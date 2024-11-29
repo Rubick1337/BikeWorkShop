@@ -1,14 +1,13 @@
 const Router = require('express')
 const router = new Router()
-const {body} = require('express-validator')
-// const authMiddleware = require('../middleware/authMiddleware') //второй параметр
-// const checkRoleMiddleware = require('../middleware/checkRoleMiddleware')
+const userController = require('../Controller/UserController')
 
-router.post('/registration', body('password').isLength({min: 2, max: 32}),)
-router.post('/login', )
-router.post('/logout',)
-router.get('/refresh',)
-router.get('/',)
-router.get('/:id',)
+
+router.post('/registration', userController.registration)
+router.post('/login', userController.login)
+router.post('/logout', userController.logout)
+router.get('/refresh', userController.refresh)
+router.get('/',userController.getAll)
+router.get('/:id', userController.getOne)
 
 module.exports = router
