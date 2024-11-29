@@ -1,35 +1,34 @@
-const {CategoryService} = require('../Models/models');
+const {CategoryPart} = require("../Models/models");
 const ApiError = require("../Exception/ApiError");
 
-
-class CategoryServiceController {
-    async createCategoryService(req, res){
+class CategoryPartController {
+    async createCategoryPart(req, res){
         const {name} = req.body;
-        const category = await CategoryService.create({name})
+        const category = await CategoryPart.create({name})
         return res.json(category)
     }
-    async getCategoryServiceAll(req,res){
-        const categories = await CategoryService.findAll()
+    async getCategoryPartAll(req,res){
+        const categories = await CategoryPart.findAll()
         return res.json(categories)
     }
-    async getCategoryServiceOne(req,res,next){
+    async getCategoryPartOne(req,res,next){
         const {id } = req.params
         if(id == null)
         {
             return next(ApiError.badRequest("Id is required"))
         }
-        const category = await CategoryService.findOne(
+        const category = await CategoryPart.findOne(
             {
                 where:{id}
             }
         )
         return res.json(category)
     }
-    async deleteCategoryService(req,res){
+    async deleteCategoryPart(req,res){
         const { id } = req.query;
 
         try {
-            const category = await CategoryService.findByPk(id);
+            const category = await CategoryPart.findByPk(id);
             if (!category) {
                 return res.status(404).json({ error: 'category record not found' });
             }
@@ -40,13 +39,13 @@ class CategoryServiceController {
             return res.status(500).json({ error: 'Failed to delete category' });
         }
     }
-    async editCategoryService(req,res){
+    async editCategoryPart(req,res){
         const { id } = req.params;
         try {
 
             const { name } = req.body;
 
-            const category = await CategoryService.findByPk(id);
+            const category = await CategoryPart.findByPk(id);
             if (!category) {
                 return res.status(404).json({ error: 'category rec not found' });
             }
@@ -58,4 +57,4 @@ class CategoryServiceController {
         }
     }
 }
-module.exports = new CategoryServiceController()
+module.exports = new CategoryPartController()
