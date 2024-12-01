@@ -9,7 +9,7 @@ class ApiError extends Error{
         return new ApiError(200, message);
     }
 
-    static badRequest(message) {
+    static badRequest(message,errors = []) {
         return new ApiError(400, message);
     }
 
@@ -26,9 +26,10 @@ class ApiError extends Error{
     }
 
 
-    static internal(message) { // Внутренняя ошибка сервера
+    static Internal(message) { // Внутренняя ошибка сервера
         return new ApiError(500, message);
     }
+
 }
 
 

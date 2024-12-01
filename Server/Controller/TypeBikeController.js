@@ -35,7 +35,7 @@ const type = await TypeBike.create({name})
             return res.status(500).json({ error: 'Failed to delete type' });
         }
     }
-    async editTypeBiket(req,res){
+    async editTypeBike(req,res){
         const { id } = req.params;
         try {
 
