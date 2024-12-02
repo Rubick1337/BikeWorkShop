@@ -72,7 +72,7 @@ const Bike = sequelize.define("Bike", {
 const Basket = sequelize.define("Basket", {
     id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
     id_user: {type: DataTypes.INTEGER, allowNull: false,references: {model:User, key: "id"}},
-    cost: {type: DataTypes.DECIMAL, allowNull: false},
+    cost: {type: DataTypes.DECIMAL, allowNull: true},
     status: {type: DataTypes.STRING, allowNull: false},
     date: {type: DataTypes.DATE, allowNull: false},
 })
