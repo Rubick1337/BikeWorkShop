@@ -1,4 +1,4 @@
-const {BikeOrder} = require("../Models/models");
+const {BikeOrder, Bike} = require("../Models/models");
 
 class OrderBikeController {
     async createOrderBike(req, res){
@@ -6,6 +6,18 @@ class OrderBikeController {
         const order = await BikeOrder.create({id_service,id_basket})
         return res.json(order)
 
+    }
+    async getOrderBikeOne(req,res){
+        const {id } = req.params
+        const bike = await BikeOrder.findOne(
+            {
+                where:{id}
+            }
+        )
+        if(!bike){
+            return  res.status(404).json({ message: 'Bike order not found' })
+        }
+        return res.json(bike)
     }
     async getOrderBikeAll(req, res) {
         try {

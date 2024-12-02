@@ -1,4 +1,4 @@
-const {ServiceOrder, PartOrder} = require("../Models/models");
+const {ServiceOrder} = require("../Models/models");
 
 class OrderServiceController {
     async createOrderService(req, res){
@@ -6,6 +6,19 @@ class OrderServiceController {
         const order = await ServiceOrder.create({id_service,id_basket})
         return res.json(order)
     }
+    async getOrderServiceOne(req,res){
+        const {id } = req.params
+        const service = await ServiceOrder.findOne(
+            {
+                where:{id}
+            }
+        )
+        if(!service){
+            return  res.status(404).json({ message: 'service order not found' })
+        }
+        return res.json(service)
+    }
+
     async getOrderServiceAll(req,res){
         try {
             const { id_user, id_basket } = req.query;

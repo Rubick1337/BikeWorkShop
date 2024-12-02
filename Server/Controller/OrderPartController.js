@@ -6,6 +6,19 @@ class OrderPartController {
         const order = await PartOrder.create({id_part,id_basket})
         return res.json(order)
     }
+    async getOrderPartOne(req,res){
+        const {id } = req.params
+        const part = await PartOrder.findOne(
+            {
+                where:{id}
+            }
+        )
+        if(!part){
+            return  res.status(404).json({ message: 'part order not found' })
+        }
+        return res.json(part)
+    }
+
     async getOrderPartAll(req,res){
         try {
             const { id_user, id_basket } = req.query;
