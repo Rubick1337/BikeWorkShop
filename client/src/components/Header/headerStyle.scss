@@ -1,0 +1,94 @@
+.logo
+{
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAPCAYAAAD6Ud/mAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFZSURBVHgBlVSBUcMwDFQ5BsgG9QZkg4YJwgZhA8oEwARlg4YJGCFlgpQJkg0aJihSeDeP4zTt3/3VlvWSItldyBifyoT2z8p9xO9B+RSxl8qP0HgTcWxpnSJxDFZMBh+2lcpCrsRaeVS+TJxXyoPSkc3229BxIfOwYFZ1rH0O3CnvydaBJ8Rax0gg9G0K0aIAOyvI1oWOt0FQG/ASjt8QOwSzryplPGjT1cp35Y/yjvS7MKElsN4eI9wgWAOfRMZ4nNBWQvNzMFqgFSX2zjVsGSVmuKDIHMWsKW5fXIWNI2EDbkgstM8o0Ra2FAlrOvPJ+vdmC34rNQkTrP11TRCsIf8D6WPPodf7y8C3pJW/we5lmEdHv28ytDiE6Zby/9GfEHt0ElRYyDQu1mcyDC2Dg33JK9nPwcnQzjzQh23ub1kjM9fzDNI5Pf8FWRUriGwWNqMvuQ75lP4XFeF/T6qUvocAAAAASUVORK5CYII=);
+  width: 25.67px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
+.Title__text
+{
+  color: #000;
+  font-feature-settings: 'dlig' on;
+  font-family: Manrope;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 21px; /* 150% */
+}
+.navigation ul {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  list-style-type: none;
+  margin-block: 0;
+  padding-inline-start: 0;
+
+}
+.navigation a {
+  text-decoration: none;
+  color: #000;
+  font-feature-settings: 'dlig' on;
+  font-family: Manrope;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 21px;
+}
+.header__logo
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+.header
+{
+  display: flex;
+  height: 65px;
+  padding: 12px 20px;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #888;
+}
+.header__menu
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px
+}
+.user-actions
+{
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.profile__container, .basket__container {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #EDF2E8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile__background
+{
+  background-image: url(../../images/Vectorprofile.png);
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
+.basket__background
+{
+  background-image: url(../../images/Vectorbasket.png);
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
