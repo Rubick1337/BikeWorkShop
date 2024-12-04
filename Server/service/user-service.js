@@ -3,8 +3,7 @@ const tokenService = require("./token-service");
 const ApiError = require("../Exception/ApiError");
 const bcrypt = require("bcryptjs");
 const UserDto = require("../dtos/user-dto")
-const res = require("express/lib/response");
-const {where} = require("sequelize");
+
 
 
 class UserService {

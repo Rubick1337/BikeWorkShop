@@ -3,6 +3,8 @@ const userService = require('../service/user-service');
 const {validationResult } = require('express-validator');
 const {User, CategoryBike} = require("../Models/models");
 const {where} = require("sequelize");
+const tokenService = require("../service/token-service");
+const UserDto = require("../dtos/user-dto");
 
 class UserController {
     async registration(req, res, next) {
@@ -53,7 +55,7 @@ class UserController {
             return res.json(userData)
         } catch (e) {
             console.error(e);
-            next(ApiError.Internal(e.message)); // Передаем ошибку в обработчик
+            next(ApiError.Internal(e.message));
         }
     }
 
