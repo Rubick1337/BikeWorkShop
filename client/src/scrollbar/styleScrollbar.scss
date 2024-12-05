@@ -1,0 +1,28 @@
+/* Кастомизация самого скроллбара */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Полоса прокрутки */
+::-webkit-scrollbar-thumb {
+  background-color: #888;  /* Цвет полосы прокрутки */
+  border-radius: 6px;  /* Закругление концов полосы */
+}
+
+/* При наведении на полосу прокрутки */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #7e5d20;  /* Цвет полосы при наведении */
+}
+
+/* Стили для дорожки скроллбара */
+::-webkit-scrollbar-track {
+  background-color: #f0f0f0;  /* Цвет фона дорожки */
+  border-radius: 6px;
+}
+
+
+/* Дорожка скроллбара */
+::-webkit-scrollbar-track {
+  background-color: #f0f0f0;  /* Цвет фона дорожки */
+  border-radius: 6px;  /* Закругление концов дорожки */
+}
