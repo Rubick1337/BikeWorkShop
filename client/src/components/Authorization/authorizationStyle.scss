@@ -79,6 +79,12 @@ span {
   font-size: 12px;
 }
 
+@media (max-width: 1000px) {
+  .container-registration{
+    min-width: 0px;
+  }
+}
+
 /* Медиазапрос для экранов шириной 480px и ниже */
 @media (max-width: 583px) {
   .container-registration {
