@@ -42,11 +42,13 @@ class UserService {
         return token;
     }
     async refresh(refreshToken) {
+        console.log(refreshToken + "Заход в user-service");
         if(!refreshToken) {
             throw ApiError.unauthorized("Refresh token not found");
         }
-        const userData = tokenService.validateRefreshToken(refreshToken);
         const tokenFromDb = await tokenService.findToken(refreshToken);
+        const userData = tokenService.validateRefreshToken(refreshToken);
+        console
         if(!tokenFromDb|| !userData) {
             throw ApiError.unauthorized("Refresh token not found");
         }

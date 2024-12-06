@@ -34,7 +34,7 @@ generateToken(payload) {
             console.log("Refresh Token:", refreshToken);
 
             const tokenData = await Refresh_Token.findOne({ where: { id_user: user_id } });
-
+            console.log("Refresh Token tokenData:", tokenData);
             if (tokenData) {
                 console.log("Updating existing token");
                 tokenData.refresh_token = refreshToken;
@@ -55,12 +55,11 @@ generateToken(payload) {
         });
         return tokenData;
     }
-    async findToken(refreshToken) {
-        const tokenData = await Refresh_Token.findOne({
-            where: {
-                refresh_token: refreshToken
-            }
-        });
+    async findToken(refreshToken){
+        const tokenData = await Refresh_Token.findOne({where: {refresh_token: refreshToken}})
+        console.log('Заход с поиском')
+        console.log(refreshToken)
+        console.log(tokenData)
         return tokenData;
     }
 

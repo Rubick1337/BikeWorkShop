@@ -15,7 +15,7 @@ export default class AuthService {
                     id: response.data.user.id,
                     surname: response.data.user.surname,
                     email: response.data.user.email,
-                    address: response.data.user.address,
+                    adress: response.data.user.adress,
                     role: response.data.user.role,
                 },
             };

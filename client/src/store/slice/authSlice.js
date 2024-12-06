@@ -23,6 +23,7 @@ export const logout = createAsyncThunk('auth/logout', async () => {
 
 export const checkAuth = createAsyncThunk('auth/refresh', async () =>{
     const response = await axios.get(`${API_URL}/user/refresh`, {withCredentials: true})
+    localStorage.removeItem('token');
     localStorage.setItem('token', response.data.accessToken);
     return response.data;
 });
@@ -73,10 +74,10 @@ const authSlice = createSlice({
             .addCase(checkAuth.pending, (state, action) => {
                 state.isLoading = true;
                 console.log(state.isAuth);
-                console.log(state.isLoading);
             })
             .addCase(checkAuth.fulfilled, (state, action) => {
                 state.isAuth = true;
+                console.log(state.isAuth);
                 state.user = action.payload.user; // Сохраняем пользователя
                 state.isLoading = false;
             })

@@ -49,15 +49,25 @@ class UserController {
 
     async refresh(req, res, next) {
         try {
-            const {refreshToken} = req.cookies;
-            const userData = await  userService.refresh(refreshToken)
+            // Получаем refresh token из cookies
+            const { refreshToken } = req.cookies;
+            console.log('refreshToken из куки', refreshToken);
+            if (!refreshToken) {
+                throw ApiError.unauthorized("Refresh token not found");
+            }
+
+            // Вызываем сервис для обновления токенов
+            const userData = await userService.refresh(refreshToken);
+
+            // Устанавливаем новый refresh token в cookies
             res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-            return res.json(userData)
+            return res.json(userData);
         } catch (e) {
             console.error(e);
             next(ApiError.Internal(e.message));
         }
     }
+
 
     async getOne(req, res, next) {
         try {
