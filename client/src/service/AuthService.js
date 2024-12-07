@@ -37,17 +37,16 @@ export default class AuthService {
         }
     }
 
-    async registration(email, password, name, surname, address, role) {
+    static async registration(email, password, name, surname, adress, role) {
         try {
-            const response = await $api.post(API_ENDPOINTS.USER.REGISTRATION, { email, password, name, surname, address, role });
+            const response = await $api.post(API_ENDPOINTS.USER.REGISTRATION, { email, password, name, surname, adress, role });
             return response.data;
         } catch (error) {
-            console.error("Register failed:", error);
             throw error;
         }
     }
 
-    async logout() {
+    static async logout() {
         try {
             const response = await $api.post(API_ENDPOINTS.USER.LOGOUT);
             return response.data;

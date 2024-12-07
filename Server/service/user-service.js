@@ -11,7 +11,7 @@ class UserService {
     {
     const candidate = await User.findOne({where:{email}});
     if (candidate) {
-     throw new Error(`User with email ${email} already exists`);
+     throw new Error(`Пользователь с такой почтой ${email} уже есть`);
     }
     const hashPassword = await bcrypt.hash(password, 3);
     const user = await User.create({email, password: hashPassword,name,surname,adress,role});

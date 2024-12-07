@@ -4,11 +4,9 @@ import {Route, Routes } from 'react-router-dom'; // Импортируем Route
 import Header from './components/Header/header';
 import Footer from "./components/Footer/footer";
 import "./scrollbar/styleScrollbar.scss"
-import Registration from "./components/Registration/registration";
-import Authorization from "./components/Authorization/authorization";
-import store from "./store/store";
 import { checkAuth } from "./store/slice/authSlice";
 import Loading from "./components/Loading/loading";
+import RegistrationPage from "./pages/RegistrationPage/RegistrationPage";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -34,13 +32,9 @@ const App = () => {
 
     return (
         <div className="App">
-            <Header/>
-            <main>
-                <Authorization></Authorization>
+                <RegistrationPage/>
                 <Routes>
                 </Routes>
-            </main>
-            <Footer/>
         </div>
     );
 };
