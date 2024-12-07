@@ -11,7 +11,7 @@ class UserController {
             try {
                 const { email, password, name, surname, adress, role } = req.body;
                 if (!email.trim() || !password.trim() || !name.trim() || !surname.trim() || !adress.trim()) {
-                    return res.status(400).json({ message: "Все поля должны быть заполнены"});
+                    return res.status(400).json({ message: "Все поля должны быть заполнены,пустых не может быть"});
                 }
                 const errors = validationResult(req);
                 if(!errors.isEmpty()) {

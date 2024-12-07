@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, NavbarToggler, Nav, NavItem, Offcanvas, OffcanvasBody, OffcanvasHeader, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'; // Импортируем компоненты из Bootstrap
 import './headerStyle.scss';
+import RegistrationPage from "../../pages/RegistrationPage/RegistrationPage";
+import AuthorizationPage from "../../pages/AuthorizaionPage/AuthorizaionPage";
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -88,8 +90,8 @@ const Header = () => {
                                 </>
                             ) : (
                                 <>
-                                    <DropdownItem tag={Link} to="/login">Войти</DropdownItem>
-                                    <DropdownItem tag={Link} to="/register">Зарегистрироваться</DropdownItem>
+                                    <DropdownItem tag={Link} to="/login" component={AuthorizationPage}>Войти</DropdownItem>
+                                    <DropdownItem tag={Link} to="/register" component={RegistrationPage}>Зарегистрироваться</DropdownItem>
                                 </>
                             )}
                         </DropdownMenu>
