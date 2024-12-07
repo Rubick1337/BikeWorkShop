@@ -2,17 +2,20 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, NavbarToggler, Nav, NavItem, Offcanvas, OffcanvasBody, OffcanvasHeader, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'; // Импортируем компоненты из Bootstrap
 import './headerStyle.scss';
-import RegistrationPage from "../../pages/RegistrationPage/RegistrationPage";
-import AuthorizationPage from "../../pages/AuthorizaionPage/AuthorizaionPage";
+import { useDispatch, useSelector } from 'react-redux'; // Добавляем useSelector
+import { logout } from '../../store/slice/authSlice'; // Импортируем действие logout
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+    const isAuthenticated = useSelector(state => state.auth.isAuth);
+    const dispatch = useDispatch();
     const toggle = () => setIsOpen(!isOpen);
     const toggleProfileDropdown = () => setProfileDropdownOpen(!profileDropdownOpen);  // Функция для toggle dropdown профиля
 
+    const handleLogout = () => {
+        dispatch(logout());
+    };
     return (
         <header className="header">
             <div className="header__logo">
@@ -86,12 +89,12 @@ const Header = () => {
                             {isAuthenticated ? (
                                 <>
                                     <DropdownItem tag={Link} to="/profile">Мой профиль</DropdownItem>
-                                    <DropdownItem tag={Link} to="/logout">Выйти</DropdownItem>
+                                    <DropdownItem tag={Link} to="/" onClick={handleLogout}>Выйти</DropdownItem>
                                 </>
                             ) : (
                                 <>
-                                    <DropdownItem tag={Link} to="/login" component={AuthorizationPage}>Войти</DropdownItem>
-                                    <DropdownItem tag={Link} to="/register" component={RegistrationPage}>Зарегистрироваться</DropdownItem>
+                                    <DropdownItem tag={Link} to="/login">Войти</DropdownItem>
+                                    <DropdownItem tag={Link} to="/registration">Зарегистрироваться</DropdownItem>
                                 </>
                             )}
                         </DropdownMenu>

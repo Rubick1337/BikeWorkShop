@@ -7,6 +7,7 @@ import { checkAuth } from "./store/slice/authSlice";
 import Loading from "./components/Loading/loading";
 import RegistrationPage from "./pages/RegistrationPage/RegistrationPage";
 import AuthorizationPage from "./pages/AuthorizaionPage/AuthorizaionPage";
+import MainPage from "./pages/Main/MainPage";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const App = () => {
             <Routes>
                 <Route path="/registration" element={<RegistrationPage />} />
                 <Route path="/login" element={<AuthorizationPage />} />
+                <Route path="/" element={<MainPage />} />
                 {/*<Route path="*" element={<NotFound />} />*/}
             </Routes>
         </div>

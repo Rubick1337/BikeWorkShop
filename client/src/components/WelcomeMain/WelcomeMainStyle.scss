@@ -1,0 +1,43 @@
+.container__welcome {
+  background-image: url(../../images/Section1.png);
+  position: relative;
+  width: 100%;
+  height: 865px;
+  display: flex;
+  align-items: center;
+  background-size: cover;
+}
+.container__text{
+  position: absolute;
+  bottom: 50px;
+  left: 30px;
+  width: 638px;
+  height: 485px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.container__text h2
+{
+  overflow: hidden;
+  color: #FFF;
+  text-overflow: ellipsis;
+  font-family: "Ribeye Marrow";
+  font-size: 60px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+}
+.container__text h5{
+  overflow: hidden;
+  color: #F6F8FB;
+  text-overflow: ellipsis;
+  font-family: Manrope;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 180.556%;
+}
+main{
+  padding: 0;
+}

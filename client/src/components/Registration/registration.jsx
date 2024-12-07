@@ -34,6 +34,7 @@ function Registration() {
     }
 
     return (
+        <div className="container__padding">
         <div className="container-registration">
             <div className="form-container sign-up-container">
                 <form onSubmit={handleRegister}>
@@ -93,6 +94,7 @@ function Registration() {
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     );
 }

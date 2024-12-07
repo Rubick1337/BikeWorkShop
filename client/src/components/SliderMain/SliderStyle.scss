@@ -1,0 +1,133 @@
+.container__slider {
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.title_section {
+  display: flex;
+  flex-direction: column;
+  gap: 21px;
+  justify-content: center;
+  align-items: center;
+}
+
+.line__title {
+  width: 170px;
+  height: 2px;
+  background: #0C0C0E;
+}
+
+.title_section h3 {
+  color: #0C0C0E;
+  font-family: Forum;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 40px;
+  letter-spacing: 2px;
+  text-transform: capitalize;
+}
+
+.container__slider h4 {
+  color: #000;
+  text-align: center;
+  font-family: Inter;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 40px;
+}
+
+.slider__container {
+  width: 1022px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+
+.slider__items {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.image__item {
+  height: 560px;
+  background-size: cover;
+  border-radius: 50px;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 922px;
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+  opacity: 0; /* Скрываем слайд по умолчанию */
+  visibility: hidden; /* Прячем слайды */
+  position: absolute; /* Размещаем слайды друг на друге */
+}
+
+.image__item.active {
+  opacity: 1; /* Показываем активный слайд */
+  visibility: visible; /* Делаем слайд видимым */
+  position: relative; /* Даем активному слайду относительное позиционирование */
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.button {
+  width: 26px;
+  height: 26px;
+  display: inline-block;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.button .inner {
+  width: 16px;
+  height: 16px;
+  margin: 5px;
+  background-color: #0C0C0E;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.inner:hover {
+  background-color: #BB945F;
+}
+
+.inner:active {
+  background-color: #BB945F;
+}
+
+.left-carrect, .right-carrect {
+  width: 48px;
+  height: 48px;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.left-carrect {
+  background-image: url(../../images/Carret_Left.png);
+}
+
+.right-carrect {
+  background-image: url(../../images/Carret_Right.png);
+}
+
+.left-carrect:hover,
+.right-carrect:hover {
+  transform: scale(1.1);
+}
+
+.button.active .inner {
+  background-color: #BB945F;
+}
