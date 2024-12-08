@@ -100,8 +100,12 @@
   top: 0;
   bottom: 0;
   width: 250px !important;
+
   background-color: #fff;
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+}
+body{
+  padding-right: 0 !important;
 }
 .navbar-toggler {
   border: none !important;

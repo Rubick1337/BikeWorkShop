@@ -1,0 +1,11 @@
+.container__eror {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.container__eror h1,
+.container__eror h2 {
+  text-align: center;
+}

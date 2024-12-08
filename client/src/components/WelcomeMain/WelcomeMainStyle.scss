@@ -41,3 +41,28 @@
 main{
   padding: 0;
 }
+@media (max-width: 768px)
+{
+  .container__welcome {
+    background-image: url(../../images/Section5tablet.png);
+  }
+}
+@media (max-width: 670px)
+{
+  .container__text {
+    width: 480px;
+  }
+}
+@media (max-width: 500px)
+{
+  .container__welcome {
+    background-image: url(../../images/Section5phone.png);
+  }
+  .container__text {
+    width: 280px;
+  }
+  .container__text h2
+  {
+    font-size: 30px;
+  }
+}

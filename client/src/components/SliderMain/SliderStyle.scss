@@ -131,3 +131,34 @@
 .button.active .inner {
   background-color: #BB945F;
 }
+@media (max-width: 1024px)
+{
+  .slider__container
+  {
+    width:730px;
+  }
+  .image__item
+  {
+    height: 400px;
+    width: 730px;
+  }
+}
+@media (max-width: 730px)
+{
+  .slider__container
+  {
+    width:530px;
+  }
+  .image__item
+  {
+    height: 400px;
+    width: 530px;
+  }
+}
+@media (max-width: 530px)
+{
+  .container__slider
+  {
+    display: none;
+  }
+}

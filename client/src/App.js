@@ -8,6 +8,7 @@ import Loading from "./components/Loading/loading";
 import RegistrationPage from "./pages/RegistrationPage/RegistrationPage";
 import AuthorizationPage from "./pages/AuthorizaionPage/AuthorizaionPage";
 import MainPage from "./pages/Main/MainPage";
+import NotFound from "./pages/NotFound/NotFound";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -37,7 +38,7 @@ const App = () => {
                 <Route path="/registration" element={<RegistrationPage />} />
                 <Route path="/login" element={<AuthorizationPage />} />
                 <Route path="/" element={<MainPage />} />
-                {/*<Route path="*" element={<NotFound />} />*/}
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </div>
     );
