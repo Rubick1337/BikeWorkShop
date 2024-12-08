@@ -1,0 +1,97 @@
+.img_dilevery
+{
+  background-image: url(../../images/7a42f224198bf7b519128db53370dab8.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  display: flex;
+  align-items: center;
+  width: 223px;
+  height: 125px;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.img_garant
+{
+  background-image: url(../../images/4ee3f524200ff0bbf5791ee2a73cd0d9.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  display: flex;
+  align-items: center;
+  width: 223px;
+  height: 125px;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.img_safe
+{
+  background-image: url(../../images/0f12e5287209a7e7dd3df101a6e8522b.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  display: flex;
+  align-items: center;
+  width: 223px;
+  height: 125px;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.img_help
+{
+  background-image: url(../../images/6a3827516680631e900f5ca5ae311816.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  display: flex;
+  align-items: center;
+  width: 223px;
+  height: 125px;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.container__item__about
+{
+  display: flex;
+  width: 223px;
+  height: 278px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
+.title_item__about h3
+{
+  color: #121A0F;
+  font-feature-settings: 'dlig' on;
+  font-family: Manrope;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px; /* 120% */
+}
+.text__item__about h4
+{
+  color: #275108;
+  font-feature-settings: 'dlig' on;
+  font-family: Manrope;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21px; /* 175% */
+}
+.all__item
+{
+  display: flex;
+  padding: 16px;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.container__about__sell
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
