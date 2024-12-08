@@ -1,0 +1,40 @@
+.container-contacts-info
+{
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+.contacts-info
+{
+  display: flex;
+  width: 650px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
+.container__info
+{
+  display: flex;
+  padding: 30px 0px;
+  flex-direction: column;
+  align-items: center;
+  gap: 49px;
+}
+.text-contacts h2, .text-contacts a
+{
+  color: #100;
+  font-family: "Noto Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration: none;
+}
+@media (max-width: 650px)
+{
+  .contacts-info
+  {
+    width: 300px
+  }
+}

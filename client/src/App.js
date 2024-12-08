@@ -9,6 +9,7 @@ import RegistrationPage from "./pages/RegistrationPage/RegistrationPage";
 import AuthorizationPage from "./pages/AuthorizaionPage/AuthorizaionPage";
 import MainPage from "./pages/Main/MainPage";
 import NotFound from "./pages/NotFound/NotFound";
+import ContactPage from "./pages/Contact/ContactPage";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -38,6 +39,7 @@ const App = () => {
                 <Route path="/registration" element={<RegistrationPage />} />
                 <Route path="/login" element={<AuthorizationPage />} />
                 <Route path="/" element={<MainPage />} />
+                <Route path="/contact" element={<ContactPage/>} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </div>
