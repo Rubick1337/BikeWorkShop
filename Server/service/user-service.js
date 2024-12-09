@@ -48,7 +48,6 @@ class UserService {
         }
         const tokenFromDb = await tokenService.findToken(refreshToken);
         const userData = tokenService.validateRefreshToken(refreshToken);
-        console
         if(!tokenFromDb|| !userData) {
             throw ApiError.unauthorized("Refresh token not found");
         }
@@ -59,6 +58,7 @@ class UserService {
         await tokenService.saveToken(userDto.id, tokens.refreshToken);
         return {...tokens, user: userDto}
     }
+
 
 }
 

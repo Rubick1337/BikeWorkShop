@@ -7,5 +7,11 @@ export const API_ENDPOINTS = {
         GET_USER: (id) => `http://localhost:9005/api/user/${id}`, // Динамический путь
         GET_USERS: 'http://localhost:9005/api/user/',
     },
+    BIKE:
+        {
+            GET: 'http://localhost:9005/api/bike',
+            CATEGORIES: 'http://localhost:9005/api/categoryBike',
+            TYPES: 'http://localhost:9005/api/typeBike',
+        }
     //
 };

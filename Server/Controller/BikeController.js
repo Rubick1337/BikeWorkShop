@@ -22,55 +22,51 @@
 
         }
         async getBikeAll(req, res) {
-            let {id_type_bike, id_category_bike, name, brand, model, price, limit, page, sortPrice} = req.query;
-
+            let { id_type_bike, id_category_bike, searchQuery, minPrice, maxPrice, limit, page, sortPrice } = req.query;
+            console.log("Filter parameters:", { id_type_bike, id_category_bike, minPrice, maxPrice, searchQuery });
+            // Дефолтные значения для пагинации и сортировки
             page = page || 1;
             limit = limit || 5;
-            let offset = page * limit - limit;
+            let offset = (page - 1) * limit;
 
             // Объект условий фильтрации
             let whereConditions = {};
+
             // Фильтрация по типу велосипеда
-            if (id_type_bike && !id_category_bike) {
+            if (id_type_bike) {
                 whereConditions.id_type_bike = id_type_bike;
             }
+
             // Фильтрация по категории велосипеда
-            if (id_category_bike && !id_type_bike) {
+            if (id_category_bike) {
                 whereConditions.id_category_bike = id_category_bike;
             }
-            // Фильтрация по типу и категории велосипеда
-            if (id_type_bike && id_category_bike) {
-                whereConditions = {id_type_bike, id_category_bike};
+
+            // Фильтрация по диапазону цен
+            if (minPrice || maxPrice) {
+                whereConditions.price = {};
+                if (minPrice) whereConditions.price[Sequelize.Op.gte] = minPrice;
+                if (maxPrice) whereConditions.price[Sequelize.Op.lte] = maxPrice;
             }
-            // Поиск по имени (если введено)
-            if (name) {
-                whereConditions.name = {
-                    [Sequelize.Op.iLike]: `%${name}%`,
+
+            // Фильтрация по поисковому запросу
+            if (searchQuery) {
+                whereConditions = {
+                    ...whereConditions,
+                    [Sequelize.Op.or]: [
+                        { name: { [Sequelize.Op.iLike]: `%${searchQuery}%` } },
+                        { brand: { [Sequelize.Op.iLike]: `%${searchQuery}%` } },
+                        { model: { [Sequelize.Op.iLike]: `%${searchQuery}%` } },
+                    ]
                 };
             }
-            // Поиск по бренду (если введено)
-            if (brand) {
-                whereConditions.brand = {
-                    [Sequelize.Op.iLike]: `%${brand}%`,
-                };
-            }
-            // Поиск по модели (если введено)
-            if (model) {
-                whereConditions.model = {
-                    [Sequelize.Op.iLike]: `%${model}%`,
-                };
-            }
-            // Поиск по цене (если введена точная цена)
-            if (price) {
-                whereConditions.price = price;
-            }
+
             // Сортировка по цене
             let order = [];
-
             if (sortPrice === 'asc') {
-                order = [['price', 'ASC']]; // Сортировка по возрастанию
+                order = [['price', 'ASC']];
             } else if (sortPrice === 'desc') {
-                order = [['price', 'DESC']]; // Сортировка по убыванию
+                order = [['price', 'DESC']];
             }
 
             try {
@@ -80,7 +76,6 @@
                     offset,
                     order
                 });
-
                 return res.json(bikes);
             } catch (e) {
                 return res.status(500).json({ error: e.message });

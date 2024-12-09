@@ -24,7 +24,7 @@ function Authorization() {
 
         if (login.fulfilled.match(action)) {
             console.log('Авторизация прошла успешно');
-            navigate('/dashboard'); // Перенаправление на другую страницу после успешного входа
+            navigate('/'); // Перенаправление на другую страницу после успешного входа
         } else {
             console.error('Не удалось авторизоваться:', action.error);
             alert("Неверный email или пароль");  //alert для уведомления об ошибке

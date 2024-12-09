@@ -27,7 +27,7 @@ function Registration() {
         const action = await dispatch(registration({ email, password, name, surname, adress, role }));
         if (registration.fulfilled.match(action)) {
             console.log('Регистрация прошла успешно');
-            navigate('/dashboard'); // Перенаправление на другую страницу после успешной регистрации
+            navigate('/'); // Перенаправление на другую страницу после успешной регистрации
         } else {
             // Ошибка будет отображена ниже формы
         }
