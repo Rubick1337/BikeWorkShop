@@ -1,70 +1,102 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchBikes, fetchCategories, fetchTypes } from '../../store/slice/bikeSlice';
+import { fetchBikes, fetchCategories, fetchTypes, fetchDeleteBike, createBike,fetchEditBike } from '../../store/slice/bikeSlice';
 import { Pagination } from '@mui/material';
+import FilterMenu from './FilterMenu';
+import CreateBikeDialog from './CreateBikeDialog';
+import DeleteBikeDialog from './DeleteBikeDialog';
+import EditBikeDialog from './EditBikeDialog';
+import Bike from './Bike';
 import "./SellBikeStyle.scss";
 
 export default function SellBike() {
     const dispatch = useDispatch();
     const { bikes, categories, types, totalCount, noBikesMessage, status } = useSelector((state) => state.bikes);
+    const { user, isAuth } = useSelector((state) => state.auth);
 
     const [sortOrder, setSortOrder] = useState('expensive');
-    const [searchQuery, setSearchQuery] = useState(""); // Состояние для поиска
-    const [selectedCategory, setSelectedCategory] = useState(""); // Состояние для выбранной категории
-    const [selectedType, setSelectedType] = useState(""); // Состояние для выбранного типа
-    const [minPrice, setMinPrice] = useState(""); // Минимальная цена
-    const [maxPrice, setMaxPrice] = useState(""); // Максимальная цена
-    const [page, setPage] = useState(1); // Текущая страница
-    const [isFilterOpen, setIsFilterOpen] = useState(false); // Состояние для отображения бокового меню фильтра
+    const [searchQuery, setSearchQuery] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const [selectedType, setSelectedType] = useState("");
+    const [minPrice, setMinPrice] = useState("");
+    const [maxPrice, setMaxPrice] = useState("");
+    const [page, setPage] = useState(1);
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [bikeToDelete, setBikeToDelete] = useState(null);
 
-    const filterRef = useRef(null); // Ссылка на окно фильтра
+    const filterRef = useRef(null);
     const limit = 5;
 
-    // Обработчик изменения сортировки
+    const [openCreateDialog, setOpenCreateDialog] = useState(false);
+    const [newBikeData, setNewBikeData] = useState({
+        id_type_bike: "",
+        id_category_bike: "",
+        name: "",
+        price: "",
+        model: "",
+        brand: "",
+        inSell: true,
+        img: null
+    });
+
+
     const handleSortChange = (event) => {
         setSortOrder(event.target.value);
         dispatch(fetchBikes({ sortOrder: event.target.value, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
     };
 
-    // Обработчик изменения текста в поле поиска
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
         dispatch(fetchBikes({ sortOrder, searchQuery: event.target.value, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
     };
 
-    // Обработчик изменения категории
     const handleCategoryChange = (event) => {
         setSelectedCategory(event.target.value);
         dispatch(fetchBikes({ sortOrder, searchQuery, category: event.target.value, type: selectedType, minPrice, maxPrice, page, limit }));
     };
 
-    // Обработчик изменения типа
     const handleTypeChange = (event) => {
         setSelectedType(event.target.value);
         dispatch(fetchBikes({ sortOrder, searchQuery, category: selectedCategory, type: event.target.value, minPrice, maxPrice, page, limit }));
     };
-
-    // Обработчик изменения минимальной цены
     const handleMinPriceChange = (event) => {
         setMinPrice(event.target.value);
     };
 
-    // Обработчик изменения максимальной цены
     const handleMaxPriceChange = (event) => {
         setMaxPrice(event.target.value);
     };
 
-    // Обработчик изменения страницы
     const handlePageChange = (event, value) => {
         setPage(value);
         dispatch(fetchBikes({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page: value, limit }));
     };
 
-    // Закрытие фильтра при клике вне его области
+    const handleDeleteClick = (id) => {
+        setBikeToDelete(id);
+        setOpenDeleteDialog(true);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDeleteDialog(false);
+        setBikeToDelete(null);
+    };
+
+    const handleConfirmDelete = async () => {
+        try {
+            await dispatch(fetchDeleteBike(bikeToDelete));
+            dispatch(fetchBikes({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
+            handleCloseDialog();
+        } catch (error) {
+            console.error("Ошибка при удалении велосипеда:", error);
+        }
+    };
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (filterRef.current && !filterRef.current.contains(event.target)) {
-                setIsFilterOpen(false); // Закрываем фильтр, если клик был вне
+                setIsFilterOpen(false);
             }
         };
         document.addEventListener('mousedown', handleClickOutside);
@@ -90,16 +122,136 @@ export default function SellBike() {
     };
 
     const handleFilterClick = (event) => {
-        event.stopPropagation(); // Остановить всплытие события
+        event.stopPropagation();
     };
-    // Количество страниц для пагинации
+
     const pageCount = Math.ceil(totalCount / limit);
+
+    const handleOpenCreateDialog = () => {
+        setOpenCreateDialog(true);
+    };
+
+    const handleCloseCreateDialog = () => {
+        setOpenCreateDialog(false);
+    };
+
+    const handleCreateBikeChange = (event) => {
+        const { name, value } = event.target;
+        setNewBikeData((prevData) => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+    const handleFileChange = (event) => {
+        setNewBikeData((prevData) => ({
+            ...prevData,
+            img: event.target.files[0]
+        }));
+    };
+
+    const handleCreateBikeSubmit = async () => {
+        if (!newBikeData.name || !newBikeData.price || !newBikeData.model || !newBikeData.brand || !newBikeData.id_category_bike || !newBikeData.id_type_bike) {
+            alert('Пожалуйста, заполните все поля');
+            return;
+        }
+        if (!newBikeData.img) {
+            alert('Пожалуйста, загрузите изображение');
+            return;
+        }
+        console.log("Продажа"+newBikeData.inSell);
+        const formData = new FormData();
+        formData.append('name', newBikeData.name);
+        formData.append('price', newBikeData.price);
+        formData.append('model', newBikeData.model);
+        formData.append('brand', newBikeData.brand);
+        formData.append('id_category_bike', newBikeData.id_category_bike);
+        formData.append('id_type_bike', newBikeData.id_type_bike);
+        formData.append('inSell', newBikeData.inSell);
+        formData.append('img', newBikeData.img);
+
+        try {
+            await dispatch(createBike(formData));
+            dispatch(fetchBikes({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
+            handleCloseCreateDialog();
+        } catch (error) {
+            console.error("Ошибка при создании велосипеда:", error);
+        }
+    };
+
+    const [openEditDialog, setOpenEditDialog] = useState(false);
+    const [bikeToEdit, setBikeToEdit] = useState(null);
+
+    const handleEditClick = (bike) => {
+        console.log(bike.id);
+        setBikeToEdit(bike);
+        setOpenEditDialog(true);
+    };
+
+    const handleCloseEditDialog = () => {
+        setOpenEditDialog(false);
+        setBikeToEdit(null);
+    };
+
+    const handleEditBikeSubmit = async (editedBike) => {
+        const formData = new FormData();
+        formData.append('name', editedBike.name);
+        formData.append('price', editedBike.price);
+        formData.append('model', editedBike.model);
+        formData.append('brand', editedBike.brand);
+        formData.append('id_category_bike', editedBike.id_category_bike);
+        formData.append('id_type_bike', editedBike.id_type_bike);
+        formData.append('inSell', editedBike.inSell);
+
+        if (editedBike.img) {
+            formData.append('img', editedBike.img);
+        }
+
+        try {
+            console.log("Передаем велосипед с id:", editedBike.id);
+            await dispatch(fetchEditBike(editedBike));
+
+            dispatch(fetchBikes({
+                sortOrder,
+                searchQuery,
+                category: selectedCategory,
+                type: selectedType,
+                minPrice,
+                maxPrice,
+                page,
+                limit
+            }));
+
+            setOpenEditDialog(false);
+            setBikeToEdit(null);
+        } catch (error) {
+            console.error("Ошибка при редактировании велосипеда:", error);
+        }
+    };
+
+
+
 
     return (
         <div className="contianer__sell_bike">
             <div className="container__header__sell">
                 <div className="Title__header">
                     <h3>Велосипеды</h3>
+                    {isAuth && (user.role === 'механик' || user.role === 'владелец') ? (
+                        <button className="create__buton" onClick={handleOpenCreateDialog}>
+                            Добавить велосипед
+                        </button>
+                    ) : null}
+                    <CreateBikeDialog
+                        open={openCreateDialog}
+                        handleClose={handleCloseCreateDialog}
+                        newBikeData={newBikeData}
+                        setNewBikeData={setNewBikeData}
+                        handleCreateBikeChange={handleCreateBikeChange}
+                        handleFileChange={handleFileChange}
+                        handleCreateBikeSubmit={handleCreateBikeSubmit}
+                        categories={categories}
+                        types={types}    />
                 </div>
                 <div className="tools">
                     <div className="input__img">
@@ -114,63 +266,27 @@ export default function SellBike() {
                     </div>
 
                     <div className="filer" onClick={() => setIsFilterOpen(!isFilterOpen)}>
-                        <div className="img__filter" ></div>
+                        <div className="img__filter"></div>
                         <h4>Фильтр</h4>
                         {isFilterOpen && (
-                            <div className="custom-filter-menu" ref={filterRef} onClick={handleFilterClick}>
-                                <h4>Фильтры</h4>
-                                <div className="filter-item">
-                                    <label>Категория:</label>
-                                    <select value={selectedCategory} onChange={handleCategoryChange} className="custom-select">
-                                    <option value="">Все категории</option>
-                                    {categories.map(category => (
-                                        <option key={category.id} value={category.id}>
-                                            {category.name}
-                                        </option>
-                                    ))}
-                                </select>
-                                </div>
-                                <div className="filter-item">
-                                    <label>Тип:</label>
-                                    <select value={selectedType} onChange={handleTypeChange} className="custom-select">
-                                        <option value="">Все типы</option>
-                                        {types.map(type => (
-                                            <option key={type.id} value={type.id}>
-                                                {type.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="filter-item">
-                                    <label>Минимальная цена:</label>
-                                    <input
-                                        type="number"
-                                        value={minPrice}
-                                        onChange={handleMinPriceChange}
-                                        className="custom-input"
-                                        placeholder="Введите минимальную цену"
-                                    />
-                                </div>
-                                <div className="filter-item">
-                                    <label>Максимальная цена:</label>
-                                    <input
-                                        type="number"
-                                        value={maxPrice}
-                                        onChange={handleMaxPriceChange}
-                                        className="custom-input"
-                                        placeholder="Введите максимальную цену"
-                                    />
-                                </div>
-                                <button
-                                    onClick={() => {
-                                        setIsFilterOpen(false);
-                                        dispatch(fetchBikes({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page }));
-                                    }}
-                                    className="custom-button"
-                                >
-                                    Применить фильтры
-                                </button>
-                            </div>
+                            <FilterMenu
+                                filterRef={filterRef}
+                                handleFilterClick={handleFilterClick}
+                                selectedCategory={selectedCategory}
+                                handleCategoryChange={handleCategoryChange}
+                                categories={categories}
+                                selectedType={selectedType}
+                                handleTypeChange={handleTypeChange}
+                                types={types}
+                                minPrice={minPrice}
+                                handleMinPriceChange={handleMinPriceChange}
+                                maxPrice={maxPrice}
+                                handleMaxPriceChange={handleMaxPriceChange}
+                                applyFilters={() => {
+                                    setIsFilterOpen(false);
+                                    dispatch(fetchBikes({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page }));
+                                }}
+                            />
                         )}
                     </div>
 
@@ -187,27 +303,25 @@ export default function SellBike() {
             {noBikesMessage && <div className="no-bikes-message">{noBikesMessage}</div>}
 
             {bikes.map(bike => (
-                <div className="container__bike" key={bike.id}>
-                    <div className="container__bike__information">
-                        <div className="background__bike"
-                             style={{backgroundImage: `url(http://localhost:9005/${bike.img})`}}></div>
-                        <div className="text__bike">
-                            <h2>{bike.name}</h2>
-                            <h3>Тип велосипеда: {getTypeName(bike.id_type_bike)}</h3>
-                            <h3>Категория товара: {getCategoryName(bike.id_category_bike)}</h3>
-                            <h3>Брэнд: {bike.brand}</h3>
-                            <h3>Модель: {bike.model}</h3>
-                        </div>
-                    </div>
-                    <div className="information__bike">
-                        <h3>Цена: ${bike.price}</h3>
-                        <div className="button__basket">
-                            <div className="img__basket"></div>
-                            <h3>Add to cart</h3>
-                        </div>
-                    </div>
-                </div>
+                <Bike
+                    key={bike.id}
+                    bike={bike}
+                    isAuth={isAuth}
+                    user={user}
+                    handleDeleteClick={handleDeleteClick}
+                    getCategoryName={getCategoryName}
+                    getTypeName={getTypeName}
+                    handleEditClick={handleEditClick}
+                />
             ))}
+            <EditBikeDialog
+                open={openEditDialog}
+                handleClose={handleCloseEditDialog}
+                bike={bikeToEdit}
+                handleEditBikeSubmit={handleEditBikeSubmit}
+                categories={categories}
+                types={types}
+            />
 
             <div className="pagination">
                 <Pagination
@@ -219,6 +333,11 @@ export default function SellBike() {
                     boundaryCount={1}
                 />
             </div>
+            <DeleteBikeDialog
+                open={openDeleteDialog}
+                handleClose={handleCloseDialog}
+                handleConfirmDelete={handleConfirmDelete}
+            />
         </div>
     );
 }

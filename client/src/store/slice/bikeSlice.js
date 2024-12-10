@@ -41,6 +41,41 @@ export const fetchTypes = createAsyncThunk(
     }
 );
 
+export const fetchDeleteBike = createAsyncThunk(
+    'bikes/fetchDeleteBike',
+    async (id, { rejectWithValue }) => {  // Принимаем id
+        try {
+            const response = await BikeService.fetchDeleteBike(id);  // Передаем id в сервис
+            return response;  // Возвращаем данные, если успешно
+        } catch (error) {
+            return rejectWithValue(error.message || 'Ошибка при удалении велосипеда');
+        }
+    }
+);
+export const createBike = createAsyncThunk(
+    'bikes/createBike',
+    async (bikeData, { rejectWithValue }) => {
+        try {
+            const response = await BikeService.createBike(bikeData);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message || 'Ошибка при создании велосипеда');
+        }
+    }
+);
+
+export const fetchEditBike = createAsyncThunk(
+    'bikes/fetchEditBike',
+    async (bikeData, { rejectWithValue }) => {
+        try {
+            const response = await BikeService.fetchEditBike(bikeData);
+            return response; // Возвращаем данные ответа
+        } catch (error) {
+            return rejectWithValue(error.message || 'Ошибка при редактировании велосипеда');
+        }
+    }
+);
+
 const bikeSlice = createSlice({
     name: 'bike',
     initialState: {
@@ -75,7 +110,26 @@ const bikeSlice = createSlice({
             })
             .addCase(fetchTypes.fulfilled, (state, action) => {
                 state.types = action.payload;
+            })
+            .addCase(fetchDeleteBike.fulfilled, (state, action) => {
+                state.bikes = state.bikes.filter(bike => bike.id !== action.payload.id);
+                state.noBikesMessage = state.bikes.length === 0 ? "Такого велосипеда нет в ассортименте" : "";
+            })
+            .addCase(createBike.fulfilled, (state, action) => {
+                state.bikes.push(action.payload);
+                state.noBikesMessage = "";
+            })
+            .addCase(fetchEditBike.fulfilled, (state, action) => {
+                const updatedBike = action.payload;
+                state.bikes = state.bikes.map(bike =>
+                    bike.id === updatedBike.id ? updatedBike : bike
+                );
+            })
+            .addCase(fetchEditBike.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
             });
+
     }
 });
 

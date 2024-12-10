@@ -3,9 +3,12 @@
     const {Bike} = require("../Models/models");
     const ApiError = require("../Exception/ApiError");
     const Sequelize = require("sequelize");
+    const fs = require("fs");
 
     class BikeController {
         async createBike(req, res,next){
+            console.log("Запрос на создание велосипеда:", req.body);
+            console.log("Файлы в запросе:", req.files);
             try{
                 const {id_type_bike,id_category_bike,name,price,model,brand,inSell} = req.body;
                 const {img} = req.files;
@@ -91,34 +94,73 @@
             )
             return res.json(bike)
         }
-        async deleteBike(req,res){
+        async deleteBike(req, res) {
             const { id } = req.params;
 
             try {
                 const bike = await Bike.findByPk(id);
                 if (!bike) {
-                    return res.status(404).json({ error: 'Bike record not found' });
+                    return res.status(404).json({ error: 'Запись о велосипеде не найдена' });
+                }
+                console.log("img" +bike.img)
+                if (bike.img) {
+                    const imagePath = path.resolve(__dirname, '..', 'static', bike.img);
+                    fs.unlink(imagePath, (err) => {
+                        if (err) {
+                            console.error('Ошибка при удалении изображения:', err);
+                        }
+                    });
                 }
 
+                // Удаляем саму запись о велосипеде
                 await bike.destroy();
-                return res.json({ message: 'Bike record deleted successfully' });
+                return res.json({ message: 'Запись о велосипеде успешно удалена' });
             } catch (error) {
-                return res.status(500).json({ error: 'Failed to delete Bike' });
+                console.error(error);
+                return res.status(500).json({ error: 'Не удалось удалить велосипед' });
             }
         }
-        async editBike(req,res){
+        async editBike(req, res) {
             try {
-
-                const { id,id_type_bike,id_category_bike,name,price,model,brand,inSell } = req.body;
+                const { id_type_bike, id_category_bike, name, price, model, brand, inSell } = req.body;
+                const { id } = req.params;
+                console.log("Редактирование велосипеда с id: " + id);
 
                 const bike = await Bike.findByPk(id);
                 if (!bike) {
-                    return res.status(404).json({ error: 'bike rec not found' });
+                    return res.status(404).json({ error: 'Bike not found' });
                 }
 
-                await bike.update({ id_type_bike,id_category_bike,name,price,model,brand,inSell });
-                return res.json({ message: 'bike updated successfully' });
+                if (req.files && req.files.img) {
+                    const oldImg = bike.img;
+
+                    if (oldImg) {
+                        const oldImgPath = path.resolve(__dirname, '..', 'static', oldImg);
+                        fs.unlinkSync(oldImgPath);
+                    }
+
+                    const { img } = req.files;
+                    const newFileName = uuid.v4() + ".jpg";
+
+                    await img.mv(path.resolve(__dirname, '..', 'static', newFileName));
+
+                    await bike.update({
+                        id_type_bike,
+                        id_category_bike,
+                        name,
+                        price,
+                        model,
+                        brand,
+                        inSell,
+                        img: newFileName,
+                    });
+                } else {
+                    await bike.update({ id_type_bike, id_category_bike, name, price, model, brand, inSell });
+                }
+
+                return res.json({ message: 'Bike updated successfully' });
             } catch (error) {
+                console.error(error);
                 return res.status(500).json({ error: 'Failed to update bike' });
             }
         }

@@ -6,6 +6,6 @@ router.post("/",bikeController.createBike)
 router.get("/",bikeController.getBikeAll)
 router.get("/:id",bikeController.getBikeOne)
 router.delete("/:id",bikeController.deleteBike)
-router.put("/",bikeController.editBike)
+router.put("/:id", bikeController.editBike);
 
 module.exports = router

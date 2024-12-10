@@ -34,7 +34,7 @@ const Header = () => {
                     <OffcanvasBody>
                         <Nav vertical>
                             <NavItem>
-                                <Link to="/bike" className="nav-link">Велосипеды</Link>
+                                <Link to="/sellbike" className="nav-link">Велосипеды</Link>
                             </NavItem>
                             <NavItem>
                                 <Link to="/services" className="nav-link">Услуги</Link>
@@ -63,7 +63,7 @@ const Header = () => {
                 {/* Навигация для больших экранов */}
                 <Nav className="ml-auto d-none d-md-flex" navbar>
                     <NavItem>
-                        <Link to="/bike" className="nav-link">Велосипеды</Link>
+                        <Link to="/sellbike" className="nav-link">Велосипеды</Link>
                     </NavItem>
                     <NavItem>
                         <Link to="/services" className="nav-link">Услуги</Link>
