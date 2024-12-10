@@ -15,5 +15,14 @@ export const API_ENDPOINTS = {
             DELETE: (id) => `http://localhost:9005/api/bike/${id}`,
             CREATE:  'http://localhost:9005/api/bike',
             EDIT: (id) => `http://localhost:9005/api/bike/${id}`,
+        },
+    PART:
+        {
+            GET: 'http://localhost:9005/api/part',
+            CATEGORIES: 'http://localhost:9005/api/categoryPart',
+            TYPES: 'http://localhost:9005/api/typePart',
+            DELETE: (id) => `http://localhost:9005/api/part/${id}`,
+            CREATE:  'http://localhost:9005/api/part',
+            EDIT: (id) => `http://localhost:9005/api/part/${id}`,
         }
 };

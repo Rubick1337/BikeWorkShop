@@ -1,18 +1,18 @@
+// src/components/SellPart.js
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchBikes, fetchCategories, fetchTypes, fetchDeleteBike, createBike,fetchEditBike } from '../../store/slice/bikeSlice';
+import { fetchParts, fetchCategories, fetchTypes, fetchDeletePart, createPart, fetchEditPart } from '../../store/slice/partSlice';
 import { Pagination } from '@mui/material';
-import FilterMenu from './FilterMenu';
-import CreateBikeDialog from './CreateBikeDialog';
-import DeleteBikeDialog from './DeleteBikeDialog';
-import EditBikeDialog from './EditBikeDialog';
-import Bike from './Bike';
-import "./SellBikeStyle.scss";
-import Part from "../SellDetails/Part";
+import FilterMenu from '../SellBike/FilterMenu';
+import CreatePartDialog from './CreatePartDialog';
+import DeletePartDialog from './DeletePartDialog';
+import EditPartDialog from './EditPartDialog';
+import Part from './Part';
+import "../SellBike/SellBikeStyle.scss";
 
-export default function SellBike() {
+export default function SellPart() {
     const dispatch = useDispatch();
-    const { bikes, categories, types, totalCount, noBikesMessage, status } = useSelector((state) => state.bikes);
+    const { parts, categories, types, totalCount, noPartsMessage, status } = useSelector((state) => state.parts);
     const { user, isAuth } = useSelector((state) => state.auth);
 
     const [sortOrder, setSortOrder] = useState('expensive');
@@ -24,15 +24,15 @@ export default function SellBike() {
     const [page, setPage] = useState(1);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
-    const [bikeToDelete, setBikeToDelete] = useState(null);
+    const [partToDelete, setPartToDelete] = useState(null);
 
     const filterRef = useRef(null);
     const limit = 5;
 
     const [openCreateDialog, setOpenCreateDialog] = useState(false);
-    const [newBikeData, setNewBikeData] = useState({
-        id_type_bike: "",
-        id_category_bike: "",
+    const [newPartData, setNewPartData] = useState({
+        id_type_part: "",
+        id_category_part: "",
         name: "",
         price: "",
         model: "",
@@ -41,7 +41,8 @@ export default function SellBike() {
         img: null
     });
 
-    const filteredBikes = bikes.filter(part => {
+    const filteredParts = parts.filter(part => {
+        // Фильтрация по inSell для клиентов
         if (user.role === 'клиент' && part.inSell === false) {
             return false;
         }
@@ -50,23 +51,24 @@ export default function SellBike() {
 
     const handleSortChange = (event) => {
         setSortOrder(event.target.value);
-        dispatch(fetchBikes({ sortOrder: event.target.value, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
+        dispatch(fetchParts({ sortOrder: event.target.value, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
     };
 
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
-        dispatch(fetchBikes({ sortOrder, searchQuery: event.target.value, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
+        dispatch(fetchParts({ sortOrder, searchQuery: event.target.value, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
     };
 
     const handleCategoryChange = (event) => {
         setSelectedCategory(event.target.value);
-        dispatch(fetchBikes({ sortOrder, searchQuery, category: event.target.value, type: selectedType, minPrice, maxPrice, page, limit }));
+        dispatch(fetchParts({ sortOrder, searchQuery, category: event.target.value, type: selectedType, minPrice, maxPrice, page, limit }));
     };
 
     const handleTypeChange = (event) => {
         setSelectedType(event.target.value);
-        dispatch(fetchBikes({ sortOrder, searchQuery, category: selectedCategory, type: event.target.value, minPrice, maxPrice, page, limit }));
+        dispatch(fetchParts({ sortOrder, searchQuery, category: selectedCategory, type: event.target.value, minPrice, maxPrice, page, limit }));
     };
+
     const handleMinPriceChange = (event) => {
         setMinPrice(event.target.value);
     };
@@ -77,26 +79,26 @@ export default function SellBike() {
 
     const handlePageChange = (event, value) => {
         setPage(value);
-        dispatch(fetchBikes({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page: value, limit }));
+        dispatch(fetchParts({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page: value, limit }));
     };
 
     const handleDeleteClick = (id) => {
-        setBikeToDelete(id);
+        setPartToDelete(id);
         setOpenDeleteDialog(true);
     };
 
     const handleCloseDialog = () => {
         setOpenDeleteDialog(false);
-        setBikeToDelete(null);
+        setPartToDelete(null);
     };
 
     const handleConfirmDelete = async () => {
         try {
-            await dispatch(fetchDeleteBike(bikeToDelete));
-            dispatch(fetchBikes({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
+            await dispatch(fetchDeletePart(partToDelete));
+            dispatch(fetchParts({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
             handleCloseDialog();
         } catch (error) {
-            console.error("Ошибка при удалении велосипеда:", error);
+            console.error("Ошибка при удалении детали:", error);
         }
     };
 
@@ -113,7 +115,7 @@ export default function SellBike() {
     }, []);
 
     useEffect(() => {
-        dispatch(fetchBikes({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
+        dispatch(fetchParts({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
         dispatch(fetchCategories());
         dispatch(fetchTypes());
     }, [dispatch, sortOrder, searchQuery, selectedCategory, selectedType, minPrice, maxPrice, page, limit]);
@@ -142,83 +144,79 @@ export default function SellBike() {
         setOpenCreateDialog(false);
     };
 
-    const handleCreateBikeChange = (event) => {
+    const handleCreatePartChange = (event) => {
         const { name, value } = event.target;
-        setNewBikeData((prevData) => ({
+        setNewPartData((prevData) => ({
             ...prevData,
             [name]: value
         }));
     };
 
     const handleFileChange = (event) => {
-        setNewBikeData((prevData) => ({
+        setNewPartData((prevData) => ({
             ...prevData,
             img: event.target.files[0]
         }));
     };
 
-    const handleCreateBikeSubmit = async () => {
-        if (!newBikeData.name || !newBikeData.price || !newBikeData.model || !newBikeData.brand || !newBikeData.id_category_bike || !newBikeData.id_type_bike) {
+    const handleCreatePartSubmit = async () => {
+        if (!newPartData.name || !newPartData.price || !newPartData.model || !newPartData.brand || !newPartData.id_category_part || !newPartData.id_type_part) {
             alert('Пожалуйста, заполните все поля');
             return;
         }
-        if (!newBikeData.img) {
+        if (!newPartData.img) {
             alert('Пожалуйста, загрузите изображение');
             return;
         }
-        console.log("Продажа"+newBikeData.inSell);
         const formData = new FormData();
-        formData.append('name', newBikeData.name);
-        formData.append('price', newBikeData.price);
-        formData.append('model', newBikeData.model);
-        formData.append('brand', newBikeData.brand);
-        formData.append('id_category_bike', newBikeData.id_category_bike);
-        formData.append('id_type_bike', newBikeData.id_type_bike);
-        formData.append('inSell', newBikeData.inSell);
-        formData.append('img', newBikeData.img);
+        formData.append('name', newPartData.name);
+        formData.append('price', newPartData.price);
+        formData.append('model', newPartData.model);
+        formData.append('brand', newPartData.brand);
+        formData.append('id_category_part', newPartData.id_category_part);
+        formData.append('id_type_part', newPartData.id_type_part);
+        formData.append('inSell', newPartData.inSell);
+        formData.append('img', newPartData.img);
 
         try {
-            await dispatch(createBike(formData));
-            dispatch(fetchBikes({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
+            await dispatch(createPart(formData));
+            dispatch(fetchParts({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
             handleCloseCreateDialog();
         } catch (error) {
-            console.error("Ошибка при создании велосипеда:", error);
+            console.error("Ошибка при создании детали:", error);
         }
     };
 
     const [openEditDialog, setOpenEditDialog] = useState(false);
-    const [bikeToEdit, setBikeToEdit] = useState(null);
+    const [partToEdit, setPartToEdit] = useState(null);
 
-    const handleEditClick = (bike) => {
-        console.log(bike.id);
-        setBikeToEdit(bike);
+    const handleEditClick = (part) => {
+        setPartToEdit(part);
         setOpenEditDialog(true);
     };
 
     const handleCloseEditDialog = () => {
         setOpenEditDialog(false);
-        setBikeToEdit(null);
+        setPartToEdit(null);
     };
 
-    const handleEditBikeSubmit = async (editedBike) => {
+    const handleEditPartSubmit = async (editedPart) => {
         const formData = new FormData();
-        formData.append('name', editedBike.name);
-        formData.append('price', editedBike.price);
-        formData.append('model', editedBike.model);
-        formData.append('brand', editedBike.brand);
-        formData.append('id_category_bike', editedBike.id_category_bike);
-        formData.append('id_type_bike', editedBike.id_type_bike);
-        formData.append('inSell', editedBike.inSell);
+        formData.append('name', editedPart.name);
+        formData.append('price', editedPart.price);
+        formData.append('model', editedPart.model);
+        formData.append('brand', editedPart.brand);
+        formData.append('id_category_part', editedPart.id_category_part);
+        formData.append('id_type_part', editedPart.id_type_part);
+        formData.append('inSell', editedPart.inSell);
 
-        if (editedBike.img) {
-            formData.append('img', editedBike.img);
+        if (editedPart.img) {
+            formData.append('img', editedPart.img);
         }
 
         try {
-            console.log("Передаем велосипед с id:", editedBike.id);
-            await dispatch(fetchEditBike(editedBike));
-
-            dispatch(fetchBikes({
+            await dispatch(fetchEditPart(editedPart));
+            dispatch(fetchParts({
                 sortOrder,
                 searchQuery,
                 category: selectedCategory,
@@ -230,35 +228,33 @@ export default function SellBike() {
             }));
 
             setOpenEditDialog(false);
-            setBikeToEdit(null);
+            setPartToEdit(null);
         } catch (error) {
-            console.error("Ошибка при редактировании велосипеда:", error);
+            console.error("Ошибка при редактировании детали:", error);
         }
     };
-
-
-
 
     return (
         <div className="contianer__sell_bike">
             <div className="container__header__sell">
                 <div className="Title__header">
-                    <h3>Велосипеды</h3>
+                    <h3>Детали</h3>
                     {isAuth && (user.role === 'механик' || user.role === 'владелец') ? (
                         <button className="create__buton" onClick={handleOpenCreateDialog}>
-                            Добавить велосипед
+                            Добавить деталь
                         </button>
                     ) : null}
-                    <CreateBikeDialog
+                    <CreatePartDialog
                         open={openCreateDialog}
                         handleClose={handleCloseCreateDialog}
-                        newBikeData={newBikeData}
-                        setNewBikeData={setNewBikeData}
-                        handleCreateBikeChange={handleCreateBikeChange}
+                        newPartData={newPartData}
+                        setNewPartData={setNewPartData}
+                        handleCreatePartChange={handleCreatePartChange}
                         handleFileChange={handleFileChange}
-                        handleCreateBikeSubmit={handleCreateBikeSubmit}
+                        handleCreatePartSubmit={handleCreatePartSubmit}
                         categories={categories}
-                        types={types}    />
+                        types={types}
+                    />
                 </div>
                 <div className="tools">
                     <div className="input__img">
@@ -291,7 +287,7 @@ export default function SellBike() {
                                 handleMaxPriceChange={handleMaxPriceChange}
                                 applyFilters={() => {
                                     setIsFilterOpen(false);
-                                    dispatch(fetchBikes({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page }));
+                                    dispatch(fetchParts({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page }));
                                 }}
                             />
                         )}
@@ -307,28 +303,30 @@ export default function SellBike() {
                 </div>
             </div>
 
-            {noBikesMessage && <div className="no-bikes-message">{noBikesMessage}</div>}
-            {filteredBikes.length === 0 ? (
+            {noPartsMessage && <div className="no-bikes-message">{noPartsMessage}</div>}
+
+            {filteredParts.length === 0 ? (
                 <div className="no-items-message">В ассортименте пусто</div>
             ) : (
-            bikes.map(bike => (
-                <Bike
-                    key={bike.id}
-                    bike={bike}
-                    isAuth={isAuth}
-                    user={user}
-                    handleDeleteClick={handleDeleteClick}
-                    getCategoryName={getCategoryName}
-                    getTypeName={getTypeName}
-                    handleEditClick={handleEditClick}
-                />
-            ))
+                filteredParts.map(part => (
+                    <Part
+                        key={part.id}
+                        part={part}
+                        isAuth={isAuth}
+                        user={user}
+                        handleDeleteClick={handleDeleteClick}
+                        handleEditClick={handleEditClick}
+                        getCategoryName={getCategoryName}
+                        getTypeName={getTypeName}
+                    />
+                ))
             )}
-            <EditBikeDialog
+
+            <EditPartDialog
                 open={openEditDialog}
                 handleClose={handleCloseEditDialog}
-                bike={bikeToEdit}
-                handleEditBikeSubmit={handleEditBikeSubmit}
+                part={partToEdit}
+                handleEditPartSubmit={handleEditPartSubmit}
                 categories={categories}
                 types={types}
             />
@@ -343,7 +341,7 @@ export default function SellBike() {
                     boundaryCount={1}
                 />
             </div>
-            <DeleteBikeDialog
+            <DeletePartDialog
                 open={openDeleteDialog}
                 handleClose={handleCloseDialog}
                 handleConfirmDelete={handleConfirmDelete}

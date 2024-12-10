@@ -1,63 +1,69 @@
-
-const {Service} = require("../Models/models");
+const { Service } = require("../Models/models");
 const ApiError = require("../Exception/ApiError");
 const Sequelize = require("sequelize");
 
 class ServiceController {
+    // Создание новой услуги
     async creatService(req, res, next) {
-        try{
-            const {id_type_service,id_category_service,name,price} = req.body;
+        try {
+            const { id_type_service, id_category_service, name, price } = req.body;
 
-            const service = await Service.create({id_type_service,id_category_service,name,price})
+            const service = await Service.create({ id_type_service, id_category_service, name, price });
 
-            return res.json(service)
-        }
-        catch (e){
-            next(ApiError.badRequest(e.message))
+            return res.json(service);
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
         }
     }
-    async getServiceAll(req, res) {
-        let {id_type_service, id_category_service, name, price, limit, page, sortPrice} = req.query;
 
+    // Получение всех услуг с фильтрами
+    async getServiceAll(req, res) {
+        let { id_type_service, id_category_service, searchQuery, minPrice, maxPrice, limit, page, sortPrice } = req.query;
+        console.log("Filter parameters:", { id_type_service, id_category_service, minPrice, maxPrice, searchQuery });
+
+        // Дефолтные значения для пагинации и сортировки
         page = page || 1;
         limit = limit || 5;
-        let offset = page * limit - limit;
+        let offset = (page - 1) * limit;
 
         // Объект условий фильтрации
         let whereConditions = {};
 
         // Фильтрация по типу услуги
-        if (id_type_service && !id_category_service) {
+        if (id_type_service) {
             whereConditions.id_type_service = id_type_service;
         }
+
         // Фильтрация по категории услуги
-        if (id_category_service && !id_type_service) {
+        if (id_category_service) {
             whereConditions.id_category_service = id_category_service;
         }
-        // Фильтрация по типу и категории услуги
-        if (id_type_service && id_category_service) {
+
+        // Фильтрация по диапазону цен
+        if (minPrice || maxPrice) {
+            whereConditions.price = {};
+            if (minPrice) whereConditions.price[Sequelize.Op.gte] = minPrice;
+            if (maxPrice) whereConditions.price[Sequelize.Op.lte] = maxPrice;
+        }
+
+        // Фильтрация по поисковому запросу
+        if (searchQuery) {
             whereConditions = {
-                id_type_service,
-                id_category_service
+                ...whereConditions,
+                [Sequelize.Op.or]: [
+                    { name: { [Sequelize.Op.iLike]: `%${searchQuery}%` } },
+                    { id_type_service: { [Sequelize.Op.iLike]: `%${searchQuery}%` } },
+                    { id_category_service: { [Sequelize.Op.iLike]: `%${searchQuery}%` } },
+                ]
             };
         }
-        // Поиск по имени (если введено)
-        if (name) {
-            whereConditions.name = {
-                [Sequelize.Op.iLike]: `%${name}%`,  // Поиск по имени, игнорируя регистр
-            };
-        }
-        // Поиск по цене (если введена точная цена)
-        if (price) {
-            whereConditions.price = price;
-        }
+
         // Сортировка по цене
         let order = [];
-
         if (sortPrice === 'asc') {
-            order = [['price', 'ASC']]; // Сортировка по возрастанию
+            order = [['price', 'ASC']];
         } else if (sortPrice === 'desc') {
-            order = [['price', 'DESC']]; // Сортировка по убыванию
+            order = [['price', 'DESC']];
         }
 
         try {
@@ -67,52 +73,62 @@ class ServiceController {
                 offset,
                 order
             });
-
             return res.json(services);
         } catch (e) {
             return res.status(500).json({ error: e.message });
         }
     }
 
-    async getServiceOne(req,res){
-        const {id } = req.params
-        const service = await Service.findOne(
-            {
-                where:{id}
+    // Получение одной услуги по ID
+    async getServiceOne(req, res) {
+        const { id } = req.params;
+        try {
+            const service = await Service.findOne({
+                where: { id }
+            });
+            if (!service) {
+                return res.status(404).json({ error: 'Service not found' });
             }
-        )
-        return res.json(service)
+            return res.json(service);
+        } catch (e) {
+            return res.status(500).json({ error: e.message });
+        }
     }
-    async deleteService(req,res){
+
+    // Удаление услуги
+    async deleteService(req, res) {
         const { id } = req.params;
 
         try {
             const service = await Service.findByPk(id);
             if (!service) {
-                return res.status(404).json({ error: 'service record not found' });
+                return res.status(404).json({ error: 'Service record not found' });
             }
 
             await service.destroy();
-            return res.json({ message: 'service record deleted successfully' });
+            return res.json({ message: 'Service record deleted successfully' });
         } catch (error) {
             return res.status(500).json({ error: 'Failed to delete service' });
         }
     }
-    async editService(req,res){
+
+    // Редактирование услуги
+    async editService(req, res) {
+        const { id } = req.params;
+        const { id_type_service, id_category_service, name, price } = req.body;
+
         try {
-
-            const { id_type_service,id_category_service,name,price} = req.body;
-
             const service = await Service.findByPk(id);
             if (!service) {
-                return res.status(404).json({ error: 'service rec not found' });
+                return res.status(404).json({ error: 'Service record not found' });
             }
 
-            await service.update({ id_type_service,id_category_service,name,price });
-            return res.json({ message: 'service updated successfully' });
+            await service.update({ id_type_service, id_category_service, name, price });
+            return res.json({ message: 'Service updated successfully' });
         } catch (error) {
             return res.status(500).json({ error: 'Failed to update service' });
         }
     }
 }
-module.exports = new ServiceController()
+
+module.exports = new ServiceController();

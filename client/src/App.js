@@ -11,6 +11,7 @@ import MainPage from "./pages/Main/MainPage";
 import NotFound from "./pages/NotFound/NotFound";
 import ContactPage from "./pages/Contact/ContactPage";
 import BikeSellPage from "./pages/BikeSell/BikeSellPage";
+import PartSellPage from "./pages/PartSell/PartSellPage";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -42,6 +43,7 @@ const App = () => {
                 <Route path="/" element={<MainPage />} />
                 <Route path="/contact" element={<ContactPage/>} />
                 <Route path="/sellbike" element={<BikeSellPage/>}/>
+                <Route path="/sellpart" element={<PartSellPage/>}/>
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </div>

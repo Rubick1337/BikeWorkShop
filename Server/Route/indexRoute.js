@@ -12,7 +12,8 @@ const serviceRouter = require("./ServiceRouter")
 const typeBikeRouter = require("./TypeBikeRouter")
 const typeServiceRouter = require("./TypeServiceRouter")
 const userRouter = require("./UserRouter")
-
+const categoryPartRouter = require("./CategoryPartRouter")
+const typePartRouter = require("./TypePartRouter")
 
 router.use('/basket',basketRouter)
 router.use('/bike',bikeRouter)
@@ -26,5 +27,8 @@ router.use('/service',serviceRouter)
 router.use('/typeBike',typeBikeRouter)
 router.use('/typeService',typeServiceRouter)
 router.use('/user',userRouter)
+router.use('/categoryPart',categoryPartRouter)
+router.use('/categoryService',categoryServiceRouter)
+router.use('/typePart',typePartRouter)
 
 module.exports = router
