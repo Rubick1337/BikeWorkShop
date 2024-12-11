@@ -9,6 +9,7 @@ import DeleteServiceDialog from './DeleteServiceDialog';
 import EditServiceDialog from './EditServiceDialog';
 import Service from './Service';
 import "../SellBike/SellBikeStyle.scss";
+import CustomAlert from "../CustomAlert/CustomAlert";
 
 export default function SellService() {
     const dispatch = useDispatch();
@@ -25,6 +26,10 @@ export default function SellService() {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [serviceToDelete, setServiceToDelete] = useState(null);
+
+    const [alertOpen, setAlertOpen] = useState(false);  // Состояние для открытия alert
+    const [alertMessage, setAlertMessage] = useState('');  // Сообщение alert
+    const [alertSeverity, setAlertSeverity] = useState('');  // Тип alert: success или error
 
     const filterRef = useRef(null);
     const limit = 5;
@@ -153,7 +158,15 @@ export default function SellService() {
     const handleCreateServiceSubmit = async () => {
         // Валидация формы перед отправкой
         if (!newServiceData.name || !newServiceData.price || !newServiceData.description || !newServiceData.id_category_service || !newServiceData.id_type_service) {
-            alert('Пожалуйста, заполните все поля');
+            setAlertMessage('Введите все поля');
+            setAlertSeverity('error');
+            setAlertOpen(true);  // Показываем alert
+            return;
+        }
+        if (!newServiceData.img) {
+            setAlertMessage('Загрузите фото');
+            setAlertSeverity('error');
+            setAlertOpen(true);  // Показываем alert
             return;
         }
 
@@ -224,6 +237,10 @@ export default function SellService() {
             ...prevData,
             img: event.target.files[0]
         }));
+    };
+
+    const handleCloseAlert = () => {
+        setAlertOpen(false);
     };
 
     return (
@@ -337,6 +354,12 @@ export default function SellService() {
                 open={openDeleteDialog}
                 handleClose={handleCloseDialog}
                 handleConfirmDelete={handleConfirmDelete}
+            />
+            <CustomAlert
+                open={alertOpen}
+                message={alertMessage}
+                severity={alertSeverity}
+                handleClose={handleCloseAlert}
             />
         </div>
     );

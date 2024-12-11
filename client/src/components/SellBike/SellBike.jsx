@@ -9,6 +9,7 @@ import EditBikeDialog from './EditBikeDialog';
 import Bike from './Bike';
 import "./SellBikeStyle.scss";
 import Part from "../SellDetails/Part";
+import CustomAlert from "../CustomAlert/CustomAlert";
 
 export default function SellBike() {
     const dispatch = useDispatch();
@@ -28,6 +29,10 @@ export default function SellBike() {
 
     const filterRef = useRef(null);
     const limit = 5;
+
+    const [alertOpen, setAlertOpen] = useState(false);  // Состояние для открытия alert
+    const [alertMessage, setAlertMessage] = useState('');  // Сообщение alert
+    const [alertSeverity, setAlertSeverity] = useState('');  // Тип alert: success или error
 
     const [openCreateDialog, setOpenCreateDialog] = useState(false);
     const [newBikeData, setNewBikeData] = useState({
@@ -160,11 +165,15 @@ export default function SellBike() {
 
     const handleCreateBikeSubmit = async () => {
         if (!newBikeData.name || !newBikeData.price || !newBikeData.model || !newBikeData.brand || !newBikeData.id_category_bike || !newBikeData.id_type_bike) {
-            alert('Пожалуйста, заполните все поля');
+            setAlertMessage('Введите все поля');
+            setAlertSeverity('error');
+            setAlertOpen(true);  // Показываем alert
             return;
         }
         if (!newBikeData.img) {
-            alert('Пожалуйста, загрузите изображение');
+            setAlertMessage('Загрузите фото');
+            setAlertSeverity('error');
+            setAlertOpen(true);  // Показываем alert
             return;
         }
         console.log("Продажа"+newBikeData.inSell);
@@ -239,8 +248,9 @@ export default function SellBike() {
         }
     };
 
-
-
+    const handleCloseAlert = () => {
+        setAlertOpen(false);
+    };
 
     return (
         <div className="contianer__sell_bike">
@@ -350,6 +360,12 @@ export default function SellBike() {
                 open={openDeleteDialog}
                 handleClose={handleCloseDialog}
                 handleConfirmDelete={handleConfirmDelete}
+            />
+            <CustomAlert
+                open={alertOpen}
+                message={alertMessage}
+                severity={alertSeverity}
+                handleClose={handleCloseAlert}
             />
         </div>
     );

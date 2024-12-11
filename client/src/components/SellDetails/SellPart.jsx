@@ -9,6 +9,7 @@ import DeletePartDialog from './DeletePartDialog';
 import EditPartDialog from './EditPartDialog';
 import Part from './Part';
 import "../SellBike/SellBikeStyle.scss";
+import CustomAlert from "../CustomAlert/CustomAlert";
 
 export default function SellPart() {
     const dispatch = useDispatch();
@@ -25,6 +26,11 @@ export default function SellPart() {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [partToDelete, setPartToDelete] = useState(null);
+
+    const [alertOpen, setAlertOpen] = useState(false);  // Состояние для открытия alert
+    const [alertMessage, setAlertMessage] = useState('');  // Сообщение alert
+    const [alertSeverity, setAlertSeverity] = useState('');  // Тип alert: success или error
+
 
     const filterRef = useRef(null);
     const limit = 5;
@@ -162,11 +168,15 @@ export default function SellPart() {
 
     const handleCreatePartSubmit = async () => {
         if (!newPartData.name || !newPartData.price || !newPartData.model || !newPartData.brand || !newPartData.id_category_part || !newPartData.id_type_part) {
-            alert('Пожалуйста, заполните все поля');
+            setAlertMessage('Введите все поля');
+            setAlertSeverity('error');
+            setAlertOpen(true);  // Показываем alert
             return;
         }
         if (!newPartData.img) {
-            alert('Пожалуйста, загрузите изображение');
+            setAlertMessage('Загрузите фото');
+            setAlertSeverity('error');
+            setAlertOpen(true);  // Показываем alert
             return;
         }
         const formData = new FormData();
@@ -236,7 +246,9 @@ export default function SellPart() {
             console.error("Ошибка при редактировании детали:", error);
         }
     };
-
+    const handleCloseAlert = () => {
+        setAlertOpen(false);
+    };
     return (
         <div className="contianer__sell_bike">
             <div className="container__header__sell">
@@ -348,6 +360,12 @@ export default function SellPart() {
                 open={openDeleteDialog}
                 handleClose={handleCloseDialog}
                 handleConfirmDelete={handleConfirmDelete}
+            />
+            <CustomAlert
+                open={alertOpen}
+                message={alertMessage}
+                severity={alertSeverity}
+                handleClose={handleCloseAlert}
             />
         </div>
     );

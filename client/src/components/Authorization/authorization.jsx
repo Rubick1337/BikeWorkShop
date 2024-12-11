@@ -4,11 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { login } from "../../store/slice/authSlice";
 import "./authorizationStyle.scss";
-
+import CustomAlert from "../CustomAlert/CustomAlert";
 function Authorization() {
     const [passwordVisible, setPasswordVisible] = useState(false);  // Состояние для видимости пароля
     const [password, setPassword] = useState("");  // Состояние для пароля
     const [email, setEmail] = useState("");  // Состояние для email
+
+    const [alertOpen, setAlertOpen] = useState(false);  // Состояние для открытия alert
+    const [alertMessage, setAlertMessage] = useState('');  // Сообщение alert
+    const [alertSeverity, setAlertSeverity] = useState('');  // Тип alert: success или error
 
     const dispatch = useDispatch();
     const navigate = useNavigate(); //useNavigate для перехода
@@ -27,10 +31,15 @@ function Authorization() {
             navigate('/'); // Перенаправление на другую страницу после успешного входа
         } else {
             console.error('Не удалось авторизоваться:', action.error);
-            alert("Неверный email или пароль");  //alert для уведомления об ошибке
+            setAlertMessage('Неверный email или пароль');
+            setAlertSeverity('error');
+            setAlertOpen(true);  // Показываем alert
         }
     }
 
+    const handleCloseAlert = () => {
+        setAlertOpen(false);
+    };
     return (
         <div className="container__padding">
             <div className="container-registration">
@@ -76,6 +85,12 @@ function Authorization() {
                     </div>
                 </div>
             </div>
+            <CustomAlert
+                open={alertOpen}
+                message={alertMessage}
+                severity={alertSeverity}
+                handleClose={handleCloseAlert}
+            />
             </div>
             );
             }

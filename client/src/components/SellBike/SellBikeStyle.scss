@@ -244,6 +244,22 @@ justify-content: center;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   padding: 20px;
   border-radius: 8px;
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+.custom-filter-menu.animated {
+  animation: slideDown 0.5s forwards;
+}
+@keyframes slideDown {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 .custom-filter-menu h4
 {

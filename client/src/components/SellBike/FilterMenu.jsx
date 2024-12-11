@@ -16,7 +16,7 @@ const FilterMenu = ({
                         applyFilters
                     }) => {
     return (
-        <div className="custom-filter-menu" ref={filterRef} onClick={handleFilterClick}>
+        <div className="custom-filter-menu animated" ref={filterRef} onClick={handleFilterClick}>
             <h4>Фильтры</h4>
             <div className="filter-item">
                 <label>Категория:</label>
