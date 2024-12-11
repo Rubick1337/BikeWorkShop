@@ -1,11 +1,25 @@
-import React from 'react';
+
+import React, { useState } from 'react';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
+import ServiceDescription from './ServiceDescription';
 
 const Service = ({ service, isAuth, user, handleDeleteClick, handleEditClick, getCategoryName, getTypeName }) => {
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);  // Открыть модальное окно
+    };
+
+    const handleClose = () => {
+        setOpen(false);  // Закрыть модальное окно
+    };
+
     return (
         <div className={`container__bike ${service.inSell === false ? 'sold-out' : ''}`}>
             <div className="container__bike__information">
                 <div className="background__bike"
                      style={{backgroundImage: `url(http://localhost:9005/${service.img})`}}
+                     onClick={handleClickOpen}
                 ></div>
                 <div className="text__bike">
                     <h2>{service.name}</h2>
@@ -38,6 +52,17 @@ const Service = ({ service, isAuth, user, handleDeleteClick, handleEditClick, ge
                     </div>
                 )}
             </div>
+            <Dialog open={open} onClose={handleClose} maxWidth={"sm"} fullWidth>
+                <DialogTitle>Информация об услуге: {service.name}</DialogTitle>
+                <DialogContent>
+                    <ServiceDescription service={service} getCategoryName={getCategoryName} getTypeName={getTypeName} />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Закрыть
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };

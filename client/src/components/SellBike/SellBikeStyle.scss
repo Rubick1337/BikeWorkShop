@@ -61,6 +61,7 @@
 }
 .filer
 {
+  cursor: pointer;
   position: relative;
   display: flex;
   padding: 0px 10px;
@@ -109,6 +110,7 @@ justify-content: center;
 }
 .background__bike
 {
+  cursor: pointer;
   background-repeat: no-repeat;
   background-size: contain;
   width: 128px;
@@ -394,4 +396,9 @@ justify-content: center;
   background-size: contain;
   width: 128px;
   height: 128px;
+}
+.modal__information
+{
+  display: flex;
+  flex-direction: column;
 }

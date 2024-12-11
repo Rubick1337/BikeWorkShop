@@ -1,12 +1,25 @@
 // src/components/Bike.js
-import React from 'react';
+import BikeDescription from './BikeDescription';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
+import React, { useState, useEffect, useRef } from 'react';
 
 const Bike = ({ bike, isAuth, user, handleDeleteClick, handleEditClick, getCategoryName, getTypeName }) => {
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
         <div className={`container__bike ${bike.inSell === false ? 'sold-out' : ''}`}>
             <div className="container__bike__information">
                 <div className="background__bike"
                      style={{backgroundImage: `url(http://localhost:9005/${bike.img})`}}
+                     onClick={handleClickOpen}
                 ></div>
                 <div className="text__bike">
                     <h2>{bike.name}</h2>
@@ -40,6 +53,17 @@ const Bike = ({ bike, isAuth, user, handleDeleteClick, handleEditClick, getCateg
                     </div>
                 )}
             </div>
+            <Dialog open={open} onClose={handleClose} maxWidth={"sm"} fullWidth>
+                <DialogTitle>Информация о велосипеде: {bike.name}</DialogTitle>
+                <DialogContent>
+                    <BikeDescription bike={bike} getCategoryName={getCategoryName} getTypeName={getTypeName} />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Закрыть
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };

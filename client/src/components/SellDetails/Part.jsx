@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
+import PartDescription from './PartDescription'; // Импортируем компонент PartDescription
 
 const Part = ({ part, isAuth, user, handleDeleteClick, handleEditClick, getCategoryName, getTypeName }) => {
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);  // Открыть модальное окно
+    };
+
+    const handleClose = () => {
+        setOpen(false);  // Закрыть модальное окно
+    };
+
     return (
         <div className={`container__bike ${part.inSell === false ? 'sold-out' : ''}`}>
             <div className="container__bike__information">
                 <div className="background__bike"
                      style={{backgroundImage: `url(http://localhost:9005/${part.img})`}}
+                     onClick={handleClickOpen}
                 ></div>
                 <div className="text__bike">
                     <h2>{part.name}</h2>
@@ -39,6 +52,17 @@ const Part = ({ part, isAuth, user, handleDeleteClick, handleEditClick, getCateg
                     </div>
                 )}
             </div>
+            <Dialog open={open} onClose={handleClose} maxWidth={"sm"} fullWidth>
+                <DialogTitle>Информация о детали: {part.name}</DialogTitle>
+                <DialogContent>
+                    <PartDescription part={part} getCategoryName={getCategoryName} getTypeName={getTypeName} />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Закрыть
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };
