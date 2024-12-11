@@ -98,7 +98,6 @@ const bikeSlice = createSlice({
                 const { rows, count } = action.payload;
                 state.bikes = rows;
                 state.totalCount = count;
-                state.noBikesMessage = rows.length === 0 ? "Такого велосипеда нет в ассортименте" : "";
             })
             .addCase(fetchBikes.rejected, (state, action) => {
                 state.status = 'failed';
@@ -113,7 +112,6 @@ const bikeSlice = createSlice({
             })
             .addCase(fetchDeleteBike.fulfilled, (state, action) => {
                 state.bikes = state.bikes.filter(bike => bike.id !== action.payload.id);
-                state.noBikesMessage = state.bikes.length === 0 ? "Такого велосипеда нет в ассортименте" : "";
             })
             .addCase(createBike.fulfilled, (state, action) => {
                 state.bikes.push(action.payload);

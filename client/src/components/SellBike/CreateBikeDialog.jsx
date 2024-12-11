@@ -21,6 +21,7 @@ const CreateBikeDialog = ({
             model: '',
             brand: '',
             id_category_bike: '',
+            description: '',
             id_type_bike: '',
             img: null,
             inSell: true,
@@ -72,6 +73,14 @@ const CreateBikeDialog = ({
                     fullWidth
                     value={newBikeData.brand}
                     onChange={handleCreateBikeChange}
+                />
+                <TextField
+                    label="Описание"
+                    name="description"
+                    value={newBikeData.description}
+                    onChange={handleCreateBikeChange}
+                    fullWidth
+                    margin="normal"
                 />
                 <FormControl fullWidth margin="dense">
                     <InputLabel>Категория</InputLabel>

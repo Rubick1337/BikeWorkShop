@@ -1,14 +1,30 @@
+const uuid = require("uuid");
+const path = require("path");
 const { Service } = require("../Models/models");
 const ApiError = require("../Exception/ApiError");
 const Sequelize = require("sequelize");
+const fs = require("fs");
 
 class ServiceController {
     // Создание новой услуги
     async creatService(req, res, next) {
+        console.log("Запрос на создание услуги:", req.body);
+        console.log("Файлы в запросе:", req.files);
         try {
-            const { id_type_service, id_category_service, name, price } = req.body;
+            const { id_type_service, id_category_service, name, price, description, inSell } = req.body;
+            const { img } = req.files;
+            let fileName = uuid.v4() + ".jpg";
+            img.mv(path.resolve(__dirname, '..', 'static', fileName));
 
-            const service = await Service.create({ id_type_service, id_category_service, name, price });
+            const service = await Service.create({
+                id_type_service,
+                id_category_service,
+                name,
+                price,
+                description,
+                inSell,
+                img: fileName,
+            });
 
             return res.json(service);
         } catch (e) {
@@ -16,7 +32,7 @@ class ServiceController {
         }
     }
 
-    // Получение всех услуг с фильтрами
+    // Получение всех услуг с фильтрацией и поиском
     async getServiceAll(req, res) {
         let { id_type_service, id_category_service, searchQuery, minPrice, maxPrice, limit, page, sortPrice } = req.query;
         console.log("Filter parameters:", { id_type_service, id_category_service, minPrice, maxPrice, searchQuery });
@@ -52,8 +68,6 @@ class ServiceController {
                 ...whereConditions,
                 [Sequelize.Op.or]: [
                     { name: { [Sequelize.Op.iLike]: `%${searchQuery}%` } },
-                    { id_type_service: { [Sequelize.Op.iLike]: `%${searchQuery}%` } },
-                    { id_category_service: { [Sequelize.Op.iLike]: `%${searchQuery}%` } },
                 ]
             };
         }
@@ -82,17 +96,10 @@ class ServiceController {
     // Получение одной услуги по ID
     async getServiceOne(req, res) {
         const { id } = req.params;
-        try {
-            const service = await Service.findOne({
-                where: { id }
-            });
-            if (!service) {
-                return res.status(404).json({ error: 'Service not found' });
-            }
-            return res.json(service);
-        } catch (e) {
-            return res.status(500).json({ error: e.message });
-        }
+        const service = await Service.findOne({
+            where: { id }
+        });
+        return res.json(service);
     }
 
     // Удаление услуги
@@ -102,28 +109,66 @@ class ServiceController {
         try {
             const service = await Service.findByPk(id);
             if (!service) {
-                return res.status(404).json({ error: 'Service record not found' });
+                return res.status(404).json({ error: 'Запись о услуге не найдена' });
+            }
+
+            // Если есть изображение, удаляем его
+            if (service.img) {
+                const imagePath = path.resolve(__dirname, '..', 'static', service.img);
+                fs.unlink(imagePath, (err) => {
+                    if (err) {
+                        console.error('Ошибка при удалении изображения:', err);
+                    }
+                });
             }
 
             await service.destroy();
-            return res.json({ message: 'Service record deleted successfully' });
+            return res.json({ message: 'Запись о услуге успешно удалена' });
         } catch (error) {
-            return res.status(500).json({ error: 'Failed to delete service' });
+            return res.status(500).json({ error: 'Не удалось удалить услугу' });
         }
     }
 
     // Редактирование услуги
     async editService(req, res) {
-        const { id } = req.params;
-        const { id_type_service, id_category_service, name, price } = req.body;
-
         try {
+            const { id_type_service, id_category_service, name, price, description, inSell } = req.body;
+            const { id } = req.params;
+            console.log("Редактирование услуги с id: " + id);
+
             const service = await Service.findByPk(id);
             if (!service) {
-                return res.status(404).json({ error: 'Service record not found' });
+                return res.status(404).json({ error: 'Service not found' });
             }
 
-            await service.update({ id_type_service, id_category_service, name, price });
+            // Если есть новое изображение, обновляем его
+            if (req.files && req.files.img) {
+                const oldImg = service.img;
+
+                if (oldImg) {
+                    const oldImgPath = path.resolve(__dirname, '..', 'static', oldImg);
+                    fs.unlinkSync(oldImgPath);
+                }
+
+                const { img } = req.files;
+                const newFileName = uuid.v4() + ".jpg";
+                await img.mv(path.resolve(__dirname, '..', 'static', newFileName));
+
+                // Обновляем информацию о услуге
+                await service.update({
+                    id_type_service,
+                    id_category_service,
+                    name,
+                    price,
+                    description,
+                    inSell,
+                    img: newFileName,
+                });
+            } else {
+                // Если изображения нет, просто обновляем остальные поля
+                await service.update({ id_type_service, id_category_service, name, price, description, inSell });
+            }
+
             return res.json({ message: 'Service updated successfully' });
         } catch (error) {
             return res.status(500).json({ error: 'Failed to update service' });

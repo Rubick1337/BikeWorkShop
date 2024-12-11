@@ -1,6 +1,5 @@
 .contianer__sell_bike
 {
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -125,6 +124,7 @@ justify-content: center;
   border: 1px solid #000;
   background: #F7FAFC;
   justify-content: space-between;
+  border-radius: 20px;
 }
 .text__bike h2
 {
@@ -370,4 +370,12 @@ justify-content: center;
 .sold-out
 {
   border-color: red;
+}
+.background__service__sell
+{
+  background-image: url(../../images/free-icon-service-7028064.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 128px;
+  height: 128px;
 }

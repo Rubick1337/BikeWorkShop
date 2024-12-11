@@ -10,12 +10,12 @@
             console.log("Запрос на создание велосипеда:", req.body);
             console.log("Файлы в запросе:", req.files);
             try{
-                const {id_type_bike,id_category_bike,name,price,model,brand,inSell} = req.body;
+                const {id_type_bike,id_category_bike,name,price,model,brand,inSell,description} = req.body;
                 const {img} = req.files;
                 let fileName = uuid.v4() + ".jpg"
                 img.mv(path.resolve(__dirname, '..','static',fileName))
 
-                const bike = await Bike.create({id_type_bike,id_category_bike,name,price,model,brand,inSell,img: fileName})
+                const bike = await Bike.create({id_type_bike,id_category_bike,name,price,model,brand,inSell,description,img: fileName})
 
                 return res.json(bike)
             }
@@ -122,7 +122,7 @@
         }
         async editBike(req, res) {
             try {
-                const { id_type_bike, id_category_bike, name, price, model, brand, inSell } = req.body;
+                const { id_type_bike, id_category_bike, name, price, model, brand,description, inSell } = req.body;
                 const { id } = req.params;
                 console.log("Редактирование велосипеда с id: " + id);
 
@@ -152,10 +152,11 @@
                         model,
                         brand,
                         inSell,
+                        description,
                         img: newFileName,
                     });
                 } else {
-                    await bike.update({ id_type_bike, id_category_bike, name, price, model, brand, inSell });
+                    await bike.update({ id_type_bike, id_category_bike, name, price, model, brand,description, inSell });
                 }
 
                 return res.json({ message: 'Bike updated successfully' });

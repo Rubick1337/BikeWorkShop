@@ -11,7 +11,7 @@ class PartController {
         console.log("Запрос на создание детали:", req.body);
         console.log("Файлы в запросе:", req.files);
         try {
-            const { id_type_part, id_category_part, name, price, model, brand, inSell } = req.body;
+            const { id_type_part, id_category_part, name, price, model, brand,description, inSell } = req.body;
             const { img } = req.files;
             let fileName = uuid.v4() + ".jpg";
             img.mv(path.resolve(__dirname, '..', 'static', fileName));
@@ -23,12 +23,14 @@ class PartController {
                 price,
                 model,
                 brand,
+                description,
                 inSell,
                 img: fileName,
             });
 
             return res.json(part);
         } catch (e) {
+            console.log("ошибка" + e.message);
             next(ApiError.badRequest(e.message));
         }
     }
@@ -137,9 +139,9 @@ class PartController {
     // Редактирование детали
     async editPart(req, res) {
         try {
-            const { id_type_part, id_category_part, name, price, model, brand, inSell } = req.body;
+            const { id_type_part, id_category_part, name, price, model, brand,description, inSell } = req.body;
             const { id } = req.params;
-            console.log("Запрос" + id_type_part, id_category_part, name, price, model, brand, inSell)
+            console.log("Запрос" + id_type_part, id_category_part, name, price, model, brand,description, inSell)
             console.log("Редактирование детали с id: " + id);
 
             const part = await Part.findByPk(id);
@@ -169,6 +171,7 @@ class PartController {
                     model,
                     brand,
                     inSell,
+                    description,
                     img: newFileName,
                 });
             } else {

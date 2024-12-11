@@ -13,7 +13,7 @@ const User = sequelize.define("User", {
 })
 const Refresh_Token = sequelize.define("Refresh_token", {
     id_user: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,references: {model:User, key: "id"}},
-    refresh_token: {type: DataTypes.STRING, allowNull: true},
+    refresh_token: {type: DataTypes.TEXT, allowNull: true},
 })
 
 const  TypeService = sequelize.define("TypeService", {
@@ -30,6 +30,9 @@ const Service = sequelize.define("Service", {
     id_category_service: {type: DataTypes.INTEGER, allowNull: false,references: {model:CategoryService, key: "id"}},
     name: {type: DataTypes.STRING, allowNull: false},
     price: {type: DataTypes.DECIMAL, allowNull: false},
+    description: {type: DataTypes.TEXT, allowNull: false},
+    inSell: {type: DataTypes.BOOLEAN, allowNull: false},
+    img: {type: DataTypes.STRING, allowNull: false},
 })
 const  TypePart = sequelize.define("TypePart", {
     id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
@@ -47,6 +50,7 @@ const Part = sequelize.define("Part", {
     price: {type: DataTypes.DECIMAL, allowNull: false},
     model: {type: DataTypes.STRING, allowNull: false},
     brand: {type: DataTypes.STRING, allowNull: false},
+    description: {type: DataTypes.TEXT, allowNull: false},
     img: {type: DataTypes.STRING, allowNull: false},
     inSell: {type: DataTypes.BOOLEAN, allowNull: false},
 })
@@ -66,6 +70,7 @@ const Bike = sequelize.define("Bike", {
     price: {type: DataTypes.DECIMAL, allowNull: false},
     model: {type: DataTypes.STRING, allowNull: false},
     brand: {type: DataTypes.STRING, allowNull: false},
+    description: {type: DataTypes.TEXT, allowNull: false},
     img: {type: DataTypes.STRING, allowNull: false},
     inSell: {type: DataTypes.BOOLEAN, allowNull: false},
 })

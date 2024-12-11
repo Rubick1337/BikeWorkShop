@@ -1,40 +1,38 @@
 import React from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 
-const CreatePartDialog = ({
-                              open,
-                              handleClose,
-                              newPartData,
-                              setNewPartData,
-                              handleCreatePartChange,
-                              handleFileChange,
-                              handleCreatePartSubmit,
-                              categories,
-                              types
-                          }) => {
+const CreateServiceDialog = ({
+                                 open,
+                                 handleClose,
+                                 newServiceData,
+                                 setNewServiceData,
+                                 handleCreateServiceChange,
+                                 handleFileChange,
+                                 handleCreateServiceSubmit,
+                                 categories,
+                                 types
+                             }) => {
 
     const handleReset = () => {
-        setNewPartData({
+        setNewServiceData({
             name: '',
             price: '',
-            model: '',
-            brand: '',
             description: '',
-            id_category_part: '',
-            id_type_part: '',
+            id_category_service: '',
+            id_type_service: '',
             img: null,
             inSell: true,
         });
     };
 
     const onSubmit = () => {
-        handleCreatePartSubmit();
-        handleReset();  // Сбрасываем форму после отправки
+        handleCreateServiceSubmit();
+        handleReset();  // Reset the form after submitting
     };
 
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Добавить деталь</DialogTitle>
+            <DialogTitle id="form-dialog-title">Добавить услугу</DialogTitle>
             <DialogContent>
                 <TextField
                     autoFocus
@@ -43,8 +41,9 @@ const CreatePartDialog = ({
                     label="Название"
                     type="text"
                     fullWidth
-                    value={newPartData.name}
-                    onChange={handleCreatePartChange}
+                    value={newServiceData.name}
+                    onChange={handleCreateServiceChange}
+                    helperText="Введите название услуги"
                 />
                 <TextField
                     margin="dense"
@@ -52,42 +51,28 @@ const CreatePartDialog = ({
                     label="Цена"
                     type="number"
                     fullWidth
-                    value={newPartData.price}
-                    onChange={handleCreatePartChange}
-                />
-                <TextField
-                    margin="dense"
-                    name="model"
-                    label="Модель"
-                    type="text"
-                    fullWidth
-                    value={newPartData.model}
-                    onChange={handleCreatePartChange}
-                />
-                <TextField
-                    margin="dense"
-                    name="brand"
-                    label="Брэнд"
-                    type="text"
-                    fullWidth
-                    value={newPartData.brand}
-                    onChange={handleCreatePartChange}
+                    value={newServiceData.price}
+                    onChange={handleCreateServiceChange}
+                    helperText="Укажите стоимость услуги"
                 />
                 <TextField
                     margin="dense"
                     name="description"
-                    label="описание"
+                    label="Описание"
                     type="text"
                     fullWidth
-                    value={newPartData.description}
-                    onChange={handleCreatePartChange}
+                    multiline
+                    rows={4}
+                    value={newServiceData.description}
+                    onChange={handleCreateServiceChange}
+                    helperText="Опишите услугу подробно"
                 />
                 <FormControl fullWidth margin="dense">
                     <InputLabel>Категория</InputLabel>
                     <Select
-                        name="id_category_part"
-                        value={newPartData.id_category_part}
-                        onChange={handleCreatePartChange}
+                        name="id_category_service"
+                        value={newServiceData.id_category_service}
+                        onChange={handleCreateServiceChange}
                     >
                         {categories.map(category => (
                             <MenuItem key={category.id} value={category.id}>
@@ -99,9 +84,9 @@ const CreatePartDialog = ({
                 <FormControl fullWidth margin="dense">
                     <InputLabel>Тип</InputLabel>
                     <Select
-                        name="id_type_part"
-                        value={newPartData.id_type_part}
-                        onChange={handleCreatePartChange}
+                        name="id_type_service"
+                        value={newServiceData.id_type_service}
+                        onChange={handleCreateServiceChange}
                     >
                         {types.map(type => (
                             <MenuItem key={type.id} value={type.id}>
@@ -116,11 +101,11 @@ const CreatePartDialog = ({
                     onChange={handleFileChange}
                     style={{ marginTop: '16px' }}
                 />
-                {newPartData.img && (
+                {newServiceData.img && (
                     <div className="img__container">
                         <img
                             className="preview-image"
-                            src={URL.createObjectURL(newPartData.img)}
+                            src={URL.createObjectURL(newServiceData.img)}
                             alt="Preview"
                         />
                     </div>
@@ -138,4 +123,4 @@ const CreatePartDialog = ({
     );
 };
 
-export default CreatePartDialog;
+export default CreateServiceDialog;

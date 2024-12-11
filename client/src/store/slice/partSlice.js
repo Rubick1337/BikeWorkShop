@@ -101,7 +101,6 @@ const partSlice = createSlice({
                 const { rows, count } = action.payload;
                 state.parts = rows;
                 state.totalCount = count;
-                state.noPartsMessage = rows.length === 0 ? "Таких деталей нет в ассортименте" : "";
             })
             .addCase(fetchParts.rejected, (state, action) => {
                 state.status = 'failed';
@@ -116,7 +115,6 @@ const partSlice = createSlice({
             })
             .addCase(fetchDeletePart.fulfilled, (state, action) => {
                 state.parts = state.parts.filter(part => part.id !== action.payload.id);
-                state.noPartsMessage = state.parts.length === 0 ? "Таких деталей нет в ассортименте" : "";
             })
             .addCase(createPart.fulfilled, (state, action) => {
                 state.parts.push(action.payload);

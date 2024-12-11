@@ -8,6 +8,7 @@ export default function EditBikeDialog({ open, handleClose, bike, handleEditBike
         price: '',
         model: '',
         brand: '',
+        description: '',
         id_category_bike: '',
         id_type_bike: '',
         img: null,
@@ -23,6 +24,7 @@ export default function EditBikeDialog({ open, handleClose, bike, handleEditBike
                 price: bike.price || '',
                 model: bike.model || '',
                 brand: bike.brand || '',
+                description: bike.description || '',
                 id_category_bike: bike.id_category_bike || '',
                 id_type_bike: bike.id_type_bike || '',
                 img: bike.img || null,
@@ -86,6 +88,14 @@ export default function EditBikeDialog({ open, handleClose, bike, handleEditBike
                     label="Бренд"
                     name="brand"
                     value={editedBike.brand}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                />
+                <TextField
+                    label="Описание"
+                    name="description"
+                    value={editedBike.description}
                     onChange={handleChange}
                     fullWidth
                     margin="normal"

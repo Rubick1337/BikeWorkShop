@@ -6,6 +6,6 @@ router.post("/",serviceRouter.creatService)
 router.get("/",serviceRouter.getServiceAll)
 router.get("/:id",serviceRouter.getServiceOne)
 router.delete("/:id",serviceRouter.deleteService)
-router.put("/",serviceRouter.editService)
+router.put("/:id",serviceRouter.editService)
 
 module.exports = router

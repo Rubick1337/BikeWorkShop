@@ -36,6 +36,7 @@ export default function SellPart() {
         name: "",
         price: "",
         model: "",
+        description: "",
         brand: "",
         inSell: true,
         img: null
@@ -175,6 +176,7 @@ export default function SellPart() {
         formData.append('brand', newPartData.brand);
         formData.append('id_category_part', newPartData.id_category_part);
         formData.append('id_type_part', newPartData.id_type_part);
+        formData.append("description", newPartData.description);
         formData.append('inSell', newPartData.inSell);
         formData.append('img', newPartData.img);
 
@@ -208,6 +210,7 @@ export default function SellPart() {
         formData.append('brand', editedPart.brand);
         formData.append('id_category_part', editedPart.id_category_part);
         formData.append('id_type_part', editedPart.id_type_part);
+        formData.append("description", editedPart.description);
         formData.append('inSell', editedPart.inSell);
 
         if (editedPart.img) {

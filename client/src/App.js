@@ -12,7 +12,7 @@ import NotFound from "./pages/NotFound/NotFound";
 import ContactPage from "./pages/Contact/ContactPage";
 import BikeSellPage from "./pages/BikeSell/BikeSellPage";
 import PartSellPage from "./pages/PartSell/PartSellPage";
-
+import ServiceSellPage from "./pages/ServiceSell/ServiceSellPage";
 const App = () => {
     const dispatch = useDispatch();
 
@@ -45,6 +45,7 @@ const App = () => {
                 <Route path="/sellbike" element={<BikeSellPage/>}/>
                 <Route path="/sellpart" element={<PartSellPage/>}/>
                 <Route path="*" element={<NotFound />} />
+                <Route path="/sellservice" element={<ServiceSellPage/>}/>
             </Routes>
         </div>
     );
