@@ -95,6 +95,19 @@ export const deleteBasketItem = createAsyncThunk(
         }
     }
 );
+export const placeOrder = createAsyncThunk(
+    'basket/placeOrder',
+    async ({ userId, cost }, { rejectWithValue }) => {
+        console.log('placeOrder вызван с данными:', { userId, cost });  // Логируем перед отправкой
+        try {
+            const response = await BasketService.placeOrder(userId, cost);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.response?.data || 'Ошибка при оформлении заказа');
+        }
+    }
+);
+
 
 const basketSlice = createSlice({
     name: 'basket',
@@ -105,7 +118,11 @@ const basketSlice = createSlice({
         status: 'idle',
         error: null
     },
-    reducers: {},
+    reducers: {
+        clearBasket: (state) => {
+            state.basketItems = []; // Очищаем корзину
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchBaskets.pending, (state) => {
@@ -161,8 +178,20 @@ const basketSlice = createSlice({
             })
             .addCase(deleteBasketItem.rejected, (state, action) => {
                 state.error = action.payload;
+            })
+            .addCase(placeOrder.pending, (state) => {
+                state.status = 'loading'; // Статус "загрузка" при отправке запроса
+            })
+            .addCase(placeOrder.fulfilled, (state, action) => {
+                state.status = 'succeeded'; // Статус "успех", если запрос успешен
+                // Вы можете обновить состояние корзины или других данных, если нужно
+                state.baskets = action.payload; // Пример обработки ответа
+            })
+            .addCase(placeOrder.rejected, (state, action) => {
+                state.status = 'failed'; // Статус "ошибка", если запрос не удался
+                state.error = action.payload; // Сохраняем ошибку в состояние
             });
     }
 });
-
+export const { clearBasket } = basketSlice.actions;
 export default basketSlice.reducer;

@@ -1,15 +1,44 @@
 import React, {useEffect, useState} from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchBasketItems, deleteBasketItem } from "../../store/slice/basketSlice";
+import { fetchBasketItems, deleteBasketItem,clearBasket } from "../../store/slice/basketSlice";
 import "./BasketStyle.scss";
 import CustomAlert from "../CustomAlert/CustomAlert";
-
+import { placeOrder } from '../../store/slice/basketSlice';
 export default function Basket() {
     const dispatch = useDispatch();
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     const { basketItems, status, error } = useSelector((state) => state.baskets);
     const { id: userId } = useSelector((state) => state.auth.user);
 
+    const isBasketEmpty = basketItems.length === 0;
+
+    const handlePlaceOrder = async () => {
+        if (isBasketEmpty) {
+            setAlertMessage('Корзина пуста. Добавьте товары для оформления заказа.');
+            setAlertSeverity('error');
+            setAlertOpen(true);
+            return;
+        }
+
+        if (userId) {
+            try {
+                await dispatch(placeOrder({ userId, cost: totalPrice }));
+
+                dispatch(clearBasket());
+
+                setAlertMessage('Заказ успешно оформлен!');
+                setAlertSeverity('success');
+                setAlertOpen(true);
+            } catch (error) {
+                console.error('Ошибка при оформлении заказа:', error);
+
+                // Если произошла ошибка, показываем alert с ошибкой
+                setAlertMessage('Ошибка при оформлении заказа!');
+                setAlertSeverity('error');
+                setAlertOpen(true);
+            }
+        }
+    };
     const [alertOpen, setAlertOpen] = useState(false);  // Состояние для открытия alert
     const [alertMessage, setAlertMessage] = useState('');  // Сообщение alert
     const [alertSeverity, setAlertSeverity] = useState('');  // Тип alert: success или error
@@ -23,6 +52,7 @@ export default function Basket() {
             dispatch(fetchBasketItems(userId));
         }
     }, [userId, dispatch]);
+
 
     const handleDelete = (item) => {
         dispatch(deleteBasketItem(item)); // Отправляем экшен для удаления
@@ -109,7 +139,7 @@ export default function Basket() {
                         <h4>${totalPrice}</h4>
                     </div>
                 </div>
-                <button className="custom-button-basket">Оформить заказ</button>
+                <button className="custom-button-basket" onClick={handlePlaceOrder}>Оформить заказ</button>
             </div>
             <CustomAlert
                 open={alertOpen}

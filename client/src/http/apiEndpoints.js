@@ -42,6 +42,7 @@ export const API_ENDPOINTS = {
         EDIT: (id) => `${API_BASE_URL}api/basket/${id}`,
         EDIT_STATUS: (id) => `${API_BASE_URL}api/basket/status/${id}`,
         GET_ITEMS: (id) => `${API_BASE_URL}api/basket/items/${id}`,
+        PLACE_ORDER: `${API_BASE_URL}api/basket/place-order`,
     },
     BIKE_ORDER: {
         CREATE: `${API_BASE_URL}api/orderBike`,

@@ -41,7 +41,7 @@ const PdfBikeButton = ({ bikes}) => {
             pdfDoc.putTotalPages(totalPages);
         }
 
-        pdfDoc.save("ReportTable.pdf");
+        pdfDoc.save("ReportBikes.pdf");
     };
 
     return (

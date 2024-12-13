@@ -1,5 +1,7 @@
 const ApiError = require("../Exception/ApiError");
 const jwt = require("jsonwebtoken");
+const { Op } = require('sequelize');
+const cron = require('node-cron');
 
 const { BikeOrder } = require('../models/models'); // Предполагается, что ваши модели находятся в папке `models`
 const { ServiceOrder, PartOrder, Basket } = require('../models/models'); // Импорт других моделей, если нужно
@@ -157,6 +159,73 @@ class BasketController {
             return res.status(500).json({ message: 'Ошибка сервера' });
         }
     }
+    async placeOrder(req, res) {
+        try {
+            const { userId, cost } = req.body;  // Получаем cost из запроса
+            console.log(userId,cost+"проверка корзины");
+            // Проверяем, что стоимость была передана в запросе
+            if (cost === undefined || cost <= 0) {
+                return res.status(400).json({ message: 'Некорректная стоимость заказа' });
+            }
+
+            // Находим текущую корзину с пользователем, которая в статусе 'пусто'
+            const basket = await Basket.findOne({
+                where: { id_user: userId, status: 'пусто' }
+            });
+
+            if (!basket) {
+                return res.status(404).json({ message: 'Корзина не найдена или уже оформлена' });
+            }
+
+            // Обновляем текущую корзину (меняем статус на 'в обработке', обновляем дату и стоимость)
+            const updatedBasket = await basket.update({
+                status: 'в обработке',
+                date: new Date(),
+                cost: cost // Присваиваем стоимость из запроса
+            });
+
+            // Создаем новую корзину с статусом 'пусто'
+            const newBasket = await Basket.create({
+                id_user: userId,
+                cost: 0,  // Стоимость новой корзины по умолчанию 0
+                status: 'пусто',
+                date: new Date()
+            });
+
+            return res.status(200).json({
+                message: 'Заказ оформлен и новая корзина создана',
+                updatedBasket,
+                newBasket
+            });
+        } catch (error) {
+            console.error('Ошибка при оформлении заказа:', error);
+            return res.status(500).json({ message: 'Ошибка сервера' });
+        }
+    }
 
 }
+// Создание cron-задачи для обновления статуса корзин
+cron.schedule('42 21 * * *', async () => { //21:42 каждый день
+    try {
+        const baskets = await Basket.findAll({
+            where: {
+                status: 'в обработке',
+                date: {
+                    [Op.lte]: new Date(new Date() - 3 * 24 * 60 * 60 * 1000)
+                }
+            }
+        });
+
+        // Обновляем статус корзин
+        await Promise.all(
+            baskets.map(basket =>
+                basket.update({ status: 'выполнено' })
+            )
+        );
+
+        console.log('Статусы корзин обновлены на "выполнено".');
+    } catch (error) {
+        console.error('Ошибка при обновлении статусов корзин:', error);
+    }
+});
 module.exports = new BasketController()

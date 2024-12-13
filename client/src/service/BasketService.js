@@ -39,5 +39,9 @@ export default class BasketService {
         const response = await $api.get(API_ENDPOINTS.BASKET.GET_ITEMS(userId));
         return response.data;
     }
+    static async placeOrder(userId, cost) {
+        const response = await $api.post(API_ENDPOINTS.BASKET.PLACE_ORDER, { userId, cost });
+        return response.data;
+    }
 
 }

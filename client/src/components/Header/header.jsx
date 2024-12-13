@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { Navbar, NavbarToggler, Nav, NavItem, Offcanvas, OffcanvasBody, OffcanvasHeader, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'; // Импортируем компоненты из Bootstrap
 import './headerStyle.scss';
 import { useDispatch, useSelector } from 'react-redux'; // Добавляем useSelector
-import { logout } from '../../store/slice/authSlice'; // Импортируем действие logout
+import { logout } from '../../store/slice/authSlice';
+import CustomAlert from "../CustomAlert/CustomAlert"; // Импортируем действие logout
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +13,23 @@ const Header = () => {
     const dispatch = useDispatch();
     const toggle = () => setIsOpen(!isOpen);
     const toggleProfileDropdown = () => setProfileDropdownOpen(!profileDropdownOpen);  // Функция для toggle dropdown профиля
+    const { isAuth } = useSelector((state) => state.auth);
 
+    const [alertOpen, setAlertOpen] = useState(false);  // Состояние для открытия alert
+    const [alertMessage, setAlertMessage] = useState('');  // Сообщение alert
+    const [alertSeverity, setAlertSeverity] = useState('');  // Тип alert: success или error
+
+    const handleCloseAlert = () => {
+        setAlertOpen(false);
+    };
+    const handleClick = (e) => {
+        if (!isAuth) {
+            e.preventDefault(); // предотвращает переход
+            setAlertMessage('Авторизируйтесь или зарегистрируйтесь в систему');
+            setAlertSeverity('error');
+            setAlertOpen(true);
+        }
+    };
     const handleLogout = () => {
         dispatch(logout());
     };
@@ -51,7 +68,7 @@ const Header = () => {
                             {/* Иконки профиля и корзины внутри бокового меню */}
                             <div className="user-actions-mobile">
                                 <NavItem>
-                                   <Link to="/basket"> <div className="basket__container__mobile">
+                                   <Link onClick={handleClick} to="/basket"> <div className="basket__container__mobile">
                                         <div className="basket__background"></div>
                                     </div></Link>
                                 </NavItem>
@@ -63,7 +80,7 @@ const Header = () => {
                 {/* Навигация для больших экранов */}
                 <Nav className="ml-auto d-none d-md-flex" navbar>
                     <NavItem>
-                        <Link to="/sellbike" className="nav-link">Велосипеды</Link>
+                        <Link  to="/sellbike" className="nav-link">Велосипеды</Link>
                     </NavItem>
                     <NavItem>
                         <Link to="/sellservice" className="nav-link">Услуги</Link>
@@ -99,11 +116,17 @@ const Header = () => {
                             )}
                         </DropdownMenu>
                     </Dropdown>
-                    <Link to="/basket"><div className="basket__container__desktop">
+                    <Link onClick={handleClick} to="/basket"><div className="basket__container__desktop">
                         <div className="basket__background"></div>
                     </div></Link>
                 </div>
             </Navbar>
+            <CustomAlert
+                open={alertOpen}
+                message={alertMessage}
+                severity={alertSeverity}
+                handleClose={handleCloseAlert}
+            />
         </header>
     );
 };

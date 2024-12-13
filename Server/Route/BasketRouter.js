@@ -8,5 +8,6 @@ router.get("/:id",basketController.getBasketNull)
 router.put("/:id",basketController.editBasket)
 router.put("/status:id",basketController.editBasketStatus)
 router.get('/items/:id_user', basketController.getBasketItems);
+router.post('/place-order', basketController.placeOrder);
 
 module.exports = router
