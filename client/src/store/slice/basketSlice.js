@@ -9,6 +9,7 @@ export const fetchBaskets = createAsyncThunk(
     async (params, { rejectWithValue }) => {
         try {
             const response = await BasketService.fetchBaskets(params);
+            console.log('API Response:', response.data);  // Логируем ответ от API
             return response;
         } catch (error) {
             return rejectWithValue(error.response.data);
@@ -115,6 +116,7 @@ const basketSlice = createSlice({
         baskets: [],
         basketNull: null,
         basketItems: [],
+        totalCount: 0,
         status: 'idle',
         error: null
     },
@@ -130,7 +132,9 @@ const basketSlice = createSlice({
             })
             .addCase(fetchBaskets.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.baskets = action.payload;
+                const {count,rows } = action.payload;
+                state.baskets = rows;
+                state.totalCount = count;
             })
             .addCase(fetchBaskets.rejected, (state, action) => {
                 state.status = 'failed';

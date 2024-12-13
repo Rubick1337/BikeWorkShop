@@ -17,13 +17,14 @@ class BasketController {
     }
     async getBasketAll(req, res) {
         try {
-            const { userId } = req.body; // Получаем userId из тела запроса
-
+            const { userId } = req.query; // Получаем userId из строки запроса
+            console.log(userId + "dsadsadasd");
             if (!userId) {
                 return res.status(400).json({ message: 'ID пользователя не предоставлен' });
             }
 
             let { limit, page, order } = req.query;
+            console.log(limit, page, order + "dsadsaddas");
             page = page || 1;
             limit = limit || 5;
             let offset = page * limit - limit;
@@ -33,18 +34,24 @@ class BasketController {
             // Сортировка по статусу
             const orderBy = [['status', sortOrder]];
 
+            // Добавляем фильтрацию по статусу, чтобы исключить корзины с "пусто"
             const baskets = await Basket.findAndCountAll({
-                where: { id_user: userId },
+                where: {
+                    id_user: userId,
+                    status: { [Op.ne]: 'пусто' } // Exclude baskets with 'пусто' status
+                },
                 limit,
                 offset,
                 order: orderBy
             });
+            console.log(baskets.count + "asdadsasd");
 
             return res.json(baskets);
         } catch (error) {
             return res.status(500).json({ message: 'Ошибка сервера' });
         }
     }
+
     async getBasketNull(req, res) {
         try {
             const { id } = req.params;  // Получаем userId из параметра URL

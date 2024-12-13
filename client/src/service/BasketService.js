@@ -9,11 +9,16 @@ export default class BasketService {
 
     // Получение всех корзин пользователя
     static async fetchBaskets({ userId, page, limit, order }) {
-        const response = await $api.post(API_ENDPOINTS.BASKET.GET, {
-            userId,
-            page,
-            limit,
-            order
+
+        const sortParam = order === 'expensive' ? 'desc' : 'asc';
+        console.log(sortParam);
+        const response = await $api.get(API_ENDPOINTS.BASKET.GET, {
+            params: {
+                userId,
+                page,
+                limit,
+                order: sortParam
+            }
         });
         return response.data;
     }
