@@ -1,25 +1,25 @@
-const {Basket} = require('../Models/models');
 const ApiError = require("../Exception/ApiError");
 const jwt = require("jsonwebtoken");
+
+const { BikeOrder } = require('../models/models'); // Предполагается, что ваши модели находятся в папке `models`
+const { ServiceOrder, PartOrder, Basket } = require('../models/models'); // Импорт других моделей, если нужно
+const { Bike, Service, Part } = require('../models/models'); // Импорт моделей связанных сущностей
+
 
 class BasketController {
     async createBasket(req, res){
         const {id_user,cost,status,date} = req.body;
+        console.log("Создание корзины" + id_user,cost,status,date);
         const basket = await Basket.create({id_user,cost,status,date})
         return res.json(basket)
     }
     async getBasketAll(req, res) {
         try {
-            // Получаем токен из заголовков запроса
-            const token = req.headers.authorization?.split(' ')[1]; // Bearer <token>
+            const { userId } = req.body; // Получаем userId из тела запроса
 
-            if (!token) {
-                return res.status(401).json({ message: 'Токен не предоставлен' });
+            if (!userId) {
+                return res.status(400).json({ message: 'ID пользователя не предоставлен' });
             }
-
-            // Декодируем токен и получаем id пользователя
-            const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
-            const userId = decoded.id;
 
             let { limit, page, order } = req.query;
             page = page || 1;
@@ -32,7 +32,7 @@ class BasketController {
             const orderBy = [['status', sortOrder]];
 
             const baskets = await Basket.findAndCountAll({
-                where: { userId }, // Фильтруем корзины по userId
+                where: { id_user: userId },
                 limit,
                 offset,
                 order: orderBy
@@ -40,33 +40,28 @@ class BasketController {
 
             return res.json(baskets);
         } catch (error) {
-            if (error.name === 'JsonWebTokenError') {
-                return res.status(401).json({ message: 'Неверный токен' });
-            }
             return res.status(500).json({ message: 'Ошибка сервера' });
         }
     }
     async getBasketNull(req, res) {
         try {
-            const token = req.headers.authorization?.split(' ')[1]; // Bearer <token>
+            const { id } = req.params;  // Получаем userId из параметра URL
+            console.log(`Запрос корзины для пользователя с ID: ${id}`);
 
-            if (!token) {
-                return res.status(401).json({ message: 'Токен не предоставлен' });
+            if (!id) {
+                return res.status(400).json({ message: 'ID пользователя не предоставлен' });
             }
 
-            const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
-            const userId = decoded.id;
-
             let basket = await Basket.findOne({
-                where: { userId, status: 'пусто' }
+                where: { id_user: id, status: 'пусто' }
             });
 
+            if (!basket) {
+                return res.status(404).json({ message: 'Корзина с указанным ID не найдена' });
+            }
 
             return res.status(200).json(basket);
         } catch (error) {
-            if (error.name === 'JsonWebTokenError') {
-                return res.status(401).json({ message: 'Неверный токен' });
-            }
             return res.status(500).json({ message: 'Ошибка сервера' });
         }
     }
@@ -106,5 +101,62 @@ class BasketController {
         const updatedBasket = await basket.update({status})
         return res.status(200).json(updatedBasket);
     }
+    async getBasketItems(req, res) {
+        try {
+            const { id_user } = req.params;
+
+            const basket = await Basket.findOne({
+                where: { id_user, status: 'пусто' },
+            });
+
+            if (!basket) {
+                return res.status(404).json({ message: 'Корзина не найдена' });
+            }
+
+            const basketId = basket.id;
+
+            // Получаем заказы из всех таблиц
+            const bikeOrders = await BikeOrder.findAll({
+                where: { id_basket: basketId },
+                include: [{ model: Bike, as: 'Bike' }],
+            });
+            console.log('Bike Orders:', bikeOrders);
+            bikeOrders.forEach(order => {
+                console.log(order.Bike);
+            });
+
+            const serviceOrders = await ServiceOrder.findAll({
+                where: { id_basket: basketId },
+                include: [{ model: Service, as: 'Service' }],
+            });
+
+            const partOrders = await PartOrder.findAll({
+                where: { id_basket: basketId },
+                include: [{ model: Part, as: 'Part' }],
+            });
+
+            // Объединяем все товары в один массив
+            const items = [
+                ...bikeOrders.map(order => ({
+                    type: 'bike',
+                    ...order.toJSON(),
+                })),
+                ...serviceOrders.map(order => ({
+                    type: 'service',
+                    ...order.toJSON(),
+                })),
+                ...partOrders.map(order => ({
+                    type: 'part',
+                    ...order.toJSON(),
+                })),
+            ];
+            console.log("dasdadasd" + items);
+            return res.status(200).json(items);
+        } catch (error) {
+            console.error('Ошибка при получении товаров корзины:', error);
+            return res.status(500).json({ message: 'Ошибка сервера' });
+        }
+    }
+
 }
 module.exports = new BasketController()

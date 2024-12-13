@@ -4,6 +4,7 @@ import "./registrationStyle.scss";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { registration } from "../../store/slice/authSlice";
+import { createBasket } from "../../store/slice/basketSlice";
 
 function Registration() {
     const [passwordVisible, setPasswordVisible] = useState(false);  // Состояние для видимости пароля
@@ -27,7 +28,19 @@ function Registration() {
         const action = await dispatch(registration({ email, password, name, surname, adress, role }));
         if (registration.fulfilled.match(action)) {
             console.log('Регистрация прошла успешно');
-            navigate('/'); // Перенаправление на другую страницу после успешной регистрации
+            const { user: { id: userId } } = action.payload;
+            console.log(userId);
+            dispatch(createBasket({
+                id_user:userId,
+                cost: 0,
+                status: "пусто",
+                date: new Date(),
+            }))
+                .unwrap()
+                .then(() => {
+                    console.log("Пустая корзина успешно создана!");
+                    navigate('/');  // Перенаправление на другую страницу после регистрации и создания корзины
+                })
         } else {
             // Ошибка будет отображена ниже формы
         }
@@ -77,7 +90,7 @@ function Registration() {
                         onChange={(e) => setAddress(e.target.value)}
                     />
 
-                    <button className="custom-button" type="submit">Зарегистрироваться</button>
+                    <button className="custom-button-reg" type="submit">Зарегистрироваться</button>
 
                         {error && <p className="error-message">{error}</p>} {/* Отображение ошибки */}
                 </form>
@@ -89,7 +102,7 @@ function Registration() {
                         <h1>Добро пожаловать обратно!</h1>
                         <p>Чтобы продолжить, войдите с вашими личными данными</p>
                         <Link to="/login">
-                            <button className="ghost custom-button">Войти</button>
+                            <button className="ghost custom-button-reg">Войти</button>
                         </Link>
                     </div>
                 </div>

@@ -5,7 +5,7 @@ export default function CustomAlert({ open, message, severity, handleClose }) {
     return (
         <Snackbar
             open={open}
-            autoHideDuration={6000}  // 6 секунд, по умолчанию скрывается
+            autoHideDuration={1000}
             onClose={handleClose}
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         >

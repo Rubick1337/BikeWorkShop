@@ -88,12 +88,12 @@ const ServiceOrder = sequelize.define("ServiceOrder", {
 })
 const PartOrder = sequelize.define("PartOrder", {
     id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
-    id_service: {type: DataTypes.INTEGER, allowNull: false,references: {model:Part, key: "id"}},
+    id_part: {type: DataTypes.INTEGER, allowNull: false,references: {model:Part, key: "id"}},
     id_basket: {type: DataTypes.INTEGER, allowNull: false,references: {model:Basket, key: "id"}},
 })
 const BikeOrder = sequelize.define("BikeOrder", {
     id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
-    id_service: {type: DataTypes.INTEGER, allowNull: false,references: {model:Bike, key: "id"}},
+    id_bike: {type: DataTypes.INTEGER, allowNull: false,references: {model:Bike, key: "id"}},
     id_basket: {type: DataTypes.INTEGER, allowNull: false,references: {model:Basket, key: "id"}},
 })
 

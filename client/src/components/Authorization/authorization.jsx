@@ -69,7 +69,7 @@ function Authorization() {
                         </span>
                         </div>
 
-                        <button className="custom-button" type="submit">Войти</button>
+                        <button className="custom-button-reg" type="submit">Войти</button>
                     </form>
                 </div>
 
@@ -79,7 +79,7 @@ function Authorization() {
                             <h1>Нет аккаунта?</h1>
                             <p>Зарегистрируйтесь, чтобы продолжить</p>
                             <Link to="/registration">
-                                <button className="ghost custom-button">Зарегистрироваться</button>
+                                <button className="ghost custom-button-reg">Зарегистрироваться</button>
                             </Link>
                         </div>
                     </div>

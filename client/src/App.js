@@ -13,6 +13,9 @@ import ContactPage from "./pages/Contact/ContactPage";
 import BikeSellPage from "./pages/BikeSell/BikeSellPage";
 import PartSellPage from "./pages/PartSell/PartSellPage";
 import ServiceSellPage from "./pages/ServiceSell/ServiceSellPage";
+import ConstPage from "./pages/ConstPage/ConstructorPage";
+import BasketPage from "./pages/Basket/BasketPage";
+
 const App = () => {
     const dispatch = useDispatch();
 
@@ -46,6 +49,8 @@ const App = () => {
                 <Route path="/sellpart" element={<PartSellPage/>}/>
                 <Route path="*" element={<NotFound />} />
                 <Route path="/sellservice" element={<ServiceSellPage/>}/>
+                <Route path="/const" element={<ConstPage/>}/>
+                <Route path="/basket" element={<BasketPage/>}/>
             </Routes>
         </div>
     );

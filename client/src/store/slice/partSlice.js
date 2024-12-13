@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import PartService from '../../service/PartService';
-
+import {createSelector} from 'reselect';
 // Асинхронные действия для работы с деталями
 export const fetchParts = createAsyncThunk(
     'parts/fetchParts',

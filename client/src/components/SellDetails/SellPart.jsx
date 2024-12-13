@@ -10,6 +10,8 @@ import EditPartDialog from './EditPartDialog';
 import Part from './Part';
 import "../SellBike/SellBikeStyle.scss";
 import CustomAlert from "../CustomAlert/CustomAlert";
+import PdfBikeButton from "../PdfBikeButton/PdfBikeButton";
+import PdfPartButton from "../PdfPartButton/PdfPartButton";
 
 export default function SellPart() {
     const dispatch = useDispatch();
@@ -255,9 +257,14 @@ export default function SellPart() {
                 <div className="Title__header">
                     <h3>Детали</h3>
                     {isAuth && (user.role === 'механик' || user.role === 'владелец') ? (
+                            <div className="create__buton__container">
                         <button className="create__buton" onClick={handleOpenCreateDialog}>
                             Добавить деталь
                         </button>
+                                <PdfPartButton
+                                    parts={parts}
+                                />
+                            </div>
                     ) : null}
                     <CreatePartDialog
                         open={openCreateDialog}

@@ -8,9 +8,8 @@ import DeleteBikeDialog from './DeleteBikeDialog';
 import EditBikeDialog from './EditBikeDialog';
 import Bike from './Bike';
 import "./SellBikeStyle.scss";
-import Part from "../SellDetails/Part";
 import CustomAlert from "../CustomAlert/CustomAlert";
-
+import PdfBikeButton from "../PdfBikeButton/PdfBikeButton";
 export default function SellBike() {
     const dispatch = useDispatch();
     const { bikes, categories, types, totalCount, noBikesMessage, status } = useSelector((state) => state.bikes);
@@ -258,9 +257,14 @@ export default function SellBike() {
                 <div className="Title__header">
                     <h3>Велосипеды</h3>
                     {isAuth && (user.role === 'механик' || user.role === 'владелец') ? (
+                        <div className="create__buton__container">
                         <button className="create__buton" onClick={handleOpenCreateDialog}>
                             Добавить велосипед
                         </button>
+                        <PdfBikeButton
+                            bikes={bikes}
+                        />
+                        </div>
                     ) : null}
                     <CreateBikeDialog
                         open={openCreateDialog}

@@ -178,9 +178,14 @@ justify-content: center;
   background-size: contain;
   width: 28px;
   height: 28px;
+  transition: transform 0.3s ease;
+}
+.img__basket.clicked {
+  transform: translateY(-10px);
 }
 .button__basket
 {
+  cursor: pointer;
   display: flex;
   height: 32px;
   padding: 0px 16px;
@@ -319,7 +324,7 @@ justify-content: center;
   border: none;
   background-color: #828487;
   color: white;
-  font-size: 14px;
+  font-size: 11px;
   cursor: pointer;
   padding: 10px 20px;
   border-radius: 5px;
@@ -401,4 +406,8 @@ justify-content: center;
 {
   display: flex;
   flex-direction: column;
+}
+.create__buton__container {
+  display: flex;
+  gap: 15px;
 }

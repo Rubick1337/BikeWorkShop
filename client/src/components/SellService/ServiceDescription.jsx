@@ -1,10 +1,12 @@
 import React from 'react';
 
 const ServiceDescription = ({ service, getCategoryName, getTypeName }) => {
+    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
     return (
         <div className="modal__information">
             <img
-                src={`http://localhost:9005/${service.img}`}
+                src={`${apiBaseUrl}${service.img}`}
                 alt={service.name}
                 style={{ width: '250px', marginBottom: '20px',alignSelf: 'center'}}
             />

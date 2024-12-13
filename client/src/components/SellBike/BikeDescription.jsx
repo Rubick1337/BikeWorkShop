@@ -1,10 +1,12 @@
 import React from 'react';
 
 const BikeDescription = ({ bike, getCategoryName, getTypeName }) => {
+    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
     return (
         <div className="modal__information">
             <img
-                src={`http://localhost:9005/${bike.img}`}
+                src={`${apiBaseUrl}${bike.img}`}
                 alt={bike.name}
                 style={{ width: '250px', marginBottom: '20px',alignSelf: 'center'}}
             />

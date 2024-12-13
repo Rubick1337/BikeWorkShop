@@ -1,24 +1,67 @@
-// src/components/Bike.js
 import BikeDescription from './BikeDescription';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { createOrderBike } from '../../store/slice/orderBikeSlice';  // Импортируем экшен для создания заказа
+import {fetchBasketNull} from "../../store/slice/basketSlice"
+import CustomAlert from "../CustomAlert/CustomAlert";
 
 const Bike = ({ bike, isAuth, user, handleDeleteClick, handleEditClick, getCategoryName, getTypeName }) => {
+    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
+
+    const [isClicked, setIsClicked] = useState(false);
+    const [alertOpen, setAlertOpen] = useState(false);  // Состояние для открытия alert
+    const [alertMessage, setAlertMessage] = useState('');  // Сообщение alert
+    const [alertSeverity, setAlertSeverity] = useState('');  // Тип alert: success или error
+
+    const handleCloseAlert = () => {
+        setAlertOpen(false);
+    };
 
     const handleClickOpen = () => {
         setOpen(true);
     };
 
+
     const handleClose = () => {
+
         setOpen(false);
     };
+    const { id: userId } = useSelector((state) => state.auth.user);
+
+    const handleAddToCart = async () => {
+        try {
+            // Вызываем `fetchBasketNull` с userId
+            const basket = await dispatch(fetchBasketNull(userId)).unwrap(); // Используем `unwrap`, чтобы получить результат
+            console.log('Корзина:', basket);
+
+            if (basket && basket.id) {
+                const orderData = {
+                    id_bike: bike.id,
+                    id_basket: basket.id,
+                };
+                dispatch(createOrderBike(orderData));
+            } else {
+                console.log('Корзина не найдена');
+            }
+            setIsClicked(true);
+            setAlertMessage('Товар добавлен в коризну');
+            setAlertSeverity('success');
+            setAlertOpen(true);
+            setTimeout(() => setIsClicked(false), 300);
+        } catch (error) {
+            console.error('Ошибка:', error);
+        }
+    }
+
 
     return (
         <div className={`container__bike ${bike.inSell === false ? 'sold-out' : ''}`}>
             <div className="container__bike__information">
                 <div className="background__bike"
-                     style={{backgroundImage: `url(http://localhost:9005/${bike.img})`}}
+                     style={{ backgroundImage: `url(${apiBaseUrl}${bike.img})` }}
                      onClick={handleClickOpen}
                 ></div>
                 <div className="text__bike">
@@ -47,8 +90,8 @@ const Bike = ({ bike, isAuth, user, handleDeleteClick, handleEditClick, getCateg
                         </button>
                     </div>
                 ) : (
-                    <div className="button__basket">
-                        <div className="img__basket"></div>
+                    <div className="button__basket" onClick={handleAddToCart}>
+                        <div className={`img__basket ${isClicked ? 'clicked' : ''}`}></div>
                         <h3>Add to cart</h3>
                     </div>
                 )}
@@ -64,6 +107,12 @@ const Bike = ({ bike, isAuth, user, handleDeleteClick, handleEditClick, getCateg
                     </Button>
                 </DialogActions>
             </Dialog>
+            <CustomAlert
+                open={alertOpen}
+                message={alertMessage}
+                severity={alertSeverity}
+                handleClose={handleCloseAlert}
+            />
         </div>
     );
 };

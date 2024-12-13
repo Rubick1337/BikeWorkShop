@@ -34,5 +34,31 @@ export const API_ENDPOINTS = {
         DELETE: (id) => `${API_BASE_URL}api/service/${id}`,
         CREATE: `${API_BASE_URL}api/service`,
         EDIT: (id) => `${API_BASE_URL}api/service/${id}`,
+    },
+    BASKET: {
+        CREATE: `${API_BASE_URL}api/basket`,
+        GET: `${API_BASE_URL}api/basket`,
+        GET_NULL: (id) => `${API_BASE_URL}api/basket/${id}`,
+        EDIT: (id) => `${API_BASE_URL}api/basket/${id}`,
+        EDIT_STATUS: (id) => `${API_BASE_URL}api/basket/status/${id}`,
+        GET_ITEMS: (id) => `${API_BASE_URL}api/basket/items/${id}`,
+    },
+    BIKE_ORDER: {
+        CREATE: `${API_BASE_URL}api/orderBike`,
+        GET: `${API_BASE_URL}api/orderBike`,
+        GET_ONE: (id) => `${API_BASE_URL}api/orderBike/${id}`,
+        DELETE: (id) =>`${API_BASE_URL}api/orderBike/${id}`,
+    },
+    PART_ORDER: {
+        CREATE: `${API_BASE_URL}api/orderPart`,
+        GET: `${API_BASE_URL}api/orderPart`,
+        GET_ONE: (id) => `${API_BASE_URL}api/orderPart/${id}`,
+        DELETE: (id) => `${API_BASE_URL}api/orderPart/${id}`,
+    },
+    SERVICE_ORDER: {
+        CREATE: `${API_BASE_URL}api/orderService`,
+        GET: `${API_BASE_URL}api/orderService`,
+        GET_ONE: (id) => `${API_BASE_URL}api/orderService/${id}`,
+        DELETE: (id) => `${API_BASE_URL}api/orderService/${id}`,
     }
 };

@@ -46,14 +46,14 @@ const Header = () => {
                                 <Link to="/sellpart" className="nav-link">Детали</Link>
                             </NavItem>
                             <NavItem>
-                                <Link to="/constructor" className="nav-link">Конструктор</Link>
+                                <Link to="/const" className="nav-link">Конструктор</Link>
                             </NavItem>
                             {/* Иконки профиля и корзины внутри бокового меню */}
                             <div className="user-actions-mobile">
                                 <NavItem>
-                                    <div className="basket__container__mobile">
+                                   <Link to="/basket"> <div className="basket__container__mobile">
                                         <div className="basket__background"></div>
-                                    </div>
+                                    </div></Link>
                                 </NavItem>
                             </div>
                         </Nav>
@@ -75,7 +75,7 @@ const Header = () => {
                         <Link to="/sellpart" className="nav-link">Детали</Link>
                     </NavItem>
                     <NavItem>
-                        <Link to="/constructor" className="nav-link">Конструктор</Link>
+                        <Link to="/const" className="nav-link">Конструктор</Link>
                     </NavItem>
                 </Nav>
 
@@ -99,9 +99,9 @@ const Header = () => {
                             )}
                         </DropdownMenu>
                     </Dropdown>
-                    <div className="basket__container__desktop">
+                    <Link to="/basket"><div className="basket__container__desktop">
                         <div className="basket__background"></div>
-                    </div>
+                    </div></Link>
                 </div>
             </Navbar>
         </header>

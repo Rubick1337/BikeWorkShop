@@ -2,8 +2,8 @@ const {BikeOrder, Bike} = require("../Models/models");
 
 class OrderBikeController {
     async createOrderBike(req, res){
-        const {id_service,id_basket} = req.body;
-        const order = await BikeOrder.create({id_service,id_basket})
+        const {id_bike,id_basket} = req.body;
+        const order = await BikeOrder.create({id_bike,id_basket})
         return res.json(order)
 
     }
@@ -38,6 +38,20 @@ class OrderBikeController {
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: 'Ошибка сервера' });
+        }
+    }
+    async deleteOrderBike(req, res) {
+        const { id } = req.params;
+        try {
+            const order = await BikeOrder.destroy({
+                where: { id }
+            });
+            if (!order) {
+                return res.status(404).json({ message: 'Bike order not found' });
+            }
+            return res.status(200).json({ message: 'Bike order deleted successfully' });
+        } catch (error) {
+            return res.status(500).json({ message: 'Error deleting bike order' });
         }
     }
 
