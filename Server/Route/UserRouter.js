@@ -10,5 +10,6 @@ router.post('/logout', userController.logout)
 router.get('/refresh', userController.refresh)
 router.get('/',authMiddleware,userController.getAll)
 router.get('/:id',authMiddleware, userController.getOne)
+router.put("/:id",userController.updateRole)
 
 module.exports = router

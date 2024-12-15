@@ -41,6 +41,31 @@ export const fetchTypes = createAsyncThunk(
     }
 );
 
+export const createCategory = createAsyncThunk(
+    'bikes/createCategory',
+    async (name, { rejectWithValue }) => {
+        try {
+            const response = await BikeService.createCategory(name);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message || 'Ошибка при создании категории');
+        }
+    }
+);
+
+// Создание нового типа велосипеда
+export const createType = createAsyncThunk(
+    'bikes/createType',
+    async (name, { rejectWithValue }) => {
+        try {
+            const response = await BikeService.createType(name);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message || 'Ошибка при создании типа');
+        }
+    }
+);
+
 export const fetchDeleteBike = createAsyncThunk(
     'bikes/fetchDeleteBike',
     async (id, { rejectWithValue }) => {  // Принимаем id
@@ -126,6 +151,12 @@ const bikeSlice = createSlice({
             .addCase(fetchEditBike.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload;
+            })
+            .addCase(createCategory.fulfilled, (state, action) => {
+                state.categories.push(action.payload); // Добавление новой категории
+            })
+            .addCase(createType.fulfilled, (state, action) => {
+                state.types.push(action.payload); // Добавление нового типа
             });
 
     }

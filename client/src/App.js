@@ -16,6 +16,8 @@ import ServiceSellPage from "./pages/ServiceSell/ServiceSellPage";
 import ConstPage from "./pages/ConstPage/ConstructorPage";
 import BasketPage from "./pages/Basket/BasketPage";
 import ProfilePage from "./pages/Profile/ProfilePage";
+import AdminPage from "./pages/AdminPage/AdminPage";
+
 const App = () => {
     const dispatch = useDispatch();
 
@@ -52,6 +54,7 @@ const App = () => {
                 <Route path="/const" element={<ConstPage/>}/>
                 <Route path="/basket" element={<BasketPage/>}/>
                 <Route path="/profile" element={<ProfilePage/>}/>
+                <Route path="/admin" element={<AdminPage/>}/>
             </Routes>
         </div>
     );

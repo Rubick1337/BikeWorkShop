@@ -1,6 +1,7 @@
 // src/slice/serviceSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import ServiceService from '../../service/ServiceWorkshopService';
+import PartService from "../../service/PartService";
 
 // Асинхронные действия для получения услуг
 export const fetchServices = createAsyncThunk(
@@ -11,6 +12,30 @@ export const fetchServices = createAsyncThunk(
             return response;
         } catch (error) {
             return rejectWithValue(error.message || 'Ошибка при загрузке данных');
+        }
+    }
+);
+export const createCategory = createAsyncThunk(
+    'services/createCategory',
+    async (name, { rejectWithValue }) => {
+        try {
+            const response = await ServiceService.createCategory(name);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message || 'Ошибка при создании категории');
+        }
+    }
+);
+
+// Создание нового типа велосипеда
+export const createType = createAsyncThunk(
+    'services/createType',
+    async (name, { rejectWithValue }) => {
+        try {
+            const response = await ServiceService.createType(name);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message || 'Ошибка при создании типа');
         }
     }
 );
@@ -131,6 +156,12 @@ const serviceSlice = createSlice({
             .addCase(fetchEditService.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload;
+            })
+            .addCase(createCategory.fulfilled, (state, action) => {
+                state.categories.push(action.payload);
+            })
+            .addCase(createType.fulfilled, (state, action) => {
+                state.types.push(action.payload);
             });
     }
 });

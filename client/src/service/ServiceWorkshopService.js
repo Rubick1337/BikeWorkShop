@@ -30,6 +30,15 @@ export default class ServiceService {
         return response.data;
     }
 
+    static async createType(name) {
+        const response = await $api.post(API_ENDPOINTS.SERVICE.CREATE_TYPE, { name });
+        return response.data;
+    }
+    static async createCategory(name) {
+        const response = await $api.post(API_ENDPOINTS.SERVICE.CREATE_CATEGORY, { name });
+        return response.data;
+    }
+
     static async fetchDeleteService(id) {
         const response = await $api.delete(API_ENDPOINTS.SERVICE.DELETE(id));
         return response.data;

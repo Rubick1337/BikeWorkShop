@@ -8,8 +8,8 @@ export const API_ENDPOINTS = {
         LOGOUT: `${API_BASE_URL}api/user/logout`,
         REGISTRATION: `${API_BASE_URL}api/user/registration`,
         REFRESH: `${API_BASE_URL}api/user/refresh`,
-        GET_USER: (id) => `${API_BASE_URL}/api/user/${id}`,
         GET_USERS: `${API_BASE_URL}api/user/`,
+        UPDATE_ROLE: (id) => `${API_BASE_URL}api/user/${id}`,
     },
     BIKE: {
         GET: `${API_BASE_URL}api/bike`,
@@ -18,6 +18,8 @@ export const API_ENDPOINTS = {
         DELETE: (id) => `${API_BASE_URL}api/bike/${id}`,
         CREATE: `${API_BASE_URL}api/bike`,
         EDIT: (id) => `${API_BASE_URL}api/bike/${id}`,
+        CREATE_TYPE: `${API_BASE_URL}api/typeBike`,
+        CREATE_CATEGORY: `${API_BASE_URL}api/categoryBike`,
     },
     PART: {
         GET: `${API_BASE_URL}api/part`,
@@ -26,6 +28,8 @@ export const API_ENDPOINTS = {
         DELETE: (id) => `${API_BASE_URL}api/part/${id}`,
         CREATE: `${API_BASE_URL}api/part`,
         EDIT: (id) => `${API_BASE_URL}api/part/${id}`,
+        CREATE_TYPE: `${API_BASE_URL}api/typePart`,
+        CREATE_CATEGORY: `${API_BASE_URL}api/categoryPart`,
     },
     SERVICE: {
         GET: `${API_BASE_URL}api/service`,
@@ -34,6 +38,8 @@ export const API_ENDPOINTS = {
         DELETE: (id) => `${API_BASE_URL}api/service/${id}`,
         CREATE: `${API_BASE_URL}api/service`,
         EDIT: (id) => `${API_BASE_URL}api/service/${id}`,
+        CREATE_TYPE: `${API_BASE_URL}api/typeService`,
+        CREATE_CATEGORY: `${API_BASE_URL}api/categoryService`,
     },
     BASKET: {
         CREATE: `${API_BASE_URL}api/basket`,

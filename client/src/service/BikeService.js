@@ -32,10 +32,26 @@ export default class BikeService {
         const response = await $api.get(API_ENDPOINTS.BIKE.TYPES);
         return response.data;
     }
-    static async fetchDeleteBike(id) {  // Принимаем id
-        const response = await $api.delete(API_ENDPOINTS.BIKE.DELETE(id));  // Добавляем id в URL
-        return response.data;  // Возвращаем данные ответа
+
+    // Создание новой категории
+    static async createCategory(name) {
+        const response = await $api.post(API_ENDPOINTS.BIKE.CREATE_CATEGORY, { name });
+        return response.data;
     }
+
+    // Создание нового типа велосипеда
+    static async createType(name) {
+        const response = await $api.post(API_ENDPOINTS.BIKE.CREATE_TYPE, { name });
+        return response.data;
+    }
+
+    // Удаление велосипеда
+    static async fetchDeleteBike(id) {
+        const response = await $api.delete(API_ENDPOINTS.BIKE.DELETE(id));
+        return response.data;
+    }
+
+    // Создание нового велосипеда
     static async createBike(bikeData) {
         const response = await $api.post(API_ENDPOINTS.BIKE.CREATE, bikeData, {
             headers: {
@@ -44,6 +60,8 @@ export default class BikeService {
         });
         return response.data;
     }
+
+    // Редактирование велосипеда
     static async fetchEditBike(bikeData) {
         const formData = new FormData();
         formData.append('name', bikeData.name);
@@ -59,7 +77,6 @@ export default class BikeService {
         }
 
         try {
-            console.log("Отправляем запрос с id:", bikeData.id);
             const response = await $api.put(API_ENDPOINTS.BIKE.EDIT(bikeData.id), formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -71,6 +88,4 @@ export default class BikeService {
             throw error;
         }
     }
-
-
 }

@@ -10,8 +10,9 @@ import EditPartDialog from './EditPartDialog';
 import Part from './Part';
 import "../SellBike/SellBikeStyle.scss";
 import CustomAlert from "../CustomAlert/CustomAlert";
-import PdfBikeButton from "../PdfBikeButton/PdfBikeButton";
 import PdfPartButton from "../PdfPartButton/PdfPartButton";
+import CreateCategoryPartDialog from "../SellDetails/CreateCategoryPart";
+import CreateTypePartDialog from "../SellDetails/CreateTypePart";
 
 export default function SellPart() {
     const dispatch = useDispatch();
@@ -33,6 +34,24 @@ export default function SellPart() {
     const [alertMessage, setAlertMessage] = useState('');  // Сообщение alert
     const [alertSeverity, setAlertSeverity] = useState('');  // Тип alert: success или error
 
+    const [openCreateCategoryDialog, setOpenCreateCategoryDialog] = useState(false);
+    const [openCreateTypeDialog, setOpenCreateTypeDialog] = useState(false);
+
+    const handleOpenCreateCategoryDialog = () => {
+        setOpenCreateCategoryDialog(true);
+    };
+
+    const handleCloseCreateCategoryDialog = () => {
+        setOpenCreateCategoryDialog(false);
+    };
+
+    const handleOpenCreateTypeDialog = () => {
+        setOpenCreateTypeDialog(true);
+    };
+
+    const handleCloseCreateTypeDialog = () => {
+        setOpenCreateTypeDialog(false);
+    };
 
     const filterRef = useRef(null);
     const limit = 5;
@@ -252,19 +271,25 @@ export default function SellPart() {
         setAlertOpen(false);
     };
     return (
-        <div className="contianer__sell_bike">
+        <div className="contianer__sell_bike" id="sellPart">
             <div className="container__header__sell">
                 <div className="Title__header">
                     <h3>Детали</h3>
                     {isAuth && (user.role === 'механик' || user.role === 'владелец') ? (
-                            <div className="create__buton__container">
-                        <button className="create__buton" onClick={handleOpenCreateDialog}>
-                            Добавить деталь
-                        </button>
-                                <PdfPartButton
-                                    parts={parts}
-                                />
-                            </div>
+                        <div className="create__buton__container">
+                            <button className="create__buton" onClick={handleOpenCreateDialog}>
+                                Добавить деталь
+                            </button>
+                            <button className="create__buton" onClick={handleOpenCreateCategoryDialog}>
+                                Добавить категорию
+                            </button>
+                            <button className="create__buton" onClick={handleOpenCreateTypeDialog}>
+                                Добавить тип
+                            </button>
+                            <PdfPartButton
+                                parts={parts}
+                            />
+                        </div>
                     ) : null}
                     <CreatePartDialog
                         open={openCreateDialog}
@@ -276,6 +301,14 @@ export default function SellPart() {
                         handleCreatePartSubmit={handleCreatePartSubmit}
                         categories={categories}
                         types={types}
+                    />
+                    <CreateCategoryPartDialog
+                        open={openCreateCategoryDialog}
+                        handleClose={handleCloseCreateCategoryDialog}
+                    />
+                    <CreateTypePartDialog
+                        open={openCreateTypeDialog}
+                        handleClose={handleCloseCreateTypeDialog}
                     />
                 </div>
                 <div className="tools">

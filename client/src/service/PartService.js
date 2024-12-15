@@ -31,6 +31,16 @@ export default class PartService {
         const response = await $api.get(API_ENDPOINTS.PART.TYPES);
         return response.data;
     }
+    static async createCategory(name) {
+        const response = await $api.post(API_ENDPOINTS.PART.CREATE_CATEGORY, { name });
+        return response.data;
+    }
+
+    // Создание нового типа велосипеда
+    static async createType(name) {
+        const response = await $api.post(API_ENDPOINTS.PART.CREATE_TYPE, { name });
+        return response.data;
+    }
 
     // Удаление детали
     static async fetchDeletePart(id) {

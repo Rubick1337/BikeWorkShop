@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import PartService from '../../service/PartService';
 import {createSelector} from 'reselect';
+import BikeService from "../../service/BikeService";
 // Асинхронные действия для работы с деталями
 export const fetchParts = createAsyncThunk(
     'parts/fetchParts',
@@ -62,6 +63,30 @@ export const createPart = createAsyncThunk(
             return response;
         } catch (error) {
             return rejectWithValue(error.message || 'Ошибка при создании детали');
+        }
+    }
+);
+export const createCategory = createAsyncThunk(
+    'parts/createCategory',
+    async (name, { rejectWithValue }) => {
+        try {
+            const response = await PartService.createCategory(name);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message || 'Ошибка при создании категории');
+        }
+    }
+);
+
+// Создание нового типа велосипеда
+export const createType = createAsyncThunk(
+    'parts/createType',
+    async (name, { rejectWithValue }) => {
+        try {
+            const response = await PartService.createType(name);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message || 'Ошибка при создании типа');
         }
     }
 );
@@ -129,6 +154,12 @@ const partSlice = createSlice({
             .addCase(fetchEditPart.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload;
+            })
+            .addCase(createCategory.fulfilled, (state, action) => {
+                state.categories.push(action.payload); // Добавление новой категории
+            })
+            .addCase(createType.fulfilled, (state, action) => {
+                state.types.push(action.payload); // Добавление нового типа
             });
     }
 });

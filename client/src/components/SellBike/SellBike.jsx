@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchBikes, fetchCategories, fetchTypes, fetchDeleteBike, createBike,fetchEditBike } from '../../store/slice/bikeSlice';
+import { fetchBikes, fetchCategories, fetchTypes, fetchDeleteBike, createBike,fetchEditBike} from '../../store/slice/bikeSlice';
 import { Pagination } from '@mui/material';
 import FilterMenu from './FilterMenu';
 import CreateBikeDialog from './CreateBikeDialog';
@@ -10,6 +10,9 @@ import Bike from './Bike';
 import "./SellBikeStyle.scss";
 import CustomAlert from "../CustomAlert/CustomAlert";
 import PdfBikeButton from "../PdfBikeButton/PdfBikeButton";
+import CreateCategoryBikeDialog from './CreateCategoryBikeDialog';
+import CreateTypeBikeDialog from './CreateTypeBikeDialog';
+
 export default function SellBike() {
     const dispatch = useDispatch();
     const { bikes, categories, types, totalCount, noBikesMessage, status } = useSelector((state) => state.bikes);
@@ -25,6 +28,25 @@ export default function SellBike() {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [bikeToDelete, setBikeToDelete] = useState(null);
+
+    const [openCreateCategoryDialog, setOpenCreateCategoryDialog] = useState(false);
+    const [openCreateTypeDialog, setOpenCreateTypeDialog] = useState(false);
+
+    const handleOpenCreateCategoryDialog = () => {
+        setOpenCreateCategoryDialog(true);
+    };
+
+    const handleCloseCreateCategoryDialog = () => {
+        setOpenCreateCategoryDialog(false);
+    };
+
+    const handleOpenCreateTypeDialog = () => {
+        setOpenCreateTypeDialog(true);
+    };
+
+    const handleCloseCreateTypeDialog = () => {
+        setOpenCreateTypeDialog(false);
+    };
 
     const filterRef = useRef(null);
     const limit = 5;
@@ -252,18 +274,24 @@ export default function SellBike() {
     };
 
     return (
-        <div className="contianer__sell_bike">
+        <div className="contianer__sell_bike" id="sellBikeSection">
             <div className="container__header__sell">
                 <div className="Title__header">
                     <h3>Велосипеды</h3>
                     {isAuth && (user.role === 'механик' || user.role === 'владелец') ? (
                         <div className="create__buton__container">
-                        <button className="create__buton" onClick={handleOpenCreateDialog}>
-                            Добавить велосипед
-                        </button>
-                        <PdfBikeButton
-                            bikes={bikes}
-                        />
+                            <button className="create__buton" onClick={handleOpenCreateDialog}>
+                                Добавить велосипед
+                            </button>
+                            <button className="create__buton" onClick={handleOpenCreateCategoryDialog}>
+                                Добавить категорию
+                            </button>
+                            <button className="create__buton" onClick={handleOpenCreateTypeDialog}>
+                                Добавить тип
+                            </button>
+                            <PdfBikeButton
+                                bikes={bikes}
+                            />
                         </div>
                     ) : null}
                     <CreateBikeDialog
@@ -276,6 +304,14 @@ export default function SellBike() {
                         handleCreateBikeSubmit={handleCreateBikeSubmit}
                         categories={categories}
                         types={types}    />
+                    <CreateCategoryBikeDialog
+                        open={openCreateCategoryDialog}
+                        handleClose={handleCloseCreateCategoryDialog}
+                    />
+                    <CreateTypeBikeDialog
+                        open={openCreateTypeDialog}
+                        handleClose={handleCloseCreateTypeDialog}
+                    />
                 </div>
                 <div className="tools">
                     <div className="input__img">

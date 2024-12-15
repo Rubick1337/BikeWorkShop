@@ -8,7 +8,7 @@ import basketReducer from './slice/basketSlice';
 import orderBikeReducer from './slice/orderBikeSlice';
 import orderPartSlice from "./slice/orderPartSlice";
 import orderServiceSlice from "./slice/orderServiceSlice";
-
+import usersReducer from './slice/usersSlice';
 const store = configureStore({
     reducer: {
         auth: authReducer,
@@ -19,6 +19,7 @@ const store = configureStore({
         orderBike: orderBikeReducer,
         orderPart:orderPartSlice,
         orderService: orderServiceSlice,
+        users: usersReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({ serializableCheck: false }),

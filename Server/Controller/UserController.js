@@ -5,7 +5,7 @@ const {User, CategoryBike} = require("../Models/models");
 const {where} = require("sequelize");
 const tokenService = require("../service/token-service");
 const UserDto = require("../dtos/user-dto");
-
+const { Op } = require('sequelize');
 class UserController {
     async registration(req, res, next) {
         try {
@@ -100,11 +100,60 @@ class UserController {
 
     async getAll(req, res, next) {
         try {
-            const users = await User.findAll()
-            return res.json(users)
+            const { page = 1, limit = 10 } = req.query;
+            const offset = (page - 1) * limit;
+
+            const users = await User.findAll({
+                limit: Number(limit),
+                offset: Number(offset),
+                where: {
+                    role: {
+                        [Op.ne]: 'владелец',
+                    }
+                }
+            });
+
+            const totalCount = await User.count({
+                where: {
+                    role: {
+                        [Op.ne]: 'владелец',
+                    }
+                }
+            });
+
+            return res.json({
+                rows: users,
+                count: totalCount
+            });
         } catch (e) {
             console.error(e);
-            next(ApiError.Internal(e.message)); // Передаем ошибку в обработчик
+            next(ApiError.Internal(e.message));
+        }
+    }
+
+
+    async updateRole(req, res, next) {
+        try {
+            const { id: userId } = req.params;
+            console.log(userId + "dassdasdadsadsa");
+            const { role } = req.body;
+            console.log(role,userId + "dassdasdadsadsa");
+            if (!role) {
+                return res.status(400).json({ message: "Роль не может быть пустой" });
+            }
+
+            const user = await User.findOne({ where: { id: userId } });
+            if (!user) {
+                return res.status(404).json({ message: "Пользователь не найден" });
+            }
+
+            user.role = role;
+            await user.save();
+
+            return res.json({ message: "Роль пользователя обновлена", user });
+        } catch (e) {
+            console.error(e);
+            next(ApiError.Internal(e.message));
         }
     }
 }

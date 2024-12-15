@@ -10,6 +10,8 @@ import EditServiceDialog from './EditServiceDialog';
 import Service from './Service';
 import "../SellBike/SellBikeStyle.scss";
 import CustomAlert from "../CustomAlert/CustomAlert";
+import CreateCategoryService from "./CreateCategoryService";
+import CreateTypeService from "./CreateTypeService";
 
 export default function SellService() {
     const dispatch = useDispatch();
@@ -30,6 +32,25 @@ export default function SellService() {
     const [alertOpen, setAlertOpen] = useState(false);  // Состояние для открытия alert
     const [alertMessage, setAlertMessage] = useState('');  // Сообщение alert
     const [alertSeverity, setAlertSeverity] = useState('');  // Тип alert: success или error
+
+    const [openCreateCategoryDialog, setOpenCreateCategoryDialog] = useState(false);
+    const [openCreateTypeDialog, setOpenCreateTypeDialog] = useState(false);
+
+    const handleOpenCreateCategoryDialog = () => {
+        setOpenCreateCategoryDialog(true);
+    };
+
+    const handleCloseCreateCategoryDialog = () => {
+        setOpenCreateCategoryDialog(false);
+    };
+
+    const handleOpenCreateTypeDialog = () => {
+        setOpenCreateTypeDialog(true);
+    };
+
+    const handleCloseCreateTypeDialog = () => {
+        setOpenCreateTypeDialog(false);
+    };
 
     const filterRef = useRef(null);
     const limit = 5;
@@ -244,14 +265,23 @@ export default function SellService() {
     };
 
     return (
-        <div className="contianer__sell_bike">
+        <div className="contianer__sell_bike" id="sellService">
             <div className="container__header__sell">
                 <div className="Title__header">
                     <h3>Сервисы</h3>
                     {isAuth && (user.role === 'механик' || user.role === 'владелец') ? (
-                        <button className="create__buton" onClick={handleOpenCreateDialog}>
-                            Добавить сервис
-                        </button>
+                        <div className="create__buton__container">
+                            <button className="create__buton" onClick={handleOpenCreateDialog}>
+                                Добавить сервис
+                            </button>
+                            <button className="create__buton" onClick={handleOpenCreateCategoryDialog}>
+                                Добавить категорию
+                            </button>
+                            <button className="create__buton" onClick={handleOpenCreateTypeDialog}>
+                                Добавить тип
+                            </button>
+                        </div>
+
                     ) : null}
                     <CreateServiceDialog
                         open={openCreateDialog}
@@ -263,6 +293,14 @@ export default function SellService() {
                         handleCreateServiceSubmit={handleCreateServiceSubmit}
                         categories={categories}
                         types={types}
+                    />
+                    <CreateCategoryService
+                        open={openCreateCategoryDialog}
+                        handleClose={handleCloseCreateCategoryDialog}
+                    />
+                    <CreateTypeService
+                        open={openCreateTypeDialog}
+                        handleClose={handleCloseCreateTypeDialog}
                     />
                 </div>
                 <div className="tools">
