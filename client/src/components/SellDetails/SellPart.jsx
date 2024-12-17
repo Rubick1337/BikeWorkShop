@@ -78,35 +78,43 @@ export default function SellPart() {
     });
 
     const handleSortChange = (event) => {
-        setSortOrder(event.target.value);
-        dispatch(fetchParts({ sortOrder: event.target.value, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
+        const newSortOrder = event.target.value;
+        setSortOrder(newSortOrder);
+        localStorage.setItem('sortOrderPart', newSortOrder);
+        dispatch(fetchParts({ sortOrder: newSortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
     };
 
-    const handleSearchChange = (event) => {
+    const handleSearchChange = (event) => {;
         setSearchQuery(event.target.value);
+        localStorage.setItem('searchQueryPart', event.target.value);
         dispatch(fetchParts({ sortOrder, searchQuery: event.target.value, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
     };
 
     const handleCategoryChange = (event) => {
         setSelectedCategory(event.target.value);
+        localStorage.setItem('selectedCategoryPart', event.target.value);
         dispatch(fetchParts({ sortOrder, searchQuery, category: event.target.value, type: selectedType, minPrice, maxPrice, page, limit }));
     };
 
     const handleTypeChange = (event) => {
         setSelectedType(event.target.value);
+        localStorage.setItem('selectedTypePart', event.target.value);
         dispatch(fetchParts({ sortOrder, searchQuery, category: selectedCategory, type: event.target.value, minPrice, maxPrice, page, limit }));
     };
 
     const handleMinPriceChange = (event) => {
+        localStorage.setItem('minPricePart',event.target.value);
         setMinPrice(event.target.value);
     };
 
     const handleMaxPriceChange = (event) => {
+        localStorage.setItem('maxPricePart',event.target.value);
         setMaxPrice(event.target.value);
     };
 
     const handlePageChange = (event, value) => {
         setPage(value);
+        localStorage.setItem('pagePart', value);
         dispatch(fetchParts({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page: value, limit }));
     };
 
@@ -143,6 +151,21 @@ export default function SellPart() {
     }, []);
 
     useEffect(() => {
+        const savedSortOrder = localStorage.getItem('sortOrderPart');
+        const savedSearchQuery = localStorage.getItem('searchQueryPart');
+        const savedSelectedCategory = localStorage.getItem('selectedCategoryPart');
+        const savedSelectedType = localStorage.getItem('selectedTypePart');
+        const savedMinPrice = localStorage.getItem('minPricePart');
+        const savedMaxPrice = localStorage.getItem('maxPricePart');
+        const savedPage = localStorage.getItem('pagePart');
+
+        if (savedSortOrder) setSortOrder(savedSortOrder);
+        if (savedSearchQuery) setSearchQuery(savedSearchQuery);
+        if (savedSelectedCategory) setSelectedCategory(savedSelectedCategory);
+        if (savedSelectedType) setSelectedType(savedSelectedType);
+        if (savedMinPrice) setMinPrice(savedMinPrice);
+        if (savedMaxPrice) setMaxPrice(savedMaxPrice);
+        if (savedPage) setPage(Number(savedPage));
         dispatch(fetchParts({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
         dispatch(fetchCategories());
         dispatch(fetchTypes());
@@ -270,6 +293,38 @@ export default function SellPart() {
     const handleCloseAlert = () => {
         setAlertOpen(false);
     };
+
+    const handleResetFilters = () => {
+        // Reset the state variables to their default values
+        setSortOrder('expensive');
+        setSearchQuery('');
+        setSelectedCategory('');
+        setSelectedType('');
+        setMinPrice('');
+        setMaxPrice('');
+        setPage(1);
+
+        // Remove the filter-related variables from localStorage
+        localStorage.removeItem('sortOrderPart');
+        localStorage.removeItem('searchQueryPart');
+        localStorage.removeItem('selectedCategoryPart');
+        localStorage.removeItem('selectedTypePart');
+        localStorage.removeItem('minPricePart');
+        localStorage.removeItem('maxPricePart');
+        localStorage.removeItem('pagePart');
+
+        // Fetch the bikes with the reset filters
+        dispatch(fetchParts({
+            sortOrder: 'expensive',
+            searchQuery: '',
+            category: '',
+            type: '',
+            minPrice: '',
+            maxPrice: '',
+            page: 1,
+            limit: 5
+        }));
+    };
     return (
         <div className="contianer__sell_bike" id="sellPart">
             <div className="container__header__sell">
@@ -342,12 +397,22 @@ export default function SellPart() {
                                 handleMaxPriceChange={handleMaxPriceChange}
                                 applyFilters={() => {
                                     setIsFilterOpen(false);
-                                    dispatch(fetchParts({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page }));
+                                    dispatch(fetchParts({
+                                        sortOrder,
+                                        searchQuery,
+                                        category: selectedCategory,
+                                        type: selectedType,
+                                        minPrice,
+                                        maxPrice,
+                                        page
+                                    }));
                                 }}
                             />
                         )}
                     </div>
-
+                    <button className="create__buton" onClick={handleResetFilters}>
+                        Сбросить фильтры
+                    </button>
                     <div className="container__sort">
                         <h4>Сортировка</h4>
                         <select value={sortOrder} onChange={handleSortChange} className="select__tool">
