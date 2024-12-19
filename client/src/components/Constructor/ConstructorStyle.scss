@@ -84,8 +84,10 @@
 
 .thumbnail {
   background-size: contain;
+  background-position: center;
   background-repeat: no-repeat;
   width: 230px;
+  flex-shrink: 0;
   height: 150px;
   margin: 0 10px;
   cursor: pointer;
@@ -99,7 +101,7 @@
 .frame-container {
   position: relative;
   width: 400px;
-  height: 300px;
+  height: 500px;
   margin: 0 auto;
   background-size: contain;
   background-repeat: no-repeat;
@@ -138,27 +140,140 @@
 }
 
 .cockpit {
-  top: 20%;
-  left: 50%;
+  width: 100px;
+  height: 170px;
+  top: 30%;
+  left: 95%;
 }
-
-.brakes {
-  top: 80%;
-  left: 35%;
-}
-
-.accessories {
-  top: 50%;
-  left: 40%;
-}
-.rear
+.wheels1
 {
-  left: 20%;
+  top: 35%;
+  left: 83%;
+  width: 250px;
 }
-
-@media (max-width: 425px) {
+.wheels2
+{
+  top: 47%;
+  left: -29%;
+  width: 250px;
+}
+.seat-mount
+{
+  transform-origin: center;
+  transform: rotate(2138deg);
+  width: 150px;
+  top: 16%;
+  left: 16%;
+}
+.handlebars
+{
+  position: absolute;
+  left: 83%;
+  top: 9%;
+  height: 70px;
+  width: 70px;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.seat
+{
+  width: 200px;
+  transform-origin: center;
+  transform: rotate(2138deg);
+  top: -2%;
+  left: 7%;
+}
+@media (max-width: 766px) {
+  .wheels1
+  {
+    top: 46%;
+    left: 86%;
+    width: 150px;
+  }
+  .wheels2
+  {
+    top: 46%;
+    left: -36%;
+    width: 150px;
+  }
+  .cockpit{
+    width: 80px;
+    height: 120px;
+    top: 40%;
+    left: 93%;
+  }
+  .seat-mount
+  {
+    width: 80px;
+    top: 33%;
+    left: 15%;
+  }
+  .seat
+  {
+    width: 99px;
+    top: 24%;
+  }
+  .handlebars
+  {
+    left: 82%;
+    top: 29%;
+    height: 40px;
+    width: 40px;
+  }
   .frame-container
   {
-    width: 300px;
+    width: 200px;
   }
 }
+@media (max-width: 466px) {
+  .wheels2
+  {
+    top: 45%;
+    left: -41%;
+    width: 130px;
+  }
+  .wheels1
+  {
+    top: 45%;
+    left: 89%;
+    width: 130px;
+  }
+  .frame-container
+  {
+    width: 150px;
+  }
+  .cockpit
+  {
+    width: 80px;
+    height: 90px;
+    top: 42%;
+    left: 91%;
+  }
+  .seat-mount {
+    width: 59px;
+    top: 36%;
+    left: 13%;
+  }
+  .handlebars {
+    left: 79%;
+    top: 32%;
+    height: 40px;
+    width: 40px;
+  }
+  .seat {
+    width: 99px;
+    top: 27%;
+    left: -4%;
+  }
+}
+@media (max-width: 379px) {
+  .frame-container {
+    margin-left: 55px;
+  }
+}
+@media (max-width: 335px) {
+  .frame-container {
+    margin-left: 35px;
+  }
+}
+

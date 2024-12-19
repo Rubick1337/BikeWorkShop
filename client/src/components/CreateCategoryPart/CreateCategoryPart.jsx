@@ -7,6 +7,8 @@ export default function CreateCategoryBikeDialog({ open, handleClose }) {
     const [categoryName, setCategoryName] = useState('');
     const dispatch = useDispatch();
 
+
+
     const handleCategoryChange = (event) => {
         setCategoryName(event.target.value);
     };

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import CustomAlert from "../CustomAlert/CustomAlert";
 
 const CreatePartDialog = ({
                               open,
@@ -26,8 +27,27 @@ const CreatePartDialog = ({
             inSell: true,
         });
     };
+    const [alertOpen, setAlertOpen] = useState(false);  // Состояние для открытия alert
+    const [alertMessage, setAlertMessage] = useState('');  // Сообщение alert
+    const [alertSeverity, setAlertSeverity] = useState('');  // Тип alert: success или error
+
+    const handleCloseAlert = () => {
+        setAlertOpen(false);
+    };
 
     const onSubmit = () => {
+        if (!newPartData.name || !newPartData.price || !newPartData.model || !newPartData.brand || !newPartData.id_category_part || !newPartData.id_type_part) {
+            setAlertMessage('Введите все поля');
+            setAlertSeverity('error');
+            setAlertOpen(true);  // Показываем alert
+            return;
+        }
+        if (!newPartData.img) {
+            setAlertMessage('Загрузите фото');
+            setAlertSeverity('error');
+            setAlertOpen(true);  // Показываем alert
+            return;
+        }
         handleCreatePartSubmit();
         handleReset();  // Сбрасываем форму после отправки
     };
@@ -134,6 +154,12 @@ const CreatePartDialog = ({
                     Добавить
                 </Button>
             </DialogActions>
+            <CustomAlert
+                open={alertOpen}
+                message={alertMessage}
+                severity={alertSeverity}
+                handleClose={handleCloseAlert}
+            />
         </Dialog>
     );
 };

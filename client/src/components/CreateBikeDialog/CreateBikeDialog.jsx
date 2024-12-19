@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
-import './SellBikeStyle.scss';
+import '../SellBike/SellBikeStyle.scss';
+import CustomAlert from "../CustomAlert/CustomAlert";
 
 const CreateBikeDialog = ({
                               open,
@@ -27,8 +28,27 @@ const CreateBikeDialog = ({
             inSell: true,
         });
     };
+    const [alertOpen, setAlertOpen] = useState(false);  // Состояние для открытия alert
+    const [alertMessage, setAlertMessage] = useState('');  // Сообщение alert
+    const [alertSeverity, setAlertSeverity] = useState('');  // Тип alert: success или error
+
+    const handleCloseAlert = () => {
+        setAlertOpen(false);
+    };
 
     const onSubmit = () => {
+        if (!newBikeData.name || !newBikeData.price || !newBikeData.model || !newBikeData.brand || !newBikeData.id_category_bike || !newBikeData.id_type_bike) {
+            setAlertMessage('Введите все поля');
+            setAlertSeverity('error');
+            setAlertOpen(true);  // Показываем alert
+            return;
+        }
+        if (!newBikeData.img) {
+            setAlertMessage('Загрузите фото');
+            setAlertSeverity('error');
+            setAlertOpen(true);  // Показываем alert
+            return;
+        }
         handleCreateBikeSubmit();
         handleReset();  // Сбрасываем форму после отправки
     };
@@ -134,6 +154,12 @@ const CreateBikeDialog = ({
                     Добавить
                 </Button>
             </DialogActions>
+            <CustomAlert
+                open={alertOpen}
+                message={alertMessage}
+                severity={alertSeverity}
+                handleClose={handleCloseAlert}
+            />
         </Dialog>
     );
 };

@@ -3,16 +3,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchParts, fetchCategories, fetchTypes, fetchDeletePart, createPart, fetchEditPart } from '../../store/slice/partSlice';
 import { Pagination } from '@mui/material';
-import FilterMenu from '../SellBike/FilterMenu';
-import CreatePartDialog from './CreatePartDialog';
-import DeletePartDialog from './DeletePartDialog';
-import EditPartDialog from './EditPartDialog';
-import Part from './Part';
+import FilterMenu from '../FilterMenu/FilterMenu';
+import CreatePartDialog from '../CreatePartDialog/CreatePartDialog';
+import DeletePartDialog from '../DeletePartDialog/DeletePartDialog';
+import EditPartDialog from '../EditPartDialog/EditPartDialog';
+import Part from '../Part/Part';
 import "../SellBike/SellBikeStyle.scss";
 import CustomAlert from "../CustomAlert/CustomAlert";
 import PdfPartButton from "../PdfPartButton/PdfPartButton";
-import CreateCategoryPartDialog from "../SellDetails/CreateCategoryPart";
-import CreateTypePartDialog from "../SellDetails/CreateTypePart";
+import CreateCategoryPartDialog from "../CreateCategoryPart/CreateCategoryPart";
+import CreateTypePartDialog from "../CreateTypePart/CreateTypePart";
 
 export default function SellPart() {
     const dispatch = useDispatch();

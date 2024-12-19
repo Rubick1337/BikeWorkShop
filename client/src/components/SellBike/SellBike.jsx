@@ -2,16 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBikes, fetchCategories, fetchTypes, fetchDeleteBike, createBike,fetchEditBike} from '../../store/slice/bikeSlice';
 import { Pagination } from '@mui/material';
-import FilterMenu from './FilterMenu';
-import CreateBikeDialog from './CreateBikeDialog';
-import DeleteBikeDialog from './DeleteBikeDialog';
-import EditBikeDialog from './EditBikeDialog';
-import Bike from './Bike';
+import FilterMenu from '../FilterMenu/FilterMenu';
+import CreateBikeDialog from '../CreateBikeDialog/CreateBikeDialog';
+import DeleteBikeDialog from '../DeleteBikeDialog/DeleteBikeDialog';
+import EditBikeDialog from '../EditBikeDialog/EditBikeDialog';
+import Bike from '../Bike/Bike';
 import "./SellBikeStyle.scss";
 import CustomAlert from "../CustomAlert/CustomAlert";
 import PdfBikeButton from "../PdfBikeButton/PdfBikeButton";
-import CreateCategoryBikeDialog from './CreateCategoryBikeDialog';
-import CreateTypeBikeDialog from './CreateTypeBikeDialog';
+import CreateCategoryBikeDialog from '../CreateCategoryBikeDialog/CreateCategoryBikeDialog';
+import CreateTypeBikeDialog from '../CreateTypeBikeDialog/CreateTypeBikeDialog';
 
 export default function SellBike() {
     const dispatch = useDispatch();

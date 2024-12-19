@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import CustomAlert from "../CustomAlert/CustomAlert";
 
 const CreateServiceDialog = ({
                                  open,
@@ -24,8 +25,27 @@ const CreateServiceDialog = ({
             inSell: true,
         });
     };
+    const [alertOpen, setAlertOpen] = useState(false);  // Состояние для открытия alert
+    const [alertMessage, setAlertMessage] = useState('');  // Сообщение alert
+    const [alertSeverity, setAlertSeverity] = useState('');  // Тип alert: success или error
+
+    const handleCloseAlert = () => {
+        setAlertOpen(false);
+    };
 
     const onSubmit = () => {
+        if (!newServiceData.name || !newServiceData.price || !newServiceData.description || !newServiceData.id_category_service || !newServiceData.id_type_service) {
+            setAlertMessage('Введите все поля');
+            setAlertSeverity('error');
+            setAlertOpen(true);  // Показываем alert
+            return;
+        }
+        if (!newServiceData.img) {
+            setAlertMessage('Загрузите фото');
+            setAlertSeverity('error');
+            setAlertOpen(true);  // Показываем alert
+            return;
+        }
         handleCreateServiceSubmit();
         handleReset();  // Reset the form after submitting
     };
@@ -119,6 +139,12 @@ const CreateServiceDialog = ({
                     Добавить
                 </Button>
             </DialogActions>
+            <CustomAlert
+                open={alertOpen}
+                message={alertMessage}
+                severity={alertSeverity}
+                handleClose={handleCloseAlert}
+            />
         </Dialog>
     );
 };

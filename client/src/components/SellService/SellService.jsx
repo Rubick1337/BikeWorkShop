@@ -3,15 +3,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchServices, fetchCategories, fetchTypes, fetchDeleteService, createService, fetchEditService } from '../../store/slice/serviceSlice';
 import { Pagination } from '@mui/material';
-import FilterMenu from '../SellBike/FilterMenu';
-import CreateServiceDialog from './CreateServiceDialog';
-import DeleteServiceDialog from './DeleteServiceDialog';
-import EditServiceDialog from './EditServiceDialog';
-import Service from './Service';
+import FilterMenu from '../FilterMenu/FilterMenu';
+import CreateServiceDialog from '../CreateServiceDialog/CreateServiceDialog';
+import DeleteServiceDialog from '../DeleteServiceDialog/DeleteServiceDialog';
+import EditServiceDialog from '../EditServiceDialog/EditServiceDialog';
+import Service from '../Service/Service';
 import "../SellBike/SellBikeStyle.scss";
 import CustomAlert from "../CustomAlert/CustomAlert";
-import CreateCategoryService from "./CreateCategoryService";
-import CreateTypeService from "./CreateTypeService";
+import CreateCategoryService from "../CreateCategoryService/CreateCategoryService";
+import CreateTypeService from "../CreateTypeService/CreateTypeService";
 import {fetchParts} from "../../store/slice/partSlice";
 
 export default function SellService() {

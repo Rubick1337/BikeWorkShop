@@ -1,5 +1,5 @@
 import React from 'react';
-import './SellBikeStyle.scss'
+import '../SellBike/SellBikeStyle.scss'
 const FilterMenu = ({
                         filterRef,
                         handleFilterClick,

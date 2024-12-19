@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react';
 import './ConstructorStyle.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchParts, fetchTypes } from '../../store/slice/partSlice';
+import Handels from '../../images/Handl.png';
+const typeNameToKey = {
+    'Рама': 'frame',
+    'Колесо': 'wheels1', // Первое колесо
+    'Вилка': 'cockpit',
+    'Руль': 'handlebars', // Статичное изображение
+    'Крепление седенья': 'seatMount',
+    'Сиденье': 'seat',
+    // Добавьте другие сопоставления по необходимости
+};
 
 const BikeConfigurator = () => {
     const dispatch = useDispatch();
@@ -10,27 +20,30 @@ const BikeConfigurator = () => {
     const parts = useSelector(state => state.parts.parts);
     const types = useSelector(state => state.parts.types);
 
-    // Изначально selectedTypePart пустое, его значение будет установлено по первому типу
     const [selectedTypePart, setSelectedTypePart] = useState(null);
 
     const [selectedParts, setSelectedParts] = useState({
         frame: null,
-        wheels: null,
+        wheels1: null,
+        wheels2: null,
         cockpit: null,
+        handlebars: null, // Руль
+        seatMount: null,
+        seat: null,
     });
 
-    const [progress, setProgress] = useState(4);
+    const [progress, setProgress] = useState(0);
 
     // Загружаем типы при монтировании компонента
     useEffect(() => {
         dispatch(fetchTypes());
     }, [dispatch]);
 
-    // При загрузке типов, автоматически выбираем первый тип как default
+    // Устанавливаем тип по умолчанию (например, 'Рама') после загрузки типов
     useEffect(() => {
         if (types && types.length > 0) {
-            const defaultType = types.find(type => type.name === 'Frame');  // Ищем тип "Frame"
-            setSelectedTypePart(defaultType);  // Устанавливаем его как выбранный тип
+            const defaultType = types.find(type => type.name === 'Рама') || types[0];
+            setSelectedTypePart(defaultType);
         }
     }, [types]);
 
@@ -42,31 +55,47 @@ const BikeConfigurator = () => {
         }
     }, [selectedTypePart, dispatch]);
 
-    const updateProgress = () => {
-        let newProgress = 4; // начальный прогресс, так как рама уже выбрана
-
-        if (selectedParts.wheels) newProgress += 10;
-        if (selectedParts.cockpit) newProgress += 10;
-
-        if (newProgress > 100) newProgress = 100;
-
-        setProgress(newProgress);
-    };
+    // Обновляем прогресс на основе выбранных частей
+    useEffect(() => {
+        const totalParts = Object.keys(selectedParts).length;
+        const selectedCount = Object.values(selectedParts).filter(part => part !== null && part.length > 0).length;
+        const newProgress = Math.round((selectedCount / totalParts) * 100);
+        setProgress(newProgress > 100 ? 100 : newProgress);
+    }, [selectedParts]);
 
     const handlePartSelect = (part) => {
-        console.log(`Selected part: ${part.name}, id: ${part.id}, image: ${part.img}`);
+        console.log(`Выбрана деталь: ${part.name}, id: ${part.id}, изображение: ${part.img}`);
 
-        setSelectedParts(prevState => ({
-            ...prevState,
-            [selectedTypePart.name.toLowerCase()]: apiBaseUrl + part.img,
-        }));
+        // Определяем ключ на основе названия выбранного типа
+        const key = selectedTypePart ? typeNameToKey[selectedTypePart.name] : null;
 
-        updateProgress();
+        if (key) {
+            if (key === 'wheels1') {
+                setSelectedParts(prevState => ({
+                    ...prevState,
+                    wheels1: `${apiBaseUrl}${part.img}`,
+                    wheels2: `${apiBaseUrl}${part.img}`, // Загружаем второе колесо автоматически
+                }));
+            } else if (key === 'cockpit') {
+                setSelectedParts(prevState => ({
+                    ...prevState,
+                    [key]: `${apiBaseUrl}${part.img}`,
+                    handlebars: `${apiBaseUrl}/static/handlebars.png`, // Статичное изображение руля
+                }));
+            } else {
+                setSelectedParts(prevState => ({
+                    ...prevState,
+                    [key]: `${apiBaseUrl}${part.img}`,
+                }));
+            }
+        } else {
+            console.warn(`Не найдено сопоставление для типа: ${selectedTypePart ? selectedTypePart.name : 'null'}`);
+        }
     };
 
     const handleTypePartSelect = (typePart) => {
-        console.log(`Selected category: ${typePart.name} with id: ${typePart.id}`);
-        setSelectedTypePart(typePart);  // Обновляем выбранную категорию с id
+        console.log(`Выбрана категория: ${typePart.name} с id: ${typePart.id}`);
+        setSelectedTypePart(typePart); // Обновляем выбранный тип
     };
 
     return (
@@ -77,18 +106,20 @@ const BikeConfigurator = () => {
                 <p>{progress}% Complete</p>
                 <ul className="categories">
                     {types && types.length > 0 ? (
-                        types.filter(type => ['Frame', 'Wheels', 'Cockpit'].includes(type.name)).map((typePart, index) => (
-                            <li key={index}>
-                                <div
-                                    className={`category ${selectedTypePart?.id === typePart.id ? 'active' : ''}`}
-                                    onClick={() => handleTypePartSelect(typePart)} // передаем id типа при выборе категории
-                                >
-                                    {typePart.name}
-                                </div>
-                            </li>
-                        ))
+                        types
+                            .filter(type => ['Рама', 'Колесо', 'Вилка', 'Крепление седенья','Сиденье', 'Руль'].includes(type.name))
+                            .map((typePart, index) => (
+                                <li key={index}>
+                                    <div
+                                        className={`category ${selectedTypePart?.id === typePart.id ? 'active' : ''}`}
+                                        onClick={() => handleTypePartSelect(typePart)}
+                                    >
+                                        {typePart.name}
+                                    </div>
+                                </li>
+                            ))
                     ) : (
-                        <p>Loading categories...</p>
+                        <p>Загрузка категорий...</p>
                     )}
                 </ul>
             </div>
@@ -101,28 +132,49 @@ const BikeConfigurator = () => {
                             backgroundImage: selectedParts.frame ? `url(${selectedParts.frame})` : '',
                         }}
                     >
-                        {selectedParts.wheels && (
-                            <img src={selectedParts.wheels} alt="Wheels" className="part-overlay wheels front" />
+                        {selectedParts.wheels1 && selectedParts.wheels2 && (
+                            <>
+                                <img
+                                    src={selectedParts.wheels1}
+                                    alt="Колесо 1"
+                                    className="part-overlay wheels1 front"
+                                />
+                                <img
+                                    src={selectedParts.wheels2}
+                                    alt="Колесо 2"
+                                    className="part-overlay wheels2 front"
+                                />
+                            </>
                         )}
                         {selectedParts.cockpit && (
-                            <img src={selectedParts.cockpit} alt="Cockpit" className="part-overlay cockpit" />
+                            <img src={selectedParts.cockpit} alt="Вилка" className="part-overlay cockpit" />
                         )}
+                        {selectedParts.handlebars && (
+                            <img src={Handels} alt="Руль" className="part-overlay handlebars"/>
+                        )}
+                        {selectedParts.seatMount && (
+                            <img src={selectedParts.seatMount} alt="Крепление седенья" className="part-overlay seat-mount" />
+                        )}
+                        {selectedParts.seat && (
+                            <img src={selectedParts.seat} alt="Сиденье" className="part-overlay seat" />
+                        )}
+                        {/* Добавьте дополнительные наложения по мере необходимости */}
                     </div>
                 </div>
             </div>
 
             <div className="thumbnail-carousel">
-                {parts && parts.length > 0 ? (
+                {parts && parts.length > 0 && selectedTypePart ? (
                     parts.map((part, index) => (
                         <div
                             key={index}
-                            className="thumbnail"
+                            className={`thumbnail ${selectedParts[typeNameToKey[selectedTypePart.name]] === `${apiBaseUrl}${part.img}` ? 'selected' : ''}`}
                             style={{ backgroundImage: `url(${apiBaseUrl}${part.img})` }}
-                            onClick={() => handlePartSelect(part)} // Обновляем выбранную деталь
+                            onClick={() => handlePartSelect(part)}
                         ></div>
                     ))
                 ) : (
-                    <p>Parts not found</p>
+                    <p>Детали не найдены</p>
                 )}
             </div>
         </div>

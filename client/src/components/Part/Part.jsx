@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
-import PartDescription from './PartDescription'; // Импортируем компонент PartDescription
+import PartDescription from '../PartDescription/PartDescription'; // Импортируем компонент PartDescription
 import { createOrderPart } from '../../store/slice/orderPartSlice';
 import {fetchBasketNull} from "../../store/slice/basketSlice"
 import {useDispatch, useSelector} from "react-redux";

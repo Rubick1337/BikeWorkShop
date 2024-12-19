@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
-import ServiceDescription from './ServiceDescription';
+import ServiceDescription from '../ServiceDescription/ServiceDescription';
 import {useDispatch, useSelector} from "react-redux";
 import { createOrderService } from '../../store/slice/orderServiceSlice';
 import {fetchBasketNull} from "../../store/slice/basketSlice"

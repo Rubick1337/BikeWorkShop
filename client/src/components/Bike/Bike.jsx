@@ -1,4 +1,4 @@
-import BikeDescription from './BikeDescription';
+import BikeDescription from '../BikeDescription/BikeDescription';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -33,24 +33,32 @@ const Bike = ({ bike, isAuth, user, handleDeleteClick, handleEditClick, getCateg
 
     const handleAddToCart = async () => {
         try {
-            // Вызываем `fetchBasketNull` с userId
-            const basket = await dispatch(fetchBasketNull(userId)).unwrap(); // Используем `unwrap`, чтобы получить результат
-            console.log('Корзина:', basket);
+            if(isAuth) {
+                // Вызываем `fetchBasketNull` с userId
+                const basket = await dispatch(fetchBasketNull(userId)).unwrap(); // Используем `unwrap`, чтобы получить результат
+                console.log('Корзина:', basket);
 
-            if (basket && basket.id) {
-                const orderData = {
-                    id_bike: bike.id,
-                    id_basket: basket.id,
-                };
-                dispatch(createOrderBike(orderData));
-            } else {
-                console.log('Корзина не найдена');
+                if (basket && basket.id) {
+                    const orderData = {
+                        id_bike: bike.id,
+                        id_basket: basket.id,
+                    };
+                    dispatch(createOrderBike(orderData));
+                } else {
+                    console.log('Корзина не найдена');
+                }
+                setIsClicked(true);
+                setAlertMessage('Товар добавлен в коризну');
+                setAlertSeverity('success');
+                setAlertOpen(true);
+                setTimeout(() => setIsClicked(false), 300);
             }
-            setIsClicked(true);
-            setAlertMessage('Товар добавлен в коризну');
-            setAlertSeverity('success');
-            setAlertOpen(true);
-            setTimeout(() => setIsClicked(false), 300);
+            else {
+                setAlertMessage('Авторизируйтесь или создайте аккаунт');
+                setAlertSeverity('error');
+                setAlertOpen(true);
+            }
+
         } catch (error) {
             console.error('Ошибка:', error);
         }
