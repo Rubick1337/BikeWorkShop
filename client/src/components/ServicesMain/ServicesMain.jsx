@@ -1,5 +1,6 @@
 import React from "react";
 import "./ServicesMainStyle.scss"
+import {Link} from "react-router-dom";
 export default function ServicesMain() {
     return (
         <div className="container__services">
@@ -42,7 +43,9 @@ export default function ServicesMain() {
                         </div>
                         </div>
                     </div>
+                    <Link to="/sellservice">
                     <button className="button__service">Еще...</button>
+                    </Link>
                 </div>
             </div>
         </div>

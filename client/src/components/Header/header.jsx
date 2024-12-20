@@ -36,7 +36,9 @@ const Header = () => {
     return (
         <header className="header">
             <div className="header__logo">
+                <Link to="/">
                 <div className="logo"></div>
+                 </Link>
                 <h2 className="Title__text">Bike Workshop</h2>
             </div>
 

@@ -3,10 +3,10 @@ import "./SliderStyle.scss";
 
 
 import image1 from '../../images/image.png';
-import image2 from '../../images/frameLoading.png';
-import image3 from '../../images/image.png';
-import image4 from '../../images/image.png';
-import image5 from '../../images/image.png';
+import image2 from '../../images/bike.png';
+import image3 from '../../images/bike3.png';
+import image4 from '../../images/bike5.png';
+import image5 from '../../images/bike6.png';
 
 export default function SliderMain() {
     const [currentSlide, setCurrentSlide] = useState(0);

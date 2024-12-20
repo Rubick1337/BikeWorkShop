@@ -11,8 +11,29 @@
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
+  transition: transform 0.3s ease-in-out;
+}
+.logo:hover {
+  animation: bounce 0.5s ease-in-out;
 }
 
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  70% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
 .Title__text {
   color: #000;
   font-feature-settings: 'dlig' on;
@@ -21,6 +42,7 @@
   font-style: normal;
   font-weight: 500;
   line-height: 21px; /* 150% */
+  text-decoration: none;
 }
 
 .navigation ul {
