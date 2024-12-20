@@ -342,7 +342,6 @@ export default function SellPart() {
                                 Добавить тип
                             </button>
                             <PdfPartButton
-                                parts={parts}
                             />
                         </div>
                     ) : null}

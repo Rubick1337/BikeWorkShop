@@ -344,7 +344,6 @@ export default function SellBike() {
                                 Добавить тип
                             </button>
                             <PdfBikeButton
-                                bikes={bikes}
                             />
                         </div>
                     ) : null}
