@@ -1,60 +1,78 @@
-const {CategoryPart} = require("../Models/models");
+const { CategoryPart } = require("../Models/models");
 const ApiError = require("../Exception/ApiError");
 
 class CategoryPartController {
-    async createCategoryPart(req, res){
-        const {name} = req.body;
-        const category = await CategoryPart.create({name})
-        return res.json(category)
-    }
-    async getCategoryPartAll(req,res){
-        const categories = await CategoryPart.findAll()
-        return res.json(categories)
-    }
-    async getCategoryPartOne(req,res,next){
-        const {id } = req.params
-        if(id == null)
-        {
-            return next(ApiError.badRequest("Id is required"))
+    async createCategoryPart(req, res) {
+        try {
+            const { name } = req.body;
+            const category = await CategoryPart.create({ name });
+            return res.json(category);
+        } catch (error) {
+            return res.status(500).json({ error: 'Ошибка при создании категории' });
         }
-        const category = await CategoryPart.findOne(
-            {
-                where:{id}
-            }
-        )
-        return res.json(category)
     }
-    async deleteCategoryPart(req,res){
+
+    async getCategoryPartAll(req, res) {
+        try {
+            const categories = await CategoryPart.find();
+            return res.json(categories);
+        } catch (error) {
+            return res.status(500).json({ error: 'Ошибка при получении категорий' });
+        }
+    }
+
+    async getCategoryPartOne(req, res, next) {
+        const { id } = req.params;
+        if (!id) {
+            return next(ApiError.badRequest("Id is required"));
+        }
+
+        try {
+            const category = await CategoryPart.findById(id);
+            if (!category) {
+                return res.status(404).json({ error: 'Запись категории не найдена' });
+            }
+            return res.json(category);
+        } catch (error) {
+            return res.status(500).json({ error: 'Ошибка при получении категории' });
+        }
+    }
+
+    async deleteCategoryPart(req, res) {
         const { id } = req.query;
 
         try {
-            const category = await CategoryPart.findByPk(id);
+            const category = await CategoryPart.findById(id);
             if (!category) {
-                return res.status(404).json({ error: 'category record not found' });
+                return res.status(404).json({ error: 'Запись категории не найдена' });
             }
 
-            await category.destroy();
-            return res.json({ message: 'category record deleted successfully' });
+            await category.remove();
+            return res.json({ message: 'Запись категории успешно удалена' });
         } catch (error) {
-            return res.status(500).json({ error: 'Failed to delete category' });
+            return res.status(500).json({ error: 'Не удалось удалить категорию' });
         }
     }
-    async editCategoryPart(req,res){
+
+    async editCategoryPart(req, res) {
         const { id } = req.params;
+
         try {
-
             const { name } = req.body;
+            const category = await CategoryPart.findById(id);
 
-            const category = await CategoryPart.findByPk(id);
             if (!category) {
-                return res.status(404).json({ error: 'category rec not found' });
+                return res.status(404).json({ error: 'Запись категории не найдена' });
             }
 
-            await category.update({ name });
-            return res.json({ message: 'category updated successfully' });
+            category.name = name;
+            await category.save(); // Сохраняем изменения
+
+            return res.json({ message: 'Категория обновлена успешно' });
         } catch (error) {
-            return res.status(500).json({ error: 'Failed to update category' });
+            return res.status(500).json({ error: 'Не удалось обновить категорию' });
         }
     }
 }
-module.exports = new CategoryPartController()
+
+module.exports = new CategoryPartController();

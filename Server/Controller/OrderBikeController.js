@@ -1,24 +1,29 @@
-const {BikeOrder, Bike} = require("../Models/models");
+const { BikeOrder, Bike } = require("../Models/models");
 
 class OrderBikeController {
-    async createOrderBike(req, res){
-        const {id_bike,id_basket} = req.body;
-        const order = await BikeOrder.create({id_bike,id_basket})
-        return res.json(order)
-
-    }
-    async getOrderBikeOne(req,res){
-        const {id } = req.params
-        const bike = await BikeOrder.findOne(
-            {
-                where:{id}
-            }
-        )
-        if(!bike){
-            return  res.status(404).json({ message: 'Bike order not found' })
+    async createOrderBike(req, res) {
+        try {
+            const { id_bike, id_basket } = req.body;
+            const order = await BikeOrder.create({ id_bike, id_basket });
+            return res.json(order);
+        } catch (error) {
+            return res.status(500).json({ message: 'Ошибка при создании заказа на велосипед' });
         }
-        return res.json(bike)
     }
+
+    async getOrderBikeOne(req, res) {
+        const { id } = req.params;
+        try {
+            const bikeOrder = await BikeOrder.findById(id);
+            if (!bikeOrder) {
+                return res.status(404).json({ message: 'Заказ на велосипед не найден' });
+            }
+            return res.json(bikeOrder);
+        } catch (error) {
+            return res.status(500).json({ message: 'Ошибка при получении заказа на велосипед' });
+        }
+    }
+
     async getOrderBikeAll(req, res) {
         try {
             const { id_user, id_basket } = req.query;
@@ -27,12 +32,7 @@ class OrderBikeController {
                 return res.status(400).json({ message: 'id_user и id_basket обязательны для фильтрации' });
             }
 
-            const orderBikes = await OrderBike.findAll({
-                where: {
-                    id_user,
-                    id_basket
-                }
-            });
+            const orderBikes = await BikeOrder.find({ id_user, id_basket });
 
             return res.status(200).json(orderBikes);
         } catch (error) {
@@ -40,20 +40,19 @@ class OrderBikeController {
             return res.status(500).json({ message: 'Ошибка сервера' });
         }
     }
+
     async deleteOrderBike(req, res) {
         const { id } = req.params;
         try {
-            const order = await BikeOrder.destroy({
-                where: { id }
-            });
+            const order = await BikeOrder.findByIdAndDelete(id);
             if (!order) {
-                return res.status(404).json({ message: 'Bike order not found' });
+                return res.status(404).json({ message: 'Заказ на велосипед не найден' });
             }
-            return res.status(200).json({ message: 'Bike order deleted successfully' });
+            return res.status(200).json({ message: 'Заказ на велосипед успешно удален' });
         } catch (error) {
-            return res.status(500).json({ message: 'Error deleting bike order' });
+            return res.status(500).json({ message: 'Ошибка при удалении заказа на велосипед' });
         }
     }
-
 }
-module.exports = new OrderBikeController()
+
+module.exports = new OrderBikeController();

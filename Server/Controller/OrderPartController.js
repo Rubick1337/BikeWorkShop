@@ -4,7 +4,7 @@ class OrderPartController {
     // Создание нового заказа части
     async createOrderPart(req, res) {
         const { id_part, id_basket } = req.body;
-        console.log(id_part, id_basket + "dsadasdsadsasadas");
+        console.log(id_part, id_basket)
         try {
             const order = await PartOrder.create({ id_part, id_basket });
             return res.json(order);
@@ -17,11 +17,9 @@ class OrderPartController {
     async getOrderPartOne(req, res) {
         const { id } = req.params;
         try {
-            const part = await PartOrder.findOne({
-                where: { id }
-            });
+            const part = await PartOrder.findById(id);
             if (!part) {
-                return res.status(404).json({ message: 'Order part not found' });
+                return res.status(404).json({ message: 'Заказ части не найден' });
             }
             return res.json(part);
         } catch (error) {
@@ -37,28 +35,25 @@ class OrderPartController {
                 return res.status(400).json({ message: 'id_user и id_basket обязательны для фильтрации' });
             }
 
-            const orderParts = await PartOrder.findAll({
-                where: { id_user, id_basket }
-            });
-
+            const orderParts = await PartOrder.find({ id_user, id_basket });
             return res.status(200).json(orderParts);
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: 'Ошибка сервера' });
         }
     }
+
+    // Удаление заказа части
     async deleteOrderPart(req, res) {
         const { id } = req.params;
         try {
-            const orderPart = await PartOrder.destroy({
-                where: { id }
-            });
+            const orderPart = await PartOrder.findByIdAndDelete(id);
             if (!orderPart) {
-                return res.status(404).json({ message: 'Part order not found' });
+                return res.status(404).json({ message: 'Заказ части не найден' });
             }
-            return res.status(200).json({ message: 'Part order deleted successfully' });
+            return res.status(200).json({ message: 'Заказ части успешно удален' });
         } catch (error) {
-            return res.status(500).json({ message: 'Error deleting part order' });
+            return res.status(500).json({ message: 'Ошибка при удалении заказа части' });
         }
     }
 }

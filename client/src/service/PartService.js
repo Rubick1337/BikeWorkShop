@@ -60,6 +60,10 @@ export default class PartService {
 
     // Редактирование детали
     static async fetchEditPart(partData) {
+        // Логируем ID детали
+        console.log("ID для редактирования детали:", partData.id);
+        console.log('Данные детали для редактирования:', partData);
+
         const formData = new FormData();
         formData.append('name', partData.name);
         formData.append('price', partData.price);
@@ -74,8 +78,10 @@ export default class PartService {
         }
 
         try {
-            console.log("Отправляем запрос с id:", partData.id);
-            const response = await $api.put(API_ENDPOINTS.PART.EDIT(partData.id), formData, {
+            const url = API_ENDPOINTS.PART.EDIT(partData._id); // Логируем URL
+            console.log("URL для редактирования детали:", url);
+
+            const response = await $api.put(url, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

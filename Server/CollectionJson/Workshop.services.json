@@ -1,0 +1,34 @@
+[{
+  "_id": {
+    "$oid": "676e81603a467c662701dd47"
+  },
+  "id_type_service": {
+    "$oid": "676e811c3a467c662701dd45"
+  },
+  "id_category_service": {
+    "$oid": "676e810b3a467c662701dd41"
+  },
+  "name": "Собеседование",
+  "price": 1241,
+  "description": "Собеседование21",
+  "inSell": true,
+  "img": "707ebfe9-0218-4405-bef2-bb5aac2e6a92.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "676e818e3a467c662701dd4b"
+  },
+  "id_type_service": {
+    "$oid": "676e81113a467c662701dd43"
+  },
+  "id_category_service": {
+    "$oid": "676e810b3a467c662701dd41"
+  },
+  "name": "Мойка",
+  "price": 1234,
+  "description": "выфвы",
+  "inSell": true,
+  "img": "81076cd4-340a-4620-bd75-d10379a44ddb.jpg",
+  "__v": 0
+}]

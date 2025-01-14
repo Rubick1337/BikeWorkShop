@@ -1,0 +1,38 @@
+[{
+  "_id": {
+    "$oid": "676e81c13a467c662701dd5b"
+  },
+  "id_type_part": {
+    "$oid": "676e81983a467c662701dd57"
+  },
+  "id_category_part": {
+    "$oid": "676e819b3a467c662701dd59"
+  },
+  "name": "Kraken",
+  "price": 1231,
+  "model": "Kraken",
+  "brand": "Kraken",
+  "description": "Kraken",
+  "img": "c3d946de-ef00-461c-9c92-5e802a7e0273.jpg",
+  "inSell": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6784fac8784de810302af7d2"
+  },
+  "id_type_part": {
+    "$oid": "676e81983a467c662701dd57"
+  },
+  "id_category_part": {
+    "$oid": "676e819b3a467c662701dd59"
+  },
+  "name": "Log",
+  "price": 131,
+  "model": "Log",
+  "brand": "Log",
+  "description": "Рама Log",
+  "img": "dd0242f9-4233-4de4-ae08-6b7de47a7b84.jpg",
+  "inSell": true,
+  "__v": 0
+}]

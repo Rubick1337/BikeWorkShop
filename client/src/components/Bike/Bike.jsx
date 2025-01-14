@@ -24,7 +24,7 @@ const Bike = ({ bike, isAuth, user, handleDeleteClick, handleEditClick, getCateg
         setOpen(true);
     };
 
-
+    console.log("dsadsadsa" + JSON.stringify(bike, null, 2));
     const handleClose = () => {
 
         setOpen(false);
@@ -38,10 +38,10 @@ const Bike = ({ bike, isAuth, user, handleDeleteClick, handleEditClick, getCateg
                 const basket = await dispatch(fetchBasketNull(userId)).unwrap(); // Используем `unwrap`, чтобы получить результат
                 console.log('Корзина:', basket);
 
-                if (basket && basket.id) {
+                if (basket && basket._id) {
                     const orderData = {
-                        id_bike: bike.id,
-                        id_basket: basket.id,
+                        id_bike: bike._id,
+                        id_basket: basket._id,
                     };
                     dispatch(createOrderBike(orderData));
                 } else {
@@ -86,7 +86,7 @@ const Bike = ({ bike, isAuth, user, handleDeleteClick, handleEditClick, getCateg
                     <div className="button__crud">
                         <button
                             className="crud__buton"
-                            onClick={() => handleDeleteClick(bike.id)}
+                            onClick={() => handleDeleteClick(bike._id)}
                         >
                             Удалить
                         </button>

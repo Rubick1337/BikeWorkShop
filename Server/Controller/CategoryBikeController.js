@@ -1,60 +1,78 @@
-const {CategoryBike} = require("../Models/models");
+const { CategoryBike } = require("../Models/models");
 const ApiError = require("../Exception/ApiError");
 
 class CategoryBikeController {
-    async createCategoryBike(req, res){
-        const {name} = req.body;
-        const category = await CategoryBike.create({name})
-        return res.json(category)
-    }
-    async getCategoryBikeAll(req,res){
-        const categories = await CategoryBike.findAll()
-        return res.json(categories)
-    }
-    async getCategoryBikeOne(req,res,next){
-        const {id } = req.params
-        if(id == null)
-        {
-            return next(ApiError.badRequest("Id is required"))
+    async createCategoryBike(req, res) {
+        try {
+            const { name } = req.body;
+            const category = await CategoryBike.create({ name });
+            return res.json(category);
+        } catch (error) {
+            return res.status(500).json({ error: 'Ошибка при создании категории' });
         }
-        const category = await CategoryBike.findOne(
-            {
-                where:{id}
-            }
-        )
-        return res.json(category)
     }
-    async deleteCategoryBike(req,res){
+
+    async getCategoryBikeAll(req, res) {
+        try {
+            const categories = await CategoryBike.find();
+            return res.json(categories);
+        } catch (error) {
+            return res.status(500).json({ error: 'Ошибка при получении категорий' });
+        }
+    }
+
+    async getCategoryBikeOne(req, res, next) {
+        const { id } = req.params;
+        if (!id) {
+            return next(ApiError.badRequest("Id is required"));
+        }
+
+        try {
+            const category = await CategoryBike.findById(id);
+            if (!category) {
+                return res.status(404).json({ error: 'Запись категории не найдена' });
+            }
+            return res.json(category);
+        } catch (error) {
+            return res.status(500).json({ error: 'Ошибка при получении категории' });
+        }
+    }
+
+    async deleteCategoryBike(req, res) {
         const { id } = req.query;
 
         try {
-            const category = await CategoryBike.findByPk(id);
+            const category = await CategoryBike.findById(id);
             if (!category) {
-                return res.status(404).json({ error: 'category record not found' });
+                return res.status(404).json({ error: 'Запись категории не найдена' });
             }
 
-            await category.destroy();
-            return res.json({ message: 'category record deleted successfully' });
+            await category.remove();
+            return res.json({ message: 'Запись категории успешно удалена' });
         } catch (error) {
-            return res.status(500).json({ error: 'Failed to delete category' });
+            return res.status(500).json({ error: 'Не удалось удалить категорию' });
         }
     }
-    async editCategoryBike(req,res){
+
+    async editCategoryBike(req, res) {
         const { id } = req.params;
+
         try {
-
             const { name } = req.body;
+            const category = await CategoryBike.findById(id);
 
-            const category = await CategoryBike.findByPk(id);
             if (!category) {
-                return res.status(404).json({ error: 'category rec not found' });
+                return res.status(404).json({ error: 'Запись категории не найдена' });
             }
 
-            await category.update({ name });
-            return res.json({ message: 'category updated successfully' });
+            category.name = name;
+            await category.save(); // Сохраняем изменения
+
+            return res.json({ message: 'Категория обновлена успешно' });
         } catch (error) {
-            return res.status(500).json({ error: 'Failed to update category' });
+            return res.status(500).json({ error: 'Не удалось обновить категорию' });
         }
     }
 }
-module.exports = new CategoryBikeController()
+
+module.exports = new CategoryBikeController();

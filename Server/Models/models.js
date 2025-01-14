@@ -1,158 +1,130 @@
-const sequelize = require("../db")
-const {DataTypes} = require('sequelize')
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
-const User = sequelize.define("User", {
-    id:{type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false},
-    email: {type: DataTypes.STRING, allowNull: false},
-    password: {type: DataTypes.STRING, allowNull: false},
-    role: {type: DataTypes.STRING, allowNull: false},
-    adress: {type: DataTypes.STRING, allowNull: false},
-    surname: {type: DataTypes.STRING, allowNull: false},
+const UserSchema = new Schema({
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    role: { type: String, required: true },
+    adress: { type: String, required: true },
+    surname: { type: String, required: true },
+});
 
-})
-const Refresh_Token = sequelize.define("Refresh_token", {
-    id_user: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,references: {model:User, key: "id"}},
-    refresh_token: {type: DataTypes.TEXT, allowNull: true},
-})
+const RefreshTokenSchema = new Schema({
+    id_user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    refresh_token: { type: String, required: true },
+});
 
-const  TypeService = sequelize.define("TypeService", {
-    id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false},
-})
-const CategoryService = sequelize.define("CategoryService", {
-    id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false},
-})
-const Service = sequelize.define("Service", {
-    id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
-    id_type_service: {type: DataTypes.INTEGER, allowNull: false,references: {model:TypeService, key: "id"}},
-    id_category_service: {type: DataTypes.INTEGER, allowNull: false,references: {model:CategoryService, key: "id"}},
-    name: {type: DataTypes.STRING, allowNull: false},
-    price: {type: DataTypes.DECIMAL, allowNull: false},
-    description: {type: DataTypes.TEXT, allowNull: false},
-    inSell: {type: DataTypes.BOOLEAN, allowNull: false},
-    img: {type: DataTypes.STRING, allowNull: false},
-})
-const  TypePart = sequelize.define("TypePart", {
-    id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false},
-})
-const CategoryPart = sequelize.define("CategoryPart", {
-    id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false},
-})
-const Part = sequelize.define("Part", {
-    id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
-    id_type_part: {type: DataTypes.INTEGER, allowNull: false,references: {model:TypePart, key: "id"}},
-    id_category_part: {type: DataTypes.INTEGER, allowNull: false,references: {model:CategoryPart, key: "id"}},
-    name: {type: DataTypes.STRING, allowNull: false},
-    price: {type: DataTypes.DECIMAL, allowNull: false},
-    model: {type: DataTypes.STRING, allowNull: false},
-    brand: {type: DataTypes.STRING, allowNull: false},
-    description: {type: DataTypes.TEXT, allowNull: false},
-    img: {type: DataTypes.STRING, allowNull: false},
-    inSell: {type: DataTypes.BOOLEAN, allowNull: false},
-})
-const  TypeBike = sequelize.define("TypeBike", {
-    id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false},
-})
-const CategoryBike = sequelize.define("CategoryBike", {
-    id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: false},
-})
-const Bike = sequelize.define("Bike", {
-    id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
-    id_type_bike: {type: DataTypes.INTEGER, allowNull: false,references: {model:TypeBike, key: "id"}},
-    id_category_bike: {type: DataTypes.INTEGER, allowNull: false,references: {model:CategoryBike, key: "id"}},
-    name: {type: DataTypes.STRING, allowNull: false},
-    price: {type: DataTypes.DECIMAL, allowNull: false},
-    model: {type: DataTypes.STRING, allowNull: false},
-    brand: {type: DataTypes.STRING, allowNull: false},
-    description: {type: DataTypes.TEXT, allowNull: false},
-    img: {type: DataTypes.STRING, allowNull: false},
-    inSell: {type: DataTypes.BOOLEAN, allowNull: false},
-})
-const Basket = sequelize.define("Basket", {
-    id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
-    id_user: {type: DataTypes.INTEGER, allowNull: false,references: {model:User, key: "id"}},
-    cost: {type: DataTypes.DECIMAL, allowNull: true},
-    status: {type: DataTypes.STRING, allowNull: false},
-    date: {type: DataTypes.DATE, allowNull: false},
-})
-const ServiceOrder = sequelize.define("ServiceOrder", {
-    id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
-    id_service: {type: DataTypes.INTEGER, allowNull: false,references: {model:Service, key: "id"}},
-    id_basket: {type: DataTypes.INTEGER, allowNull: false,references: {model:Basket, key: "id"}},
-})
-const PartOrder = sequelize.define("PartOrder", {
-    id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
-    id_part: {type: DataTypes.INTEGER, allowNull: false,references: {model:Part, key: "id"}},
-    id_basket: {type: DataTypes.INTEGER, allowNull: false,references: {model:Basket, key: "id"}},
-})
-const BikeOrder = sequelize.define("BikeOrder", {
-    id: {type: DataTypes.INTEGER, allowNull: false,primaryKey: true,autoIncrement: true},
-    id_bike: {type: DataTypes.INTEGER, allowNull: false,references: {model:Bike, key: "id"}},
-    id_basket: {type: DataTypes.INTEGER, allowNull: false,references: {model:Basket, key: "id"}},
-})
+const TypeServiceSchema = new Schema({
+    name: { type: String, required: true },
+});
 
-User.hasOne(Refresh_Token, {foreignKey: 'id_user',sourceKey: 'id', as: 'refresh_token'});
-Refresh_Token.belongsTo(User, { foreignKey: 'id_user',targetKey: 'id', as: 'user'});
+const CategoryServiceSchema = new Schema({
+    name: { type: String, required: true },
+});
 
-TypeService.hasMany(Service, {foreignKey: 'id_type_service',sourceKey: 'id', as: 'Service'});
-Service.belongsTo(TypeService, { foreignKey: 'id_type_service',targetKey: 'id', as: 'TypeService' });
+const ServiceSchema = new Schema({
+    id_type_service: { type: Schema.Types.ObjectId, ref: "TypeService", required: true },
+    id_category_service: { type: Schema.Types.ObjectId, ref: "CategoryService", required: true },
+    name: { type: String, required: true },
+    price: { type: Number, required: true },
+    description: { type: String, required: true },
+    inSell: { type: Boolean, required: true },
+    img: { type: String, required: true },
+});
 
-CategoryService.hasMany(Service, {foreignKey: 'id_category_service',sourceKey: 'id', as: 'Service'});
-Service.belongsTo(CategoryService, { foreignKey: 'id_category_service',targetKey: 'id', as: 'CategoryService' });
+const TypePartSchema = new Schema({
+    name: { type: String, required: true },
+});
 
-TypePart.hasMany(Part, {foreignKey: 'id_type_part',sourceKey: 'id', as: 'Part'});
-Part.belongsTo(TypePart, { foreignKey: 'id_type_part',targetKey: 'id', as: 'TypePart' });
+const CategoryPartSchema = new Schema({
+    name: { type: String, required: true },
+});
 
-CategoryPart.hasMany(Part, {foreignKey: 'id_category_part',sourceKey: 'id', as: 'Part'});
-Part.belongsTo(CategoryPart, { foreignKey: 'id_category_part',targetKey: 'id', as: 'CategoryPart' });
+const PartSchema = new Schema({
+    id_type_part: { type: Schema.Types.ObjectId, ref: "TypePart", required: true },
+    id_category_part: { type: Schema.Types.ObjectId, ref: "CategoryPart", required: true },
+    name: { type: String, required: true },
+    price: { type: Number, required: true },
+    model: { type: String, required: true },
+    brand: { type: String, required: true },
+    description: { type: String, required: true },
+    img: { type: String, required: true },
+    inSell: { type: Boolean, required: true },
+});
 
-TypeBike.hasMany(Bike, {foreignKey: 'id_type_bike',sourceKey: 'id', as: 'Bike'});
-Bike.belongsTo(TypeBike, { foreignKey: 'id_type_bike',targetKey: 'id', as: 'TypeBike' });
+const TypeBikeSchema = new Schema({
+    name: { type: String, required: true },
+});
 
-CategoryBike.hasMany(Bike, {foreignKey: 'id_category_bike',sourceKey: 'id', as: 'Bike'});
-Bike.belongsTo(CategoryBike, { foreignKey: 'id_category_bike',targetKey: 'id', as: 'CategoryBike' });
+const CategoryBikeSchema = new Schema({
+    name: { type: String, required: true },
+});
 
-Service.hasMany(ServiceOrder, {foreignKey: 'id_service',sourceKey: 'id', as: 'ServiceOrder'});
-ServiceOrder.belongsTo(Service, { foreignKey: 'id_service',targetKey: 'id', as: 'Service' });
+const BikeSchema = new Schema({
+    id_type_bike: { type: Schema.Types.ObjectId, ref: "TypeBike", required: true },
+    id_category_bike: { type: Schema.Types.ObjectId, ref: "CategoryBike", required: true },
+    name: { type: String, required: true },
+    price: { type: Number, required: true },
+    model: { type: String, required: true },
+    brand: { type: String, required: true },
+    description: { type: String, required: true },
+    img: { type: String, required: true },
+    inSell: { type: Boolean, required: true },
+});
 
-Part.hasMany(PartOrder, {foreignKey: 'id_part',sourceKey: 'id', as: 'PartOrder'});
-PartOrder.belongsTo(Part, { foreignKey: 'id_part',targetKey: 'id', as: 'Part' });
+const BasketSchema = new Schema({
+    id_user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    cost: { type: Number, required: false },
+    status: { type: String, required: true },
+    date: { type: Date, required: true },
+});
 
-Bike.hasMany(BikeOrder, {foreignKey: 'id_bike',sourceKey: 'id', as: 'BikeOrder'});
-BikeOrder.belongsTo(Bike, { foreignKey: 'id_bike',targetKey: 'id', as: 'Bike' });
+const ServiceOrderSchema = new Schema({
+    id_service: { type: Schema.Types.ObjectId, ref: "Service", required: true },
+    id_basket: { type: Schema.Types.ObjectId, ref: "Basket", required: true },
+});
 
-User.hasMany(Basket, {foreignKey: 'id_user',sourceKey: 'id', as: 'Basket'});
-Basket.belongsTo(User, { foreignKey: 'id_user',targetKey: 'id', as: 'User' });
+const PartOrderSchema = new Schema({
+    id_part: { type: Schema.Types.ObjectId, ref: "Part", required: true },
+    id_basket: { type: Schema.Types.ObjectId, ref: "Basket", required: true },
+});
 
-Basket.hasMany(ServiceOrder, {foreignKey: 'id_basket',sourceKey: 'id', as: 'ServiceOrder'});
-ServiceOrder.belongsTo(Basket, { foreignKey: 'id_basket',targetKey: 'id', as: 'Basket' });
+const BikeOrderSchema = new Schema({
+    id_bike: { type: Schema.Types.ObjectId, ref: "Bike", required: true },
+    id_basket: { type: Schema.Types.ObjectId, ref: "Basket", required: true },
+});
 
-Basket.hasMany(PartOrder, {foreignKey: 'id_basket',sourceKey: 'id', as: 'PartOrder'});
-PartOrder.belongsTo(Basket, { foreignKey: 'id_basket',targetKey: 'id', as: 'Basket' });
-
-Basket.hasMany(BikeOrder, {foreignKey: 'id_basket',sourceKey: 'id', as: 'BikeOrder'});
-BikeOrder.belongsTo(Basket, { foreignKey: 'id_basket',targetKey: 'id', as: 'Basket' });
+const User = mongoose.models.User || mongoose.model("User", UserSchema);
+const RefreshToken = mongoose.models.RefreshToken || mongoose.model("RefreshToken", RefreshTokenSchema);
+const TypeService = mongoose.models.TypeService || mongoose.model("TypeService", TypeServiceSchema);
+const CategoryService = mongoose.models.CategoryService || mongoose.model("CategoryService", CategoryServiceSchema);
+const Service = mongoose.models.Service || mongoose.model("Service", ServiceSchema);
+const TypePart = mongoose.models.TypePart || mongoose.model("TypePart", TypePartSchema);
+const CategoryPart = mongoose.models.CategoryPart || mongoose.model("CategoryPart", CategoryPartSchema);
+const Part = mongoose.models.Part || mongoose.model("Part", PartSchema);
+const TypeBike = mongoose.models.TypeBike || mongoose.model("TypeBike", TypeBikeSchema);
+const CategoryBike = mongoose.models.CategoryBike || mongoose.model("CategoryBike", CategoryBikeSchema);
+const Bike = mongoose.models.Bike || mongoose.model("Bike", BikeSchema);
+const Basket = mongoose.models.Basket || mongoose.model("Basket", BasketSchema);
+const ServiceOrder = mongoose.models.ServiceOrder || mongoose.model("ServiceOrder", ServiceOrderSchema);
+const PartOrder = mongoose.models.PartOrder || mongoose.model("PartOrder", PartOrderSchema);
+const BikeOrder = mongoose.models.BikeOrder || mongoose.model("BikeOrder", BikeOrderSchema);
 
 module.exports = {
     User,
-    Refresh_Token,
+    RefreshToken,
+    TypeService,
+    CategoryService,
+    Service,
+    TypePart,
+    CategoryPart,
+    Part,
+    TypeBike,
+    CategoryBike,
+    Bike,
     Basket,
     ServiceOrder,
     PartOrder,
     BikeOrder,
-    TypeBike,
-    TypePart,
-    TypeService,
-    CategoryPart,
-    CategoryBike,
-    CategoryService,
-    Bike,
-    Part,
-    Service,
-}
+};

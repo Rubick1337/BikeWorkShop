@@ -3,7 +3,7 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, F
 
 export default function EditPartDialog({ open, handleClose, part, handleEditPartSubmit, categories, types }) {
     const [editedPart, setEditedPart] = useState({
-        id: '',
+        _id: '',
         name: '',
         price: '',
         model: '',
@@ -16,9 +16,9 @@ export default function EditPartDialog({ open, handleClose, part, handleEditPart
 
     useEffect(() => {
         if (part) {
-            console.log('Part updated: ', part.id);
+            console.log('Part updated: ', part._id);
             setEditedPart({
-                id: part.id,
+                _id: part._id,
                 name: part.name || '',
                 price: part.price || '',
                 model: part.model || '',
@@ -101,7 +101,7 @@ export default function EditPartDialog({ open, handleClose, part, handleEditPart
                             label="Категория"
                         >
                             {categories.map((category) => (
-                                <MenuItem key={category.id} value={category.id}>
+                                <MenuItem key={category._id} value={category._id}>
                                     {category.name}
                                 </MenuItem>
                             ))}
@@ -118,7 +118,7 @@ export default function EditPartDialog({ open, handleClose, part, handleEditPart
                             label="Тип"
                         >
                             {types.map((type) => (
-                                <MenuItem key={type.id} value={type.id}>
+                                <MenuItem key={type._id} value={type._id}>
                                     {type.name}
                                 </MenuItem>
                             ))}

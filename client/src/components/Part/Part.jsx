@@ -33,10 +33,10 @@ const Part = ({ part, isAuth, user, handleDeleteClick, handleEditClick, getCateg
             const basket = await dispatch(fetchBasketNull(userId)).unwrap(); // Используем `unwrap`, чтобы получить результат
             console.log('Корзина:', basket);
 
-            if (basket && basket.id) {
+            if (basket && basket._id) {
                 const orderData = {
-                    id_part: part.id,
-                    id_basket: basket.id,
+                    id_part: part._id,
+                    id_basket: basket._id,
                 };
                 dispatch(createOrderPart(orderData));
             } else {
@@ -72,7 +72,7 @@ const Part = ({ part, isAuth, user, handleDeleteClick, handleEditClick, getCateg
                     <div className="button__crud">
                         <button
                             className="crud__buton"
-                            onClick={() => handleDeleteClick(part.id)}
+                            onClick={() => handleDeleteClick(part._id)}
                         >
                             Удалить
                         </button>

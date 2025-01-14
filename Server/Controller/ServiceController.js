@@ -1,8 +1,7 @@
 const uuid = require("uuid");
 const path = require("path");
-const { Service } = require("../Models/models");
+const { Service } = require("../Models/models"); // Предполагается, что у вас есть модель Service для Mongoose
 const ApiError = require("../Exception/ApiError");
-const Sequelize = require("sequelize");
 const fs = require("fs");
 
 class ServiceController {
@@ -38,9 +37,9 @@ class ServiceController {
         console.log("Filter parameters:", { id_type_service, id_category_service, minPrice, maxPrice, searchQuery });
 
         // Дефолтные значения для пагинации и сортировки
-        page = page || 1;
-        limit = limit || 5;
-        let offset = (page - 1) * limit;
+        page = parseInt(page) || 1;
+        limit = parseInt(limit) || 5;
+        const offset = (page - 1) * limit;
 
         // Объект условий фильтрации
         let whereConditions = {};
@@ -58,36 +57,29 @@ class ServiceController {
         // Фильтрация по диапазону цен
         if (minPrice || maxPrice) {
             whereConditions.price = {};
-            if (minPrice) whereConditions.price[Sequelize.Op.gte] = minPrice;
-            if (maxPrice) whereConditions.price[Sequelize.Op.lte] = maxPrice;
+            if (minPrice) whereConditions.price.$gte = parseFloat(minPrice);
+            if (maxPrice) whereConditions.price.$lte = parseFloat(maxPrice);
         }
 
         // Фильтрация по поисковому запросу
         if (searchQuery) {
-            whereConditions = {
-                ...whereConditions,
-                [Sequelize.Op.or]: [
-                    { name: { [Sequelize.Op.iLike]: `%${searchQuery}%` } },
-                ]
-            };
+            whereConditions.$or = [
+                { name: { $regex: searchQuery, $options: 'i' } },
+            ];
         }
 
         // Сортировка по цене
-        let order = [];
+        let sort = {};
         if (sortPrice === 'asc') {
-            order = [['price', 'ASC']];
+            sort.price = 1;
         } else if (sortPrice === 'desc') {
-            order = [['price', 'DESC']];
+            sort.price = -1;
         }
 
         try {
-            const services = await Service.findAndCountAll({
-                where: whereConditions,
-                limit,
-                offset,
-                order
-            });
-            return res.json(services);
+            const services = await Service.find(whereConditions).limit(limit).skip(offset).sort(sort);
+            const totalCount = await Service.countDocuments(whereConditions);
+            return res.json({ rows: services, count: totalCount }); // Изменяем на rows для соответствия Redux
         } catch (e) {
             return res.status(500).json({ error: e.message });
         }
@@ -96,10 +88,15 @@ class ServiceController {
     // Получение одной услуги по ID
     async getServiceOne(req, res) {
         const { id } = req.params;
-        const service = await Service.findOne({
-            where: { id }
-        });
-        return res.json(service);
+        try {
+            const service = await Service.findById(id);
+            if (!service) {
+                return res.status(404).json({ error: 'Запись о услуге не найдена' });
+            }
+            return res.json(service);
+        } catch (error) {
+            return res.status(500).json({ error: 'Ошибка при получении услуги' });
+        }
     }
 
     // Удаление услуги
@@ -107,7 +104,7 @@ class ServiceController {
         const { id } = req.params;
 
         try {
-            const service = await Service.findByPk(id);
+            const service = await Service.findById(id);
             if (!service) {
                 return res.status(404).json({ error: 'Запись о услуге не найдена' });
             }
@@ -122,7 +119,7 @@ class ServiceController {
                 });
             }
 
-            await service.destroy();
+            await Service.findByIdAndDelete(id);
             return res.json({ message: 'Запись о услуге успешно удалена' });
         } catch (error) {
             return res.status(500).json({ error: 'Не удалось удалить услугу' });
@@ -131,14 +128,13 @@ class ServiceController {
 
     // Редактирование услуги
     async editService(req, res) {
+        const { id } = req.params;
         try {
             const { id_type_service, id_category_service, name, price, description, inSell } = req.body;
-            const { id } = req.params;
-            console.log("Редактирование услуги с id: " + id);
 
-            const service = await Service.findByPk(id);
+            const service = await Service.findById(id);
             if (!service) {
-                return res.status(404).json({ error: 'Service not found' });
+                return res.status(404).json({ error: 'Запись о услуге не найдена' });
             }
 
             // Если есть новое изображение, обновляем его
@@ -155,23 +151,27 @@ class ServiceController {
                 await img.mv(path.resolve(__dirname, '..', 'static', newFileName));
 
                 // Обновляем информацию о услуге
-                await service.update({
-                    id_type_service,
-                    id_category_service,
-                    name,
-                    price,
-                    description,
-                    inSell,
-                    img: newFileName,
-                });
+                service.id_type_service = id_type_service;
+                service.id_category_service = id_category_service;
+                service.name = name;
+                service.price = price;
+                service.description = description;
+                service.inSell = inSell;
+                service.img = newFileName;
             } else {
                 // Если изображения нет, просто обновляем остальные поля
-                await service.update({ id_type_service, id_category_service, name, price, description, inSell });
+                service.id_type_service = id_type_service;
+                service.id_category_service = id_category_service;
+                service.name = name;
+                service.price = price;
+                service.description = description;
+                service.inSell = inSell;
             }
 
-            return res.json({ message: 'Service updated successfully' });
+            await service.save();
+            return res.json({ message: 'Услуга успешно обновлена' });
         } catch (error) {
-            return res.status(500).json({ error: 'Failed to update service' });
+            return res.status(500).json({ error: 'Не удалось обновить услугу' });
         }
     }
 }

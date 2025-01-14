@@ -1,0 +1,60 @@
+[{
+  "_id": {
+    "$oid": "67852f96d8d18d8dfd68d52d"
+  },
+  "id_part": {
+    "$oid": "6784fac8784de810302af7d2"
+  },
+  "id_basket": {
+    "$oid": "67852d5242ffa297eb293276"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67852fa0d8d18d8dfd68d542"
+  },
+  "id_part": {
+    "$oid": "6784fac8784de810302af7d2"
+  },
+  "id_basket": {
+    "$oid": "67852f9bd8d18d8dfd68d537"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67852fa1d8d18d8dfd68d545"
+  },
+  "id_part": {
+    "$oid": "676e81c13a467c662701dd5b"
+  },
+  "id_basket": {
+    "$oid": "67852f9bd8d18d8dfd68d537"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67852fa1d8d18d8dfd68d548"
+  },
+  "id_part": {
+    "$oid": "6784fac8784de810302af7d2"
+  },
+  "id_basket": {
+    "$oid": "67852f9bd8d18d8dfd68d537"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67852fa2d8d18d8dfd68d54b"
+  },
+  "id_part": {
+    "$oid": "676e81c13a467c662701dd5b"
+  },
+  "id_basket": {
+    "$oid": "67852f9bd8d18d8dfd68d537"
+  },
+  "__v": 0
+}]

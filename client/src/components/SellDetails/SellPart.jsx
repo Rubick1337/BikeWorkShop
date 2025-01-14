@@ -69,7 +69,7 @@ export default function SellPart() {
         img: null
     });
 
-    const filteredParts = parts.filter(part => {
+    const filteredParts = (parts|| []).filter(part => {
         // Фильтрация по inSell для клиентов
         if (user.role === 'клиент' && part.inSell === false) {
             return false;
@@ -172,12 +172,12 @@ export default function SellPart() {
     }, [dispatch, sortOrder, searchQuery, selectedCategory, selectedType, minPrice, maxPrice, page, limit]);
 
     const getCategoryName = (id) => {
-        const category = categories.find(category => category.id === id);
+        const category = categories.find(category => category._id === id);
         return category ? category.name : 'Неизвестно';
     };
 
     const getTypeName = (id) => {
-        const type = types.find(type => type.id === id);
+        const type = types.find(type => type._id === id);
         return type ? type.name : 'Неизвестно';
     };
 
@@ -429,7 +429,7 @@ export default function SellPart() {
             ) : (
                 filteredParts.map(part => (
                     <Part
-                        key={part.id}
+                        key={part._id}
                         part={part}
                         isAuth={isAuth}
                         user={user}

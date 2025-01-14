@@ -95,7 +95,7 @@ const CreateServiceDialog = ({
                         onChange={handleCreateServiceChange}
                     >
                         {categories.map(category => (
-                            <MenuItem key={category.id} value={category.id}>
+                            <MenuItem key={category._id} value={category._id}>
                                 {category.name}
                             </MenuItem>
                         ))}
@@ -109,7 +109,7 @@ const CreateServiceDialog = ({
                         onChange={handleCreateServiceChange}
                     >
                         {types.map(type => (
-                            <MenuItem key={type.id} value={type.id}>
+                            <MenuItem key={type._id} value={type._id}>
                                 {type.name}
                             </MenuItem>
                         ))}

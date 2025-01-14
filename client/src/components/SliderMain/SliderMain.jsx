@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./SliderStyle.scss";
 
-
 import image1 from '../../images/image.png';
 import image2 from '../../images/bike.png';
 import image3 from '../../images/bike3.png';
@@ -35,7 +34,12 @@ export default function SliderMain() {
 
             <div className="slider__container">
                 <div className="slider__items">
-                    <div className="left-carrect" onClick={prevSlide}></div>
+                    <div
+                        className="left-carrect"
+                        onClick={prevSlide}
+                        role="button"
+                        aria-label="Previous slide"
+                    ></div>
                     {images.map((image, index) => (
                         <div
                             key={index}
@@ -43,7 +47,12 @@ export default function SliderMain() {
                             style={{ backgroundImage: `url(${image})` }}
                         ></div>
                     ))}
-                    <div className="right-carrect" onClick={nextSlide}></div>
+                    <div
+                        className="right-carrect"
+                        onClick={nextSlide}
+                        role="button"
+                        aria-label="Next slide"
+                    ></div>
                 </div>
 
                 <div className="pagination">
@@ -52,6 +61,8 @@ export default function SliderMain() {
                             key={index}
                             className={`button ${currentSlide === index ? "active" : ""}`}
                             onClick={() => goToSlide(index)}
+                            role="button"
+                            aria-label={`Go to slide ${index + 1}`}
                         >
                             <div className="inner"></div>
                         </div>

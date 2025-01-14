@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContactInfo Component matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="container__info"
+  >
+    <div
+      class="title_section"
+    >
+      <h3>
+        Контакты
+      </h3>
+      <div
+        class="line__title"
+      />
+    </div>
+    <div
+      class="container-contacts-info"
+    >
+      <div
+        class="contacts-info"
+      >
+        <div
+          class="text-contacts"
+        >
+          <h2>
+            Центральный офис:
+            <br />
+            г. Москва, ул,Гоголя 13, 1й этаж
+          </h2>
+        </div>
+        <div
+          class="text-contacts"
+        >
+          <h2>
+            Представительство в Киеве:
+            <br />
+            г. Киев, ул. Є. Коновальця, 103 оф. 410
+          </h2>
+        </div>
+        <div
+          class="text-contacts"
+        >
+          <a
+            href="https://github.com/Rubick1337?tab=repositories"
+          >
+            Github
+          </a>
+        </div>
+        <div
+          class="telephone"
+        >
+          <h2>
+            Телефон:
+          </h2>
+          <div
+            class="text-contacts"
+          >
+            <a
+              href="tel:+7987654-54-56"
+            >
+              +7 987 654-54-56
+            </a>
+          </div>
+          <div
+            class="text-contacts"
+          >
+            <a
+              href="tel:+38067504-32-57"
+            >
+              +38 067 504-32-57
+            </a>
+          </div>
+        </div>
+        <div
+          class="text-contacts"
+        >
+          <a
+            href="mailto:poss1337@gmail.com"
+          >
+            Почта: poss1337@gmail.com
+          </a>
+        </div>
+      </div>
+      <div
+        class="map"
+        id="map"
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;

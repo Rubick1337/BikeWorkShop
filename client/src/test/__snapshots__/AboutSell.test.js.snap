@@ -1,0 +1,361 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AboutSell Component handles unexpected props gracefully 1`] = `
+<div>
+  <div
+    class="container__about__sell"
+  >
+    <div
+      class="title__about"
+    >
+      <h2>
+        О наших товарах
+      </h2>
+    </div>
+    <div
+      class="all__item"
+    >
+      <div
+        class="container__item__about"
+      >
+        <div
+          class="dilevery__container"
+        >
+          <div
+            class="img_dilevery"
+          />
+          <div
+            class="title_item__about"
+          >
+            <h3>
+              Партнерские поставки
+            </h3>
+          </div>
+          <div
+            class="text__item__about"
+          >
+            <h4>
+              Наши велосипеды и комплектующие поставляются только от проверенных партнеров, что гарантирует высокое качество продукции.
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div
+        class="container__item__about"
+      >
+        <div
+          class="dilevery__container"
+        >
+          <div
+            class="img_garant"
+          />
+          <div
+            class="title_item__about"
+          >
+            <h3>
+              Гарантия качества
+            </h3>
+          </div>
+          <div
+            class="text__item__about"
+          >
+            <h4>
+              Каждая деталь и велосипед проходят строгий контроль качества и сопровождаются гарантией на срок до 2 лет.
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div
+        class="container__item__about"
+      >
+        <div
+          class="dilevery__container"
+        >
+          <div
+            class="img_safe"
+          />
+          <div
+            class="title_item__about"
+          >
+            <h3>
+              Надежность
+            </h3>
+          </div>
+          <div
+            class="text__item__about"
+          >
+            <h4>
+              Мы выбираем материалы, которые обеспечивают долговечность и надежность вашего велосипеда даже при интенсивном использовании.
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div
+        class="container__item__about"
+      >
+        <div
+          class="dilevery__container"
+        >
+          <div
+            class="img_help"
+          />
+          <div
+            class="title_item__about"
+          >
+            <h3>
+              Поддержка клиентов
+            </h3>
+          </div>
+          <div
+            class="text__item__about"
+          >
+            <h4>
+              Покупая у нас, вы получаете квалифицированную поддержку и возможность сервисного обслуживания у наших партнеров.
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AboutSell Component renders correctly 1`] = `
+<div>
+  <div
+    class="container__about__sell"
+  >
+    <div
+      class="title__about"
+    >
+      <h2>
+        О наших товарах
+      </h2>
+    </div>
+    <div
+      class="all__item"
+    >
+      <div
+        class="container__item__about"
+      >
+        <div
+          class="dilevery__container"
+        >
+          <div
+            class="img_dilevery"
+          />
+          <div
+            class="title_item__about"
+          >
+            <h3>
+              Партнерские поставки
+            </h3>
+          </div>
+          <div
+            class="text__item__about"
+          >
+            <h4>
+              Наши велосипеды и комплектующие поставляются только от проверенных партнеров, что гарантирует высокое качество продукции.
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div
+        class="container__item__about"
+      >
+        <div
+          class="dilevery__container"
+        >
+          <div
+            class="img_garant"
+          />
+          <div
+            class="title_item__about"
+          >
+            <h3>
+              Гарантия качества
+            </h3>
+          </div>
+          <div
+            class="text__item__about"
+          >
+            <h4>
+              Каждая деталь и велосипед проходят строгий контроль качества и сопровождаются гарантией на срок до 2 лет.
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div
+        class="container__item__about"
+      >
+        <div
+          class="dilevery__container"
+        >
+          <div
+            class="img_safe"
+          />
+          <div
+            class="title_item__about"
+          >
+            <h3>
+              Надежность
+            </h3>
+          </div>
+          <div
+            class="text__item__about"
+          >
+            <h4>
+              Мы выбираем материалы, которые обеспечивают долговечность и надежность вашего велосипеда даже при интенсивном использовании.
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div
+        class="container__item__about"
+      >
+        <div
+          class="dilevery__container"
+        >
+          <div
+            class="img_help"
+          />
+          <div
+            class="title_item__about"
+          >
+            <h3>
+              Поддержка клиентов
+            </h3>
+          </div>
+          <div
+            class="text__item__about"
+          >
+            <h4>
+              Покупая у нас, вы получаете квалифицированную поддержку и возможность сервисного обслуживания у наших партнеров.
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AboutSell Component renders correctly with different props 1`] = `
+<div>
+  <div
+    class="container__about__sell"
+  >
+    <div
+      class="title__about"
+    >
+      <h2>
+        О наших товарах
+      </h2>
+    </div>
+    <div
+      class="all__item"
+    >
+      <div
+        class="container__item__about"
+      >
+        <div
+          class="dilevery__container"
+        >
+          <div
+            class="img_dilevery"
+          />
+          <div
+            class="title_item__about"
+          >
+            <h3>
+              Партнерские поставки
+            </h3>
+          </div>
+          <div
+            class="text__item__about"
+          >
+            <h4>
+              Наши велосипеды и комплектующие поставляются только от проверенных партнеров, что гарантирует высокое качество продукции.
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div
+        class="container__item__about"
+      >
+        <div
+          class="dilevery__container"
+        >
+          <div
+            class="img_garant"
+          />
+          <div
+            class="title_item__about"
+          >
+            <h3>
+              Гарантия качества
+            </h3>
+          </div>
+          <div
+            class="text__item__about"
+          >
+            <h4>
+              Каждая деталь и велосипед проходят строгий контроль качества и сопровождаются гарантией на срок до 2 лет.
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div
+        class="container__item__about"
+      >
+        <div
+          class="dilevery__container"
+        >
+          <div
+            class="img_safe"
+          />
+          <div
+            class="title_item__about"
+          >
+            <h3>
+              Надежность
+            </h3>
+          </div>
+          <div
+            class="text__item__about"
+          >
+            <h4>
+              Мы выбираем материалы, которые обеспечивают долговечность и надежность вашего велосипеда даже при интенсивном использовании.
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div
+        class="container__item__about"
+      >
+        <div
+          class="dilevery__container"
+        >
+          <div
+            class="img_help"
+          />
+          <div
+            class="title_item__about"
+          >
+            <h3>
+              Поддержка клиентов
+            </h3>
+          </div>
+          <div
+            class="text__item__about"
+          >
+            <h4>
+              Покупая у нас, вы получаете квалифицированную поддержку и возможность сервисного обслуживания у наших партнеров.
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

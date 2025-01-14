@@ -35,10 +35,10 @@ const Service = ({ service, isAuth, user, handleDeleteClick, handleEditClick, ge
             const basket = await dispatch(fetchBasketNull(userId)).unwrap(); // Используем `unwrap`, чтобы получить результат
             console.log('Корзина:', basket);
 
-            if (basket && basket.id) {
+            if (basket && basket._id) {
                 const orderData = {
-                    id_service: service.id,
-                    id_basket: basket.id,
+                    id_service: service._id,
+                    id_basket: basket._id,
                 };
                 dispatch(createOrderService(orderData));
             } else {
@@ -73,7 +73,7 @@ const Service = ({ service, isAuth, user, handleDeleteClick, handleEditClick, ge
                     <div className="button__crud">
                         <button
                             className="crud__buton"
-                            onClick={() => handleDeleteClick(service.id)}
+                            onClick={() => handleDeleteClick(service._id)}
                         >
                             Удалить
                         </button>

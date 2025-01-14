@@ -70,6 +70,7 @@ export const fetchDeleteBike = createAsyncThunk(
     'bikes/fetchDeleteBike',
     async (id, { rejectWithValue }) => {  // Принимаем id
         try {
+
             const response = await BikeService.fetchDeleteBike(id);  // Передаем id в сервис
             return response;  // Возвращаем данные, если успешно
         } catch (error) {

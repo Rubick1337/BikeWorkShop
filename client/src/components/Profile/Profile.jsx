@@ -30,10 +30,10 @@ export default function Profile() {
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     };
-
+console.log(baskets)
     // Фильтруем корзины
     const filteredBaskets = Array.isArray(baskets) ? baskets.filter(basket => basket.status !== 'пусто') : [];
-    console.log(filteredBaskets.length);
+    console.log(filteredBaskets);
     const pageCount = Math.ceil(totalCount / limit);
     console.log(limit)
     return (
@@ -68,12 +68,12 @@ export default function Profile() {
                     <div className="no-items-message">Нет активных корзин</div>
                 ) : (
                     filteredBaskets.map(basket => (
-                        <div key={basket.id} className="container__bike">
+                        <div key={basket._id} className="container__bike">
                             <div className="container__bike__information">
                                 <div className="background__order"></div>
                                 <div className="text__bike">
                                     <h2>Дата заказа: {formatDate(basket.date)}</h2>
-                                    <h3>Order #{basket.id}</h3>
+                                    <h3>Order #{basket._id}</h3>
                                     <h3>$ {basket.cost}</h3>
                                 </div>
                             </div>

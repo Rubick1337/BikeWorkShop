@@ -1,0 +1,60 @@
+[{
+  "_id": {
+    "$oid": "676e7e8c996846255df214f5"
+  },
+  "name": "Владислав",
+  "email": "Aleksand111232r123@gmail.com",
+  "password": "$2a$04$/pSSLAlr6USxv5xCi8BsZOTtSQomRcXBNYWQ8JN2VOh8EZWi4XX/m",
+  "role": "механик",
+  "adress": "Космонавтов д 11",
+  "surname": "Шаболда",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "676e7e96996846255df214fe"
+  },
+  "name": "Артем",
+  "email": "Aleksandr1123@gmail.com",
+  "password": "$2a$04$QDWyNWd/zJbWVaSPcerHFOETrI5WSztsp6/IyRaZ.jmdzfYbeKM2y",
+  "role": "владелец",
+  "adress": "Космонавтов д 11",
+  "surname": "Шаболда",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "676e7e9d996846255df21507"
+  },
+  "name": "Алексей",
+  "email": "Aleksandr3@gmail.com",
+  "password": "$2a$04$mJzhIOLjP/6SaNs9e7Y0QO67i5VSBBvGMq8StF9YgFRrP6gwKn2gC",
+  "role": "механик",
+  "adress": "Космонавтов д 11",
+  "surname": "Гусев",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "676e7ea4996846255df21510"
+  },
+  "name": "Максим",
+  "email": "Aleksar3@gmail.com",
+  "password": "$2a$04$13MTVt1mL7NFyCZgXNR75e4RtYspyK1jQpJfTwALMylXwz9I.jszS",
+  "role": "клиент",
+  "adress": "Космонавтов д 11",
+  "surname": "Шабанов",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67852d1242ffa297eb293206"
+  },
+  "name": "Илья",
+  "email": "Aleksandr112123@gmail.com",
+  "password": "$2a$04$muo9ldaBd6zkaRs8u4N55ubWdLOQnLcAteL7AY4bnbk0qUnTSIgIO",
+  "role": "клиент",
+  "adress": "Космонавтов д 11",
+  "surname": "Шикунец",
+  "__v": 0
+}]

@@ -52,7 +52,6 @@ const CreateBikeDialog = ({
         handleCreateBikeSubmit();
         handleReset();  // Сбрасываем форму после отправки
     };
-
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Добавить велосипед</DialogTitle>
@@ -106,11 +105,11 @@ const CreateBikeDialog = ({
                     <InputLabel>Категория</InputLabel>
                     <Select
                         name="id_category_bike"
-                        value={newBikeData.id_category_bike}
+                        value={newBikeData.id_category_bike || ''} // Пустая строка по умолчанию
                         onChange={handleCreateBikeChange}
                     >
                         {categories.map(category => (
-                            <MenuItem key={category.id} value={category.id}>
+                            <MenuItem key={category._id} value={category._id}> {/* Используйте `_id` */}
                                 {category.name}
                             </MenuItem>
                         ))}
@@ -120,11 +119,11 @@ const CreateBikeDialog = ({
                     <InputLabel>Тип</InputLabel>
                     <Select
                         name="id_type_bike"
-                        value={newBikeData.id_type_bike}
+                        value={newBikeData.id_type_bike || ''}
                         onChange={handleCreateBikeChange}
                     >
                         {types.map(type => (
-                            <MenuItem key={type.id} value={type.id}>
+                            <MenuItem key={type._id} value={type._id}>
                                 {type.name}
                             </MenuItem>
                         ))}

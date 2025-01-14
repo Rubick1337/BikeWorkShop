@@ -6,6 +6,7 @@ export default class BikeService {
     // Получение списка велосипедов
     static async fetchBikes({ sortOrder, searchQuery, category, type, minPrice, maxPrice, page, limit }) {
         const sortParam = sortOrder === 'expensive' ? 'desc' : 'asc';
+        console.log(category);
         const response = await $api.get(API_ENDPOINTS.BIKE.GET, {
             params: {
                 sortPrice: sortParam,
@@ -47,6 +48,7 @@ export default class BikeService {
 
     // Удаление велосипеда
     static async fetchDeleteBike(id) {
+        console.log("dsasaddas"+id);
         const response = await $api.delete(API_ENDPOINTS.BIKE.DELETE(id));
         return response.data;
     }
@@ -63,8 +65,13 @@ export default class BikeService {
 
     // Редактирование велосипеда
     static async fetchEditBike(bikeData) {
+        // Логируем ID
+        console.log("ID для редактирования:", bikeData._id);
+        console.log('Данные велосипеда для редактирования:', bikeData);
+
         const formData = new FormData();
         formData.append('name', bikeData.name);
+        formData.append('description', bikeData.description);
         formData.append('price', bikeData.price);
         formData.append('model', bikeData.model);
         formData.append('brand', bikeData.brand);
@@ -77,7 +84,10 @@ export default class BikeService {
         }
 
         try {
-            const response = await $api.put(API_ENDPOINTS.BIKE.EDIT(bikeData.id), formData, {
+            const url = API_ENDPOINTS.BIKE.EDIT(bikeData._id); // Логируем URL
+            console.log("URL для редактирования:", url);
+
+            const response = await $api.put(url, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

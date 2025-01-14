@@ -1,56 +1,76 @@
-const {TypeService} = require("../Models/models")
+const { TypeService } = require("../Models/models"); // Предполагается, что у вас есть модель TypeService для Mongoose
 
 class TypeServiceController {
-    async createTypeService(req, res){
-        const {name} = req.body;
-        const type = await TypeService.create({name})
-        return res.json(type)
+    // Создание нового типа услуги
+    async createTypeService(req, res, next) {
+        const { name } = req.body;
+        try {
+            const type = await TypeService.create({ name });
+            return res.json(type);
+        } catch (error) {
+            next(new Error(error.message)); // Обработка ошибок
+        }
     }
-    async getTypeServiceAll(req,res){
-        const types = await TypeService.findAll()
-        return res.json(types)
+
+    // Получение всех типов услуг
+    async getTypeServiceAll(req, res) {
+        try {
+            const types = await TypeService.find();
+            return res.json(types);
+        } catch (error) {
+            return res.status(500).json({ error: 'Ошибка при получении типов услуг' });
+        }
     }
-    async getTypeServiceOne(req,res){
-        const {id } = req.params
-        const typeService = await TypeService.findOne(
-            {
-                where:{id}
+
+    // Получение одного типа услуги по ID
+    async getTypeServiceOne(req, res) {
+        const { id } = req.params;
+        try {
+            const typeService = await TypeService.findById(id);
+            if (!typeService) {
+                return res.status(404).json({ error: 'Тип услуги не найден' });
             }
-        )
-        return res.json(typeService)
+            return res.json(typeService);
+        } catch (error) {
+            return res.status(500).json({ error: 'Ошибка при получении типа услуги' });
+        }
     }
-    async deleteTypeService(req,res){
+
+    // Удаление типа услуги
+    async deleteTypeService(req, res) {
         const { id } = req.query;
 
         try {
-            const type = await TypeService.findByPk(id);
+            const type = await TypeService.findById(id);
             if (!type) {
-                return res.status(404).json({ error: 'type record not found' });
+                return res.status(404).json({ error: 'Запись типа не найдена' });
             }
 
-            await type.destroy();
-            return res.json({ message: 'type record deleted successfully' });
+            await TypeService.findByIdAndDelete(id);
+            return res.json({ message: 'Запись типа успешно удалена' });
         } catch (error) {
-            return res.status(500).json({ error: 'Failed to delete type' });
+            return res.status(500).json({ error: 'Не удалось удалить тип' });
         }
     }
-    async editTypeService(req,res){
+
+    // Редактирование типа услуги
+    async editTypeService(req, res) {
         const { id } = req.params;
         try {
-
             const { name } = req.body;
 
-            const type = await TypeService.findByPk(id);
+            const type = await TypeService.findById(id);
             if (!type) {
-                return res.status(404).json({ error: 'type rec not found' });
+                return res.status(404).json({ error: 'Тип не найден' });
             }
 
-            await type.update({ name });
-            return res.json({ message: 'type updated successfully' });
+            type.name = name;
+            await type.save();
+            return res.json({ message: 'Тип успешно обновлен' });
         } catch (error) {
-            return res.status(500).json({ error: 'Failed to update type' });
+            return res.status(500).json({ error: 'Не удалось обновить тип' });
         }
     }
-
 }
-module.exports = new TypeServiceController()
+
+module.exports = new TypeServiceController();

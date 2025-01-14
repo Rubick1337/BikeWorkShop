@@ -1,56 +1,77 @@
-const {TypePart} = require("../Models/models");
+const { TypePart } = require("../Models/models"); // Предполагается, что у вас есть модель TypePart для Mongoose
 const ApiError = require("../Exception/ApiError");
 
 class TypePartController {
-    async createTypePart(req, res){
-        const {name} = req.body;
-        const type = await TypePart.create({name})
-        return res.json(type)
+    // Создание нового типа части
+    async createTypePart(req, res, next) {
+        const { name } = req.body;
+        try {
+            const type = await TypePart.create({ name });
+            return res.json(type);
+        } catch (error) {
+            next(ApiError.badRequest(error.message));
+        }
     }
-    async getTypePartAll(req,res){
-        const types = await TypePart.findAll()
-        return res.json(types)
+
+    // Получение всех типов частей
+    async getTypePartAll(req, res) {
+        try {
+            const types = await TypePart.find();
+            return res.json(types);
+        } catch (error) {
+            return res.status(500).json({ error: 'Ошибка при получении типов частей' });
+        }
     }
-    async getTypePartOne(req,res){
-        const {id } = req.params
-        const typePart = await TypePart.findOne(
-            {
-                where:{id}
+
+    // Получение одного типа части по ID
+    async getTypePartOne(req, res) {
+        const { id } = req.params;
+        try {
+            const typePart = await TypePart.findById(id);
+            if (!typePart) {
+                return res.status(404).json({ error: 'Тип части не найден' });
             }
-        )
-        return res.json(typePart)
+            return res.json(typePart);
+        } catch (error) {
+            return res.status(500).json({ error: 'Ошибка при получении типа части' });
+        }
     }
-    async deleteTypePart(req,res){
+
+    // Удаление типа части
+    async deleteTypePart(req, res) {
         const { id } = req.query;
 
         try {
-            const type = await TypePart.findByPk(id);
+            const type = await TypePart.findById(id);
             if (!type) {
-                return res.status(404).json({ error: 'type record not found' });
+                return res.status(404).json({ error: 'Запись типа не найдена' });
             }
 
-            await type.destroy();
-            return res.json({ message: 'type record deleted successfully' });
+            await TypePart.findByIdAndDelete(id);
+            return res.json({ message: 'Запись типа успешно удалена' });
         } catch (error) {
-            return res.status(500).json({ error: 'Failed to delete type' });
+            return res.status(500).json({ error: 'Не удалось удалить тип' });
         }
     }
-    async editTypePart(req,res){
+
+    // Редактирование типа части
+    async editTypePart(req, res) {
         const { id } = req.params;
         try {
-
             const { name } = req.body;
 
-            const type = await TypePart.findByPk(id);
+            const type = await TypePart.findById(id);
             if (!type) {
-                return res.status(404).json({ error: 'type rec not found' });
+                return res.status(404).json({ error: 'Тип не найден' });
             }
 
-            await type.update({ name });
-            return res.json({ message: 'type updated successfully' });
+            type.name = name;
+            await type.save();
+            return res.json({ message: 'Тип успешно обновлен' });
         } catch (error) {
-            return res.status(500).json({ error: 'Failed to update type' });
+            return res.status(500).json({ error: 'Не удалось обновить тип' });
         }
     }
 }
-module.exports = new TypePartController()
+
+module.exports = new TypePartController();

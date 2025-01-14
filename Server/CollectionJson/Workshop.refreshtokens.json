@@ -1,0 +1,20 @@
+[{
+  "_id": {
+    "$oid": "676e82413a467c662701dd8b"
+  },
+  "id_user": {
+    "$oid": "676e7e9d996846255df21507"
+  },
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NmU3ZTlkOTk2ODQ2MjU1ZGYyMTUwNyIsIm5hbWUiOiLQkNC70LXQutGB0LXQuSIsInN1cm5hbWUiOiLQk9GD0YHQtdCyIiwiZW1haWwiOiJBbGVrc2FuZHIzQGdtYWlsLmNvbSIsImFkcmVzcyI6ItCa0L7RgdC80L7QvdCw0LLRgtC-0LIg0LQgMTEiLCJyb2xlIjoi0LrQu9C40LXQvdGCIiwiaWF0IjoxNzM2MjYzMTkwLCJleHAiOjE3MzcxMjcxOTB9.lQjbDghckgoc8CepQvYhc9Rkt7laF9BNxDFB6feagRU",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67852fe9d8d18d8dfd68d559"
+  },
+  "id_user": {
+    "$oid": "676e7e8c996846255df214f5"
+  },
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NmU3ZThjOTk2ODQ2MjU1ZGYyMTRmNSIsIm5hbWUiOiLQktC70LDQtNC40YHQu9Cw0LIiLCJzdXJuYW1lIjoi0KjQsNCx0L7Qu9C00LAiLCJlbWFpbCI6IkFsZWtzYW5kMTExMjMycjEyM0BnbWFpbC5jb20iLCJhZHJlc3MiOiLQmtC-0YHQvNC-0L3QsNCy0YLQvtCyINC0IDExIiwicm9sZSI6ItC80LXRhdCw0L3QuNC6IiwiaWF0IjoxNzM2NzgxODA4LCJleHAiOjE3Mzc2NDU4MDh9.9HVuPSjnFdfzt22yeUPp_lxtogyX9aRXx9mCbRr51sQ",
+  "__v": 0
+}]

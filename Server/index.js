@@ -2,7 +2,7 @@
 require("dotenv").config()
 
 const express = require("express")
-const sequelize = require("./db")
+const connectDB = require("./db")
 const cors = require('cors')
 const models = require("./Models/models")
 const router = require("./Route/indexRoute")
@@ -14,7 +14,8 @@ const cookieParser = require("cookie-parser");
 
 const PORT = process.env.PORT || 5000
 
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+// app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: 'http://localhost', credentials: true }));
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.static(path.resolve(__dirname, "static")))
@@ -25,13 +26,12 @@ app.use('/api', router)
 app.use(errorHandler)
 
 const start = async () => {
-    try{
-       await sequelize.authenticate()
-       await sequelize.sync()
-       app.listen(PORT,()=> console.log("Server started on port "+ PORT))
+    try {
+        await connectDB();
+        app.listen(PORT, () => console.log("Server started on port " + PORT));
+    } catch (e) {
+        console.log(e);
     }
-    catch(e) {
-        console.log(e)
-    }
-}
-start()
+};
+
+start();

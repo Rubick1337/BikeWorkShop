@@ -1,0 +1,114 @@
+[{
+  "_id": {
+    "$oid": "676e7efa996846255df21524"
+  },
+  "id_type_bike": {
+    "$oid": "676e7ed2996846255df21520"
+  },
+  "id_category_bike": {
+    "$oid": "676e7ed7996846255df21522"
+  },
+  "name": "Cayen21",
+  "price": 100,
+  "model": "28-15",
+  "brand": "pro",
+  "description": "pro",
+  "img": "f78eb858-f527-45ff-823f-15dc729186d6.jpg",
+  "inSell": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "676e7f0d996846255df21528"
+  },
+  "id_type_bike": {
+    "$oid": "676e7ed2996846255df21520"
+  },
+  "id_category_bike": {
+    "$oid": "676e7ed7996846255df21522"
+  },
+  "name": "KRAKKEN Fortuna 2812",
+  "price": 123,
+  "model": "12",
+  "brand": "KRAKKEN",
+  "description": "dsadqw",
+  "img": "a7412700-6b06-44f8-a80f-9a8406714928.jpg",
+  "inSell": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "676e7f28996846255df2152e"
+  },
+  "id_type_bike": {
+    "$oid": "676e7ed2996846255df21520"
+  },
+  "id_category_bike": {
+    "$oid": "676e7f17996846255df2152c"
+  },
+  "name": "Z 21",
+  "price": 2321,
+  "model": "123",
+  "brand": "2312",
+  "description": "dsadsdsa",
+  "img": "de4dd05d-fd3a-4bb0-9ea9-ac6af67fa73c.jpg",
+  "inSell": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "677d465f4e7cc639e25a47dc"
+  },
+  "id_type_bike": {
+    "$oid": "676e7ed2996846255df21520"
+  },
+  "id_category_bike": {
+    "$oid": "676e7f17996846255df2152c"
+  },
+  "name": "eqwqew1",
+  "price": 12312,
+  "model": "1ewq",
+  "brand": "eqwe",
+  "description": "ewqeqw",
+  "img": "053af85c-6e84-4c5b-9b0f-26566c3fd5ac.jpg",
+  "inSell": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67853017d8d18d8dfd68d575"
+  },
+  "id_type_bike": {
+    "$oid": "67852cdd42ffa297eb2931e5"
+  },
+  "id_category_bike": {
+    "$oid": "676e7ed7996846255df21522"
+  },
+  "name": "Moler",
+  "price": 1341,
+  "model": "12-41-21",
+  "brand": "Moler",
+  "description": "Велосипед молер",
+  "img": "48df14a4-9eec-46f7-a68f-6ce96eac3c33.jpg",
+  "inSell": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67853036d8d18d8dfd68d579"
+  },
+  "id_type_bike": {
+    "$oid": "67852cd242ffa297eb2931e1"
+  },
+  "id_category_bike": {
+    "$oid": "676e7ed7996846255df21522"
+  },
+  "name": "Logitec",
+  "price": 1414,
+  "model": "14-51-231",
+  "brand": "Logitec",
+  "description": "Logitec велосипед ",
+  "img": "268231ae-e7e7-437b-b70a-70a34b364263.jpg",
+  "inSell": true,
+  "__v": 0
+}]

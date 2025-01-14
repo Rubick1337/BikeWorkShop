@@ -68,7 +68,7 @@ export default function SellBike() {
         img: null
     });
 
-    const filteredBikes = bikes.filter(part => {
+    const filteredBikes = (bikes || []).filter(part => {
         if (user.role === 'клиент' && part.inSell === false) {
             return false;
         }
@@ -115,8 +115,9 @@ export default function SellBike() {
         dispatch(fetchBikes({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page: value, limit }));
     };
 
-    const handleDeleteClick = (id) => {
-        setBikeToDelete(id);
+    const handleDeleteClick = (_id) => {
+        console.log("qwe"+_id)
+        setBikeToDelete(_id);
         setOpenDeleteDialog(true);
     };
 
@@ -127,6 +128,7 @@ export default function SellBike() {
 
     const handleConfirmDelete = async () => {
         try {
+            console.log("qqweqweqwds"+bikeToDelete)
             await dispatch(fetchDeleteBike(bikeToDelete));
             dispatch(fetchBikes({ sortOrder, searchQuery, category: selectedCategory, type: selectedType, minPrice, maxPrice, page, limit }));
             handleCloseDialog();
@@ -169,12 +171,12 @@ export default function SellBike() {
     }, [dispatch, sortOrder, searchQuery, selectedCategory, selectedType, minPrice, maxPrice, page, limit]);
 
     const getCategoryName = (id) => {
-        const category = categories.find(category => category.id === id);
+        const category = categories.find(category => category._id === id);
         return category ? category.name : 'Неизвестно';
     };
 
     const getTypeName = (id) => {
-        const type = types.find(type => type.id === id);
+        const type = types.find(type => type._id === id);
         return type ? type.name : 'Неизвестно';
     };
 
@@ -245,7 +247,7 @@ export default function SellBike() {
     const [bikeToEdit, setBikeToEdit] = useState(null);
 
     const handleEditClick = (bike) => {
-        console.log(bike.id);
+        console.log(bike._id);
         setBikeToEdit(bike);
         setOpenEditDialog(true);
     };
@@ -271,7 +273,7 @@ export default function SellBike() {
         }
 
         try {
-            console.log("Передаем велосипед с id:", editedBike.id);
+            console.log("Передаем велосипед с id:", editedBike._id);
             await dispatch(fetchEditBike(editedBike));
 
             dispatch(fetchBikes({
@@ -291,7 +293,7 @@ export default function SellBike() {
             console.error("Ошибка при редактировании велосипеда:", error);
         }
     };
-
+    console.log(bikes)
     const handleCloseAlert = () => {
         setAlertOpen(false);
     };
@@ -429,7 +431,7 @@ export default function SellBike() {
             ) : (
             bikes.map(bike => (
                 <Bike
-                    key={bike.id}
+                    key={bike._id}
                     bike={bike}
                     isAuth={isAuth}
                     user={user}

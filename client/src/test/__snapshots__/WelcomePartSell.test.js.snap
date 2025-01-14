@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WelcomPartSell Component matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="container__sell__bike"
+  >
+    <div
+      class="background__sell__part"
+    >
+      <div
+        class="container__text__sell"
+      >
+        <h2>
+          Ride Free, Ride Far
+        </h2>
+        <h3>
+          Посмотрите нашу коллекцию
+        </h3>
+        <a
+          class="link__sell"
+          href="#sellPart"
+        >
+          За покупками
+        </a>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

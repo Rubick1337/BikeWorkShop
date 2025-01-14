@@ -23,7 +23,7 @@ const FilterMenu = ({
                 <select value={selectedCategory} onChange={handleCategoryChange} className="custom-select">
                     <option value="">Все категории</option>
                     {categories.map(category => (
-                        <option key={category.id} value={category.id}>
+                        <option key={category._id} value={category._id}>
                             {category.name}
                         </option>
                     ))}
@@ -34,7 +34,7 @@ const FilterMenu = ({
                 <select value={selectedType} onChange={handleTypeChange} className="custom-select">
                     <option value="">Все типы</option>
                     {types.map(type => (
-                        <option key={type.id} value={type.id}>
+                        <option key={type._id} value={type._id}>
                             {type.name}
                         </option>
                     ))}

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loading Component matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="container__loading"
+  >
+    <div
+      class="road"
+    />
+     
+    <div
+      class="bike"
+    >
+      <div
+        class="wheel front"
+      />
+      <div
+        class="wheel back"
+      />
+      <div
+        class="frame"
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;

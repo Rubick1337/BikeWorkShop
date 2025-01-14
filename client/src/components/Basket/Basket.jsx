@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchBasketItems, deleteBasketItem,clearBasket } from "../../store/slice/basketSlice";
+import { fetchBasketItems, deleteBasketItem, clearBasket } from "../../store/slice/basketSlice";
 import "./BasketStyle.scss";
 import CustomAlert from "../CustomAlert/CustomAlert";
 import { placeOrder } from '../../store/slice/basketSlice';
+
 export default function Basket() {
     const dispatch = useDispatch();
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
@@ -11,6 +12,14 @@ export default function Basket() {
     const { id: userId } = useSelector((state) => state.auth.user);
 
     const isBasketEmpty = basketItems.length === 0;
+
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [alertSeverity, setAlertSeverity] = useState('');
+
+    const handleCloseAlert = () => {
+        setAlertOpen(false);
+    };
 
     const handlePlaceOrder = async () => {
         if (isBasketEmpty) {
@@ -22,29 +31,25 @@ export default function Basket() {
 
         if (userId) {
             try {
+                const totalPrice = basketItems.reduce(
+                    (sum, item) =>
+                        sum +
+                        (Number(item.id_bike?.price) || Number(item.id_service?.price) || Number(item.id_part?.price) || 0),
+                    0
+                ).toFixed(2);
+
                 await dispatch(placeOrder({ userId, cost: totalPrice }));
-
                 dispatch(clearBasket());
-
                 setAlertMessage('Заказ успешно оформлен!');
                 setAlertSeverity('success');
                 setAlertOpen(true);
             } catch (error) {
                 console.error('Ошибка при оформлении заказа:', error);
-
-                // Если произошла ошибка, показываем alert с ошибкой
                 setAlertMessage('Ошибка при оформлении заказа!');
                 setAlertSeverity('error');
                 setAlertOpen(true);
             }
         }
-    };
-    const [alertOpen, setAlertOpen] = useState(false);  // Состояние для открытия alert
-    const [alertMessage, setAlertMessage] = useState('');  // Сообщение alert
-    const [alertSeverity, setAlertSeverity] = useState('');  // Тип alert: success или error
-
-    const handleCloseAlert = () => {
-        setAlertOpen(false);
     };
 
     useEffect(() => {
@@ -53,9 +58,8 @@ export default function Basket() {
         }
     }, [userId, dispatch]);
 
-
     const handleDelete = (item) => {
-        dispatch(deleteBasketItem(item)); // Отправляем экшен для удаления
+        dispatch(deleteBasketItem(item));
         setAlertMessage('Товар удален из корзины');
         setAlertSeverity('success');
         setAlertOpen(true);
@@ -72,7 +76,7 @@ export default function Basket() {
     const totalPrice = basketItems.reduce(
         (sum, item) =>
             sum +
-            (Number(item.Bike?.price) || Number(item.Service?.price) || Number(item.Part?.price) || 0),
+            (Number(item.id_bike?.price) || Number(item.id_service?.price) || Number(item.id_part?.price) || 0),
         0
     ).toFixed(2);
 
@@ -89,33 +93,35 @@ export default function Basket() {
                             <div
                                 className="background__bike"
                                 style={{
-                                    backgroundImage: `url(${item.Bike?.img ? `${apiBaseUrl}${item.Bike.img}` :
-                                        item.Service?.img ? `${apiBaseUrl}${item.Service.img}` :
-                                            item.Part?.img ? `${apiBaseUrl}${item.Part.img}` : ''})`,
+                                    backgroundImage: `url(${item.id_bike?.img ? `${apiBaseUrl}${item.id_bike.img}` :
+                                        item.id_service?.img ? `${apiBaseUrl}${item.id_service.img}` :
+                                            item.id_part?.img ? `${apiBaseUrl}${item.id_part.img}` : ''})`,
                                 }}
                             ></div>
                             <div className="text__bike">
-                                <h2>{item.Bike?.name || item.Service?.name || item.Part?.name}</h2>
-                                <h3>Цена: ${item.Bike?.price || item.Service?.price || item.Part?.price}</h3>
+                                <h2>{item.id_bike?.name || item.id_service?.name || item.id_part?.name}</h2>
+                                <h3>Цена: ${item.id_bike?.price || item.id_service?.price || item.id_part?.price}</h3>
 
-                                {/* Дополнительные данные для разных типов */}
-                                {item.Bike && (
+                                {/* Дополнительные данные для велосипеда */}
+                                {item.id_bike && (
                                     <>
-                                        <h3>Брэнд: {item.Bike.brand || 'Не указан'}</h3>
-                                        <h3>Модель: {item.Bike.model || 'Не указана'}</h3>
+                                        <h3>Брэнд: {item.id_bike.brand || 'Не указан'}</h3>
+                                        <h3>Модель: {item.id_bike.model || 'Не указана'}</h3>
                                     </>
                                 )}
 
-                                {item.Part && (
+                                {/* Дополнительные данные для деталей */}
+                                {item.id_part && (
                                     <>
-                                        <h3>Модель: {item.Part.model || 'Не указана'}</h3>
-                                        <h3>Брэнд: {item.Part.brand || 'Не указан'}</h3>
+                                        <h3>Модель: {item.id_part.model || 'Не указана'}</h3>
+                                        <h3>Брэнд: {item.id_part.brand || 'Не указан'}</h3>
                                     </>
                                 )}
 
-                                {item.Service && (
+                                {/* Дополнительные данные для услуг */}
+                                {item.id_service && (
                                     <>
-                                        <h3>Описание: {item.Service.description || 'Описание отсутствует'}</h3>
+                                        <h3>Описание: {item.id_service.description || 'Описание отсутствует'}</h3>
                                     </>
                                 )}
                             </div>

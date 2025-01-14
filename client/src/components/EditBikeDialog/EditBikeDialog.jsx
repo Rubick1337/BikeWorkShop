@@ -3,7 +3,7 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, F
 
 export default function EditBikeDialog({ open, handleClose, bike, handleEditBikeSubmit, categories, types }) {
     const [editedBike, setEditedBike] = useState({
-        id: '',
+        _id: '',
         name: '',
         price: '',
         model: '',
@@ -17,9 +17,9 @@ export default function EditBikeDialog({ open, handleClose, bike, handleEditBike
 
     useEffect(() => {
         if (bike) {
-            console.log('Bike updated'+ bike.id);
+            console.log('Bike updated'+ bike._id);
             setEditedBike({
-                id: bike.id,
+                _id: bike._id,
                 name: bike.name || '',
                 price: bike.price || '',
                 model: bike.model || '',
@@ -110,7 +110,7 @@ export default function EditBikeDialog({ open, handleClose, bike, handleEditBike
                             label="Категория"
                         >
                             {categories.map((category) => (
-                                <MenuItem key={category.id} value={category.id}>
+                                <MenuItem key={category._id} value={category._id}>
                                     {category.name}
                                 </MenuItem>
                             ))}
@@ -127,7 +127,7 @@ export default function EditBikeDialog({ open, handleClose, bike, handleEditBike
                             label="Тип"
                         >
                             {types.map((type) => (
-                                <MenuItem key={type.id} value={type.id}>
+                                <MenuItem key={type._id} value={type._id}>
                                     {type.name}
                                 </MenuItem>
                             ))}

@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PartDescription Component matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="modal__information"
+  >
+    <img
+      src="http://localhost:9005//path/to/image.jpg"
+      style="width: 250px; margin-bottom: 20px; align-self: center;"
+    />
+    <p>
+      <strong>
+        Тип детали:
+      </strong>
+       
+    </p>
+    <p>
+      <strong>
+        Категория товара:
+      </strong>
+       
+    </p>
+    <p>
+      <strong>
+        Брэнд:
+      </strong>
+       BrandName
+    </p>
+    <p>
+      <strong>
+        Модель:
+      </strong>
+       ModelName
+    </p>
+    <p>
+      <strong>
+        Цена:
+      </strong>
+       $100
+    </p>
+    <p>
+      <strong>
+        Описание:
+      </strong>
+       This is a test part description.
+    </p>
+  </div>
+</DocumentFragment>
+`;

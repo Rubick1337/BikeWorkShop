@@ -6,6 +6,7 @@ export const createOrderPart = createAsyncThunk(
     'orderPart/createOrderPart',
     async (orderData, { rejectWithValue }) => {
         try {
+            console.log(orderData + " запрос на создание заказа");
             const response = await OrderPartService.createOrderPart(orderData);
             return response;
         } catch (error) {

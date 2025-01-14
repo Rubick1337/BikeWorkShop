@@ -6,8 +6,8 @@ import Loading from "../Loading/loading";
 
 const UserList = () => {
     const dispatch = useDispatch();
-    const { users = [], status, error, noUsersMessage, totalCount } = useSelector((state) => state.users || {}); // totalCount - общее количество пользователей
-    const { role } = useSelector((state) => state.auth.user);  // Получаем роль текущего пользователя
+    const { users = [], status, error, noUsersMessage, totalCount } = useSelector((state) => state.users || {});
+    const { role } = useSelector((state) => state.auth.user);
     const [selectedRole, setSelectedRole] = useState({});
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -18,12 +18,15 @@ const UserList = () => {
     }, [dispatch, page, rowsPerPage]);
 
     useEffect(() => {
+        console.log(users); // Проверьте, что в каждом user есть _id
         const initialRoles = {};
         users.forEach(user => {
-            initialRoles[user.id] = user.role;
+            console.log(user._id); // Логируем _id каждого пользователя
+            initialRoles[user._id] = user.role;
         });
         setSelectedRole(initialRoles);
     }, [users]);
+
 
     const handleRoleChange = (userId, role) => {
         console.log('Updating role:', userId, role);
@@ -42,12 +45,14 @@ const UserList = () => {
     };
 
     const handleRoleSelectChange = (userId, event) => {
+        console.log("User ID:", userId); // Проверьте, что userId — это _id пользователя
         const role = event.target.value;
         handleRoleChange(userId, role);
     };
 
+
     const handleChangePage = (event, newPage) => {
-        setPage(newPage);  // Изменяем страницу
+        setPage(newPage);
     };
 
     const handleChangeRowsPerPage = (event) => {
@@ -68,13 +73,13 @@ const UserList = () => {
     if (role !== 'владелец') {
         return (
             <>
-            <div className="container__eror">
-                <h1>404</h1>
-                <h2>Такой страницы не существует</h2>
-            </div>
-        <Loading/>
+                <div className="container__eror">
+                    <h1>404</h1>
+                    <h2>Такой страницы не существует</h2>
+                </div>
+                <Loading />
             </>
-    )
+        );
     }
 
     return (
@@ -82,7 +87,7 @@ const UserList = () => {
             {noUsersMessage && <div>{noUsersMessage}</div>}
             <TableContainer>
                 <Table>
-                <TableHead>
+                    <TableHead>
                         <TableRow>
                             <TableCell>Имя</TableCell>
                             <TableCell>Почта</TableCell>
@@ -91,25 +96,25 @@ const UserList = () => {
                     </TableHead>
                     <TableBody>
                         {filteredUsers.map((user) => (
-                            <TableRow key={user.id}>
+                            <TableRow key={user._id}>
                                 <TableCell>{user.name} {user.surname}</TableCell>
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell>
                                     <FormControl fullWidth>
                                         <InputLabel>Роль</InputLabel>
                                         <Select
-                                            value={selectedRole[user.id] || ''}  // Используем состояние selectedRole
-                                            onChange={(event) => handleRoleSelectChange(user.id, event)}
+                                            value={selectedRole[user._id] || ''} // Используем _id
+                                            onChange={(event) => handleRoleSelectChange(user._id, event)} // Используем _id
                                             MenuProps={{
                                                 PaperProps: {
                                                     style: {
-                                                        maxHeight: 200,  // Устанавливаем максимальную высоту меню
-                                                        width: 150,  // Ограничиваем ширину меню
+                                                        maxHeight: 200,
+                                                        width: 150,
                                                     },
                                                 },
                                             }}
                                             sx={{
-                                                width: 150,  // Ограничиваем ширину самого селектора
+                                                width: 150,
                                             }}
                                         >
                                             <MenuItem value="клиент">Клиент</MenuItem>

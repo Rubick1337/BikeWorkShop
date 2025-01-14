@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SliderMain Component matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="container__slider"
+  >
+    <div
+      class="title_section"
+    >
+      <h3>
+        Bike workshop
+      </h3>
+      <div
+        class="line__title"
+      />
+    </div>
+    <h4>
+      Веломастерская позаботиться о вашем велосипеде
+    </h4>
+    <div
+      class="slider__container"
+    >
+      <div
+        class="slider__items"
+      >
+        <div
+          aria-label="Previous slide"
+          class="left-carrect"
+          role="button"
+        />
+        <div
+          class="image__item active"
+          style="background-image: url(image.png);"
+        />
+        <div
+          class="image__item "
+          style="background-image: url(bike.png);"
+        />
+        <div
+          class="image__item "
+          style="background-image: url(bike3.png);"
+        />
+        <div
+          class="image__item "
+          style="background-image: url(bike5.png);"
+        />
+        <div
+          class="image__item "
+          style="background-image: url(bike6.png);"
+        />
+        <div
+          aria-label="Next slide"
+          class="right-carrect"
+          role="button"
+        />
+      </div>
+      <div
+        class="pagination"
+      >
+        <div
+          aria-label="Go to slide 1"
+          class="button active"
+          role="button"
+        >
+          <div
+            class="inner"
+          />
+        </div>
+        <div
+          aria-label="Go to slide 2"
+          class="button "
+          role="button"
+        >
+          <div
+            class="inner"
+          />
+        </div>
+        <div
+          aria-label="Go to slide 3"
+          class="button "
+          role="button"
+        >
+          <div
+            class="inner"
+          />
+        </div>
+        <div
+          aria-label="Go to slide 4"
+          class="button "
+          role="button"
+        >
+          <div
+            class="inner"
+          />
+        </div>
+        <div
+          aria-label="Go to slide 5"
+          class="button "
+          role="button"
+        >
+          <div
+            class="inner"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

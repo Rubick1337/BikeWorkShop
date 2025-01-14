@@ -66,7 +66,7 @@ export default function SellService() {
         inSell: true,
     });
 
-    const filteredServices = services.filter(service => {
+    const filteredServices = (services || []).filter(service => {
         // Фильтрация по inSell для клиентов
         if (user.role === 'клиент' && service.inSell === false) {
             return false;
@@ -169,12 +169,12 @@ export default function SellService() {
     }, [dispatch, sortOrder, searchQuery, selectedCategory, selectedType, minPrice, maxPrice, page, limit]);
 
     const getCategoryName = (id) => {
-        const category = categories.find(category => category.id === id);
+        const category = categories.find(category => category._id === id);
         return category ? category.name : 'Неизвестно';
     };
 
     const getTypeName = (id) => {
-        const type = types.find(type => type.id === id);
+        const type = types.find(type => type._id === id);
         return type ? type.name : 'Неизвестно';
     };
 
@@ -423,7 +423,7 @@ export default function SellService() {
             ) : (
                 filteredServices.map(service => (
                     <Service
-                        key={service.id}
+                        key={service._id}
                         service={service}
                         isAuth={isAuth}
                         user={user}

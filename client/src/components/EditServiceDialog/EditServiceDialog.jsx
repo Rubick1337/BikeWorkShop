@@ -3,7 +3,7 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, F
 
 export default function EditServiceDialog({ open, handleClose, service, handleEditServiceSubmit, categories, types }) {
     const [editedService, setEditedService] = useState({
-        id: '',
+        _id: '',
         name: '',
         price: '',
         description: '',
@@ -16,7 +16,7 @@ export default function EditServiceDialog({ open, handleClose, service, handleEd
     useEffect(() => {
         if (service) {
             setEditedService({
-                id: service.id,
+                id: service._id,
                 name: service.name || '',
                 price: service.price || '',
                 description: service.description || '',
@@ -89,7 +89,7 @@ export default function EditServiceDialog({ open, handleClose, service, handleEd
                         label="Категория"
                     >
                         {categories.map((category) => (
-                            <MenuItem key={category.id} value={category.id}>
+                            <MenuItem key={category._id} value={category._id}>
                                 {category.name}
                             </MenuItem>
                         ))}
@@ -104,7 +104,7 @@ export default function EditServiceDialog({ open, handleClose, service, handleEd
                         label="Тип услуги"
                     >
                         {types.map((type) => (
-                            <MenuItem key={type.id} value={type.id}>
+                            <MenuItem key={type._id} value={type._id}>
                                 {type.name}
                             </MenuItem>
                         ))}
