@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import CustomAlert from '../components/CustomAlert/CustomAlert'; // Убедитесь, что путь правильный
+import CustomAlert from '../components/CustomAlert/CustomAlert';
 
 
 describe('CustomAlert Component', () => {

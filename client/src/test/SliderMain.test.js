@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import SliderMain from '../components/SliderMain/SliderMain'; // Убедитесь, что путь правильный
+import SliderMain from '../components/SliderMain/SliderMain';
 
 describe('SliderMain Component', () => {
     beforeEach(() => {

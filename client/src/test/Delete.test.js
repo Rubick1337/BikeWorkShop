@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import DeletePartDialog from '../components/DeletePartDialog/DeletePartDialog'; // Убедитесь, что путь правильный
+import DeletePartDialog from '../components/DeletePartDialog/DeletePartDialog';
 
 describe('DeletePartDialog Component', () => {
     const mockHandleClose = jest.fn();

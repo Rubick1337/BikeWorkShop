@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import Loading from '../components/Loading/Loading'; // Убедитесь, что путь правильный
+import Loading from '../components/Loading/Loading';
 
 describe('Loading Component', () => {
     it('matches snapshot', () => {

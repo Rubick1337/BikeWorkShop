@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import ContactInfo from '../components/ContactInfo/ContactInfo'; // Убедитесь, что путь правильный
+import ContactInfo from '../components/ContactInfo/ContactInfo';
 
 describe('ContactInfo Component', () => {
     it('matches snapshot', () => {
